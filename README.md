@@ -25,5 +25,8 @@ O **backend** será construido utilizando a linguagem **Java** e **Spring Boot**
 * Spring Email
 * Spring Web
 
+## Diagrama de Classes
+
+Foi elaborado um diagrama de classes para a documentação do projeto. Esse diagrama pode ser acessível [clicando aqui]()
 
 
