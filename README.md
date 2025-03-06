@@ -4,7 +4,7 @@ O conselho do Estudante é uma aplicação Web responsiva para todos os disposit
 
 Este projeto foi dividido em dois repositórios especificos, um para o **frontend (feito em Next e React)** e outro para o **backend (feito com Spring Boot)**. Este repositório é dedicado ao desenvolvimento backend, você pode acessar o outro repositório [clicando aqui]().
 
-## Funcionalidades do Projeto
+## ❗ Funcionalidades do Projeto
 
 > * O projeto deve suportar 5 tipos de usuários: **alunos, representantes, professores, equipe pedagógica (técnico e orientador), supervisor e um administrador**;
 > * O projeto deve permitir que os **alunos** sejam capazes de **visualizar o histórico de feedbacks, alterar configurações básicas, utilizar o chat integrado e visualizar seu perfil**;
@@ -14,7 +14,7 @@ Este projeto foi dividido em dois repositórios especificos, um para o **fronten
 > * O projeto deve permitir que os **orientadores pedagógicos** sejam capazes de **alterar configurações básicas, visualizar seu perfil, gerenciar conselhos de classe, visualizar dashboards, utilizar o chat integrado, gerenciar usuários (supervisores, professores, alunos e representantes), gerenciar turmas (importação com CSV), gerenciar cursos, gerenciar disciplinas, gerenciar professores PCP e gerencar a equipe pedagógica**;
 > * O projeto deve constar constar com um perfil de **administrador** que será responsável por gerenciar os usuários, principalmente os **orientadores pedagógicos**.
 
-## Sobre o Backend
+## 💻 Sobre o Backend
 
 O **backend** será construido utilizando a linguagem **Java** e **Spring Boot** constando com algumas depedências:
 
@@ -25,8 +25,15 @@ O **backend** será construido utilizando a linguagem **Java** e **Spring Boot**
 * Spring Email
 * Spring Web
 
-## Diagrama de Classes
+## 👩‍💻 Diagrama de Classes
 
 Foi elaborado um diagrama de classes para a documentação do projeto. Esse diagrama pode ser acessível [clicando aqui]()
 
+## 💽 Banco de Dados
+
+Para o projeto será utilizado dois bancos de dados especificos:
+
+> 🐬 **Mysql**: Para representar os **usuários** e outros dados estruturados.
+
+> 🍃 **MongoDB**: Para armazenar os logs das operações realizadas no sistema.
 
