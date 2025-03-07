@@ -2,7 +2,7 @@
 
 O conselho do Estudante é uma aplicação Web responsiva para todos os dispositivos, com foco principal para a versão **Desktop** e em secundário para **celulares**. Esse projeto foi solicitado pela equipe pedagógica da instituição com ínicio do desenvolvimento em Fevereiro de 2025 e conclusão estima em Abril do mesmo ano.
 
-Este projeto foi dividido em dois repositórios especificos, um para o **frontend (feito em Next e React)** e outro para o **backend (feito com Spring Boot)**. Este repositório é dedicado ao desenvolvimento backend, você pode acessar o outro repositório [clicando aqui]().
+Este projeto foi dividido em dois repositórios especificos, um para o **frontend (feito em Next e React)** e outro para o **backend (feito com Spring Boot)**. Este repositório é dedicado ao desenvolvimento backend, você pode acessar o outro repositório [clicando aqui](https://github.com/GustavoBrDev/front-projeto).
 
 ## ❗ Funcionalidades do Projeto
 
@@ -27,7 +27,7 @@ O **backend** será construido utilizando a linguagem **Java** e **Spring Boot**
 
 ## 👩‍💻 Diagrama de Classes
 
-Foi elaborado um diagrama de classes para a documentação do projeto. Esse diagrama pode ser acessível [clicando aqui]()
+Foi elaborado um diagrama de classes para a documentação do projeto. Esse diagrama pode ser acessível [clicando aqui](https://lucid.app/lucidchart/a7205f80-000e-4be5-b5db-e67f5441fb02/edit?viewport_loc=-220%2C-214%2C3326%2C1630%2CHWEp-vi-RSFO&invitationId=inv_dce38466-131d-416f-8281-742e3e205518)
 
 ## 💽 Banco de Dados
 
