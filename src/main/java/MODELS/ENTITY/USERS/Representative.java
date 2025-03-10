@@ -8,6 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Classe model da entidade Representante
+ * @author Gustavo Stinghen
+ * @since 10/03/2025
+ * @see Student
+ */
 @Entity
 @AllArgsConstructor
 @Data
@@ -16,7 +22,7 @@ public class Representative {
 
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @OneToMany
     private List<Student> students;

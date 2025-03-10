@@ -8,6 +8,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * Classe model da entidade PreCouncil (abstração para pre-council)
+ * @author Gustavo Stinghen
+ * @since 10/03/2025
+ * @see Council
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -16,7 +23,7 @@ public abstract class PreCouncil {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(nullable = false)

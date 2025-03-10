@@ -7,12 +7,18 @@ import lombok.NonNull;
 import java.awt.*;
 import java.util.Date;
 
+/**
+ * Abstração para usários regulares
+ * @author Gustavo Stinghen
+ * @since 10/03/2025
+ * @see User
+ */
 @MappedSuperclass
-public abstract class RegularUser {
+public abstract class RegularUser implements User {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String image;
 

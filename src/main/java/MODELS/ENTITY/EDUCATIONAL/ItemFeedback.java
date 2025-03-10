@@ -1,4 +1,4 @@
-package MODELS.ENTITY.USERS;
+package MODELS.ENTITY.EDUCATIONAL;
 
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -7,16 +7,19 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * Classe model da entidade Técnico da equipe pedagógica
- * É uma subclasse de {@link Pedadogue}
- * @see Pedadogue, Staff, User
+ * Classe model da entidade Feedback de item
  * @author Gustavo Stinghen
  * @since 10/03/2025
+ * @see Feedback
  */
-@EqualsAndHashCode(callSuper = true) //Pedir isso ao professor
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Technique extends Pedadogue {
+public class ItemFeedback extends Feedback {
+
+    private String text;
+
+    private String item;
 }
