@@ -1,11 +1,9 @@
 package MODELS.ENTITY.USERS;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NonNull;
 
-import java.awt.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Abstração para usários regulares
@@ -25,8 +23,7 @@ public abstract class RegularUser implements User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String username;
+    public List<Notification> notifications;
 
     @Column(nullable = false)
     private String email;

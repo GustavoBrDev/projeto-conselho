@@ -1,0 +1,16 @@
+package MODELS.DTO;
+
+import MODELS.ENTITY.USERS.Student;
+
+public record StudentDTO(
+    Long id,
+    String name,
+    String email,
+    String password,
+    String image
+) {
+
+    public Student toEntity() {
+        return new Student();
+    }
+}
