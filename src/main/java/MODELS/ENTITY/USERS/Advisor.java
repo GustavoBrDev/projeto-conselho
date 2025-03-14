@@ -1,22 +1,49 @@
 package MODELS.ENTITY.USERS;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * Classe model da entidade Orientador da equipe pedagógica
- * É uma subclasse de {@link Pedadogue}
- * @see Pedadogue, Staff, User
+ * @see User
  * @author Gustavo Stinghen
  * @since 10/03/2025
+ *
+ * Atualizado em 13/03/2025
+ * @author Gustavo Stinghen
  */
-@EqualsAndHashCode(callSuper = true) //Pedir isso ao professor
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Advisor extends Pedadogue {
+public class Advisor implements User {
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String image;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private Date createdAt;
+
+    @Column(nullable = false)
+    private Long register;
 }

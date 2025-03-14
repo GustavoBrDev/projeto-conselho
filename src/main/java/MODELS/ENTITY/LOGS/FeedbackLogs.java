@@ -1,6 +1,5 @@
 package MODELS.ENTITY.LOGS;
 
-import MODELS.ENTITY.EDUCATIONAL.Feedback;
 import MODELS.ENTITY.USERS.User;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

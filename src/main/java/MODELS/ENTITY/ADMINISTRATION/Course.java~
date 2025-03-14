@@ -1,6 +1,5 @@
 package MODELS.ENTITY.ADMINISTRATION;
 
-import MODELS.ENTITY.USERS.Supervisor;
 import MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,9 +14,6 @@ import java.util.List;
  * @author Gustavo Stinghen
  * @since 10/03/2025
  * @see Classe
- *
- * Atualizado em 13/03/2025
- * @author Gustavo Stinghen
  */
 
 @Entity
@@ -57,9 +53,6 @@ public class Course {
     @OneToMany (mappedBy = "course")
     @JoinColumn(nullable = false)
     private List<Classe> classes;
-
-    @ManyToOne
-    private Supervisor supervisor;
 
     /**
      * Metodo para adicionar um professor ao curso

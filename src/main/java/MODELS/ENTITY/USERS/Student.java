@@ -1,34 +1,57 @@
 package MODELS.ENTITY.USERS;
 
 import MODELS.ENTITY.ADMINISTRATION.Classe;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Classe model da entidade Aluno
- * É uma subclasse de {@link RegularUser}
  * @author Gustavo Stinghen
  * @since 10/03/2025
- * @see RegularUser
+ * @see User
+ *
+ * Atualizado em 13/03/2025
+ * @author Gustavo Stinghen
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode (callSuper = true) //Pedir isso ao professor
 @Data
 @Entity
-public class Student extends RegularUser {
+public class Student implements User {
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String image;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private Date createdAt;
 
     @Column(nullable = false)
     private Long registration;
+
     @Column(nullable = false)
     private boolean isRepresentative;
+
     @ManyToMany
     private List<Classe> classes;
 
