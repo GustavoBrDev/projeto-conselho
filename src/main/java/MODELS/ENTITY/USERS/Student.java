@@ -50,7 +50,10 @@ public class Student implements User {
     private Long registration;
 
     @Column(nullable = false)
-    private boolean isRepresentative;
+    private Boolean isRepresentative;
+
+    @Column(nullable = false)
+    private Boolean isHidden;
 
     @ManyToMany
     private List<Classe> classes;
