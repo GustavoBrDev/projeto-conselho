@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Technique {
+public class Technique implements User {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)

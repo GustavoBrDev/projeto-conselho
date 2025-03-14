@@ -15,6 +15,13 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Classe concreta da entidade RepresentativePreCouncil (Pre-council de representantes)
+ * @author Gustavo Stinghen
+ * @since 13/03/2025
+ * @see Council, TeacherFeeback, AdvisorFeeback, SupervisorFeeback
+ */
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -55,5 +62,8 @@ public class RepresentativePreCouncil {
 
     @OneToMany
     private List<TeacherFeeback> teacherFeebacks;
+
+    @OneToMany
+    private List<ItemFeedback> itemFeedbacks;
 
 }

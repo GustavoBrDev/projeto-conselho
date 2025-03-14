@@ -2,14 +2,10 @@ package MODELS.ENTITY.EDUCATIONAL;
 
 
 import MODELS.ENTITY.ADMINISTRATION.Classe;
-import MODELS.ENTITY.USERS.Advisor;
-import MODELS.ENTITY.USERS.RegularUser;
-import MODELS.ENTITY.USERS.Supervisor;
 import MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
