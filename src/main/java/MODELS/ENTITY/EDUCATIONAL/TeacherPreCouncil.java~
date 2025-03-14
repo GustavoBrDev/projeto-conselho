@@ -20,7 +20,6 @@ import java.util.List;
  * @see Council, PersonalFeedback, PreCouncil
  *
  * Atualizado em 13/03/2025
- * Removido lista de estudantes
  * @author Gustavo Stinghen
  */
 
@@ -99,6 +98,38 @@ public class TeacherPreCouncil {
         }
     }
 
+    /**
+     * Método para adicionar um aluno ao pre-council
+     * @param student aluno a ser adicionado em formato de {@link Student}
+     * @return um booleano indicando se o aluno foi adicionado. Se verdadeiro, o aluno foi adicionado ao pre-council. Se falso, o aluno nao foi adicionado ao pre-council
+     * O aluno nao pode ser adicionado se ele ja estiver na lista de alunos
+     * @see Student
+     */
+    public boolean addStudent(Student student) {
 
+        if ( students.contains(student) ) {
+            return false;
+        } else {
+            students.add(student);
+            return true;
+        }
+    }
+
+    /**
+     * Método para remover um aluno ao pre-council
+     * @param student aluno a ser removido em formato de {@link Student}
+     * @return um booleano indicando se o aluno foi removido. Se verdadeiro, o aluno foi removido ao pre-council. Se falso, o aluno nao foi removido ao pre-council
+     * O aluno nao pode ser removido se ele nao estiver na lista de alunos
+     * @see Student
+     */
+    public boolean removeStudent(Student student) {
+
+        if ( students.contains(student) ) {
+            students.remove(student);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

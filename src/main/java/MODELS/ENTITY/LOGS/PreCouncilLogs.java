@@ -1,6 +1,5 @@
 package MODELS.ENTITY.LOGS;
 
-import MODELS.ENTITY.EDUCATIONAL.PreCouncil;
 import MODELS.ENTITY.USERS.User;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

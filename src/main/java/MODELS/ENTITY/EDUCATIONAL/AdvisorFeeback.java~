@@ -1,27 +1,31 @@
 package MODELS.ENTITY.EDUCATIONAL;
 
+import MODELS.ENTITY.USERS.Advisor;
 import MODELS.ENTITY.USERS.User;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * Classe model da entidade Feedback de melhoria
+ * Classe model da entidade Feedback de melhoria de orientador
  * @author Gustavo Stinghen
- * @since 10/03/2025
- * @see Feedback
+ * @since 13/03/2025
+ * @see Advisor
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
-public class ImprovementFeedback extends Feedback {
+public class AdvisorFeeback {
 
-    private User user;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private Advisor advisor;
 
     private String strengthsText;
 
