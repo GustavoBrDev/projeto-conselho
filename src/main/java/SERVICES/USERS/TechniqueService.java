@@ -4,7 +4,6 @@ import MODELS.DTO.REQUEST.TechniqueRequestDTO;
 import MODELS.DTO.RESPONSE.TechniqueResponseDTO;
 import MODELS.ENTITY.USERS.Technique;
 import MODELS.EXCEPTIONS.DadosDuplicadosException;
-import MODELS.EXCEPTIONS.NaoEncontradoException;
 import REPOSITORIES.USERS.TechniqueRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

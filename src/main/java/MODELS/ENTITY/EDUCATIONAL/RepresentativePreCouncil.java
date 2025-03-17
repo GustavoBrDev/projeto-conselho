@@ -1,7 +1,6 @@
 package MODELS.ENTITY.EDUCATIONAL;
 
 
-import MODELS.ENTITY.USERS.RegularUser;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;

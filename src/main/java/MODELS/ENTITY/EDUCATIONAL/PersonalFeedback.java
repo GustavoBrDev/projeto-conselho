@@ -1,6 +1,5 @@
 package MODELS.ENTITY.EDUCATIONAL;
 
-import MODELS.ENTITY.USERS.Student;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;

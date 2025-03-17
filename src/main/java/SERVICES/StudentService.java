@@ -3,10 +3,7 @@ package SERVICES;
 import MODELS.DTO.REQUEST.StudentRequestDTO;
 import MODELS.DTO.RESPONSE.StudentResponseDTO;
 import MODELS.ENTITY.ADMINISTRATION.Classe;
-import MODELS.ENTITY.ADMINISTRATION.Notification;
-import MODELS.ENTITY.USERS.Student;
 import MODELS.EXCEPTIONS.DadosDuplicadosException;
-import MODELS.EXCEPTIONS.NaoEncontradoException;
 import REPOSITORIES.USERS.StudentRepository;
 import lombok.AllArgsConstructor;
 

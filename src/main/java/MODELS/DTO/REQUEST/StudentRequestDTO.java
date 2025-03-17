@@ -1,6 +1,5 @@
 package MODELS.DTO.REQUEST;
 
-import MODELS.ENTITY.USERS.Student;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
