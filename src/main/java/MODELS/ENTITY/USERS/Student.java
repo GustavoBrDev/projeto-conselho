@@ -1,6 +1,7 @@
 package MODELS.ENTITY.USERS;
 
 import MODELS.ENTITY.ADMINISTRATION.Classe;
+import MODELS.ENTITY.ADMINISTRATION.Notification;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -63,4 +64,5 @@ public class Student extends RegularUser {
             return false;
         }
     }
+
 }

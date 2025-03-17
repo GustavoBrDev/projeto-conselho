@@ -20,4 +20,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     public boolean findAllByClasses(Classe classe, Pageable pageable);
 
+    public boolean findByEmail(String email);
+
 }

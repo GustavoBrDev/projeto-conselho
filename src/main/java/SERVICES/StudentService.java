@@ -3,6 +3,7 @@ package SERVICES;
 import MODELS.DTO.REQUEST.StudentRequestDTO;
 import MODELS.DTO.RESPONSE.StudentResponseDTO;
 import MODELS.ENTITY.ADMINISTRATION.Classe;
+import MODELS.ENTITY.ADMINISTRATION.Notification;
 import MODELS.ENTITY.USERS.Student;
 import MODELS.EXCEPTIONS.DadosDuplicadosException;
 import MODELS.EXCEPTIONS.NaoEncontradoException;
@@ -117,9 +118,6 @@ public class StudentService {
         }
     }
 
-
-
-
     public void delete(Long id) {
         try {
             repository.deleteById(id);
@@ -145,9 +143,28 @@ public class StudentService {
         }
     }
 
+    public StudentResponseDTO addNotification(Long id, Notification notification) {
+        Student student = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
+        student.addNotification(notification);
+        return repository.save(student).convert();
+    }
 
+    public StudentResponseDTO removeNotification(Long id, Notification notification) {
+        Student student = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
+        student.removeNotification(notification);
+        return repository.save(student).convert();
+    }
 
+    public StudentResponseDTO findByEmail(String email) {
+        try {
+            return repository.findByEmail(email).convert();
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Aluno nao encontrado");
+        }
+    }
 
-
+    
 
 }
