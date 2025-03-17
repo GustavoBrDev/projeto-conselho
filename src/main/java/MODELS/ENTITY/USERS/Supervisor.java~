@@ -1,53 +1,27 @@
 package MODELS.ENTITY.USERS;
 
 import MODELS.ENTITY.ADMINISTRATION.Course;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * Classe model da entidade Supervisor
  * @author Gustavo Stinghen
  * @since 10/03/2025
- * @see User
- *
- * Atualizado em 13/03/2025
- * @author Gustavo Stinghen
+ * @see Staff, User
  */
+@EqualsAndHashCode(callSuper = true) //Pedir isso ao professor
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Entity
-public class Supervisor implements User {
-
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String image;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private Date createdAt;
-
-    @Column(nullable = false)
-    private Long register;
+public class Supervisor extends Staff {
 
     @OneToMany
     private List<Course> courses;

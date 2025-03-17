@@ -1,0 +1,151 @@
+package SERVICES.LOGS;
+
+import MODELS.ENTITY.EDUCATIONAL.Council;
+import MODELS.ENTITY.EDUCATIONAL.Feedback;
+import MODELS.ENTITY.LOGS.CouncilLogs;
+import MODELS.ENTITY.LOGS.CourseLogs;
+import MODELS.ENTITY.LOGS.EditableItem;
+import MODELS.ENTITY.LOGS.FeedbackLogs;
+import MODELS.ENTITY.USERS.User;
+import MODELS.EXCEPTIONS.NaoEncontradoException;
+import REPOSITORIES.LOGS.CouncilLogsRepository;
+import REPOSITORIES.LOGS.FeedbackLogsRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Classe de serviço para a entidade {@link FeedbackLogs}
+ * @author Gustavo Stinghen
+ * @since 17/03/2025
+ * @see FeedbackLogs
+ */
+
+@AllArgsConstructor
+@Service
+public class FeedbackLogsService {
+
+    private FeedbackLogsRepository repository;
+
+    /**
+     * Cria um log de um {@link Council}
+     * @param actor o usuario que criou o log
+     * @param target o conselho alvo
+     * @param changes as mudanças efetuadas
+     * @param type o tipo de log
+     * @return {@link Boolean} se o log foi criado ou nao
+     */
+    public boolean create(User actor, Feedback target, List<EditableItem> changes, String type) {
+
+        try {
+
+            FeedbackLogs log = FeedbackLogs.builder().
+                    actor(actor).
+                    target(target).
+                    type(type).
+                    timestamp(Instant.now()).
+                    changes(changes).
+                    createdAt( new Date() ).
+                    build();
+
+            repository.save(log);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Metodo para buscar todos os logs
+     * @param pageable informacoes de paginacao
+     * @return {@link Page} de {@link FeedbackLogs}
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see FeedbackLogs
+     */
+    public Page<FeedbackLogs> findAll(Pageable pageable) {
+
+        try {
+            return repository.findAll(pageable);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Log nao encontrado");
+        }
+    }
+
+    /**
+     * Metodo para buscar os logs de um {@link  Feedback}
+     * @param actor {@link User} que criou o log
+     * @param pageable informacoes de paginacao
+     * @return {@link Page} de {@link FeedbackLogs}
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see User, FeedbackLogs
+     */
+    public Page<FeedbackLogs> findByActor(User actor, Pageable pageable) {
+
+        try {
+            return repository.findByActor(actor, pageable);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Log nao encontrado");
+        }
+    }
+
+    /**
+     * Metodo para buscar os logs de um {@link Feedback}
+     * @param target {@link Feedback } alvo do log
+     * @param pageable informacoes de paginacao
+     * @return {@link Page} de {@link FeedbackLogs}
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see User, FeedbackLogs
+     */
+    public Page<FeedbackLogs> findByTarget(Feedback target, Pageable pageable) {
+
+        try {
+            return repository.findByTarget(target, pageable);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Log nao encontrado");
+        }
+    }
+
+    /**
+     * Metodo para buscar os logs de um {@link Feedback}
+     * @param type {@link String} com o tipo de log
+     * @param pageable informacoes de paginacao
+     * @return {@link Page} de {@link FeedbackLogs}
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see User, FeedbackLogs
+     */
+    public Page<FeedbackLogs> findByType(String type, Pageable pageable) {
+
+        try {
+            return repository.findByType(type, pageable);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Log nao encontrado");
+        }
+    }
+
+    /**
+     * Metodo para deletar um log
+     * @param id {@link String} com o id do log
+     * @return {@link Boolean} se o log foi deletado ou nao
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see FeedbackLogs
+     */
+    public boolean delete(String id) {
+        try {
+
+            if (repository.existsById(id)) {
+                repository.deleteById(id);
+                return true;
+            } else {
+                throw new NaoEncontradoException("Log nao encontrado");
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}

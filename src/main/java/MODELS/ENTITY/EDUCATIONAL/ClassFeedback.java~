@@ -30,9 +30,6 @@ public class ClassFeedback {
     private Date createdAt;
 
     @ManyToOne
-    private Council council;
-
-    @ManyToOne
     private Classe classe;
 
     @Column(nullable = false)

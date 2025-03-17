@@ -1,5 +1,6 @@
 package MODELS.ENTITY.EDUCATIONAL;
 
+import MODELS.ENTITY.ADMINISTRATION.Classe;
 import MODELS.ENTITY.ADMINISTRATION.Subject;
 import MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,14 +17,46 @@ import java.util.List;
  * @author Gustavo Stinghen
  * @since 10/03/2025
  * @see Council, PersonalFeedback, PreCouncil
+ *
+ * Atualizado em 13/03/2025
+ * Removido lista de estudantes
+ * @author Gustavo Stinghen
+ *
+ * Atualizado em 17/03/2025
+ * Utilização de uma interface
+ * @author Gustavo Stinghen
+ * @see PreCouncil
  */
 
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class TeacherPreCouncil extends PreCouncil {
+public class TeacherPreCouncil implements PreCouncil {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(nullable = false)
+    private Date createdAt;
+
+    @Column(nullable = false)
+    private Date startDate;
+
+    @Column(nullable = false)
+    private Date endDate;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Council council;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Classe classe;
+
+    @Column(nullable = false)
+    private Boolean isFilled;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -31,9 +65,6 @@ public class TeacherPreCouncil extends PreCouncil {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Subject subject;
-
-    @ManyToMany
-    private List<Student> students;
 
     @OneToMany
     private List<PersonalFeedback> feedbacks;
@@ -72,38 +103,6 @@ public class TeacherPreCouncil extends PreCouncil {
         }
     }
 
-    /**
-     * Método para adicionar um aluno ao pre-council
-     * @param student aluno a ser adicionado em formato de {@link Student}
-     * @return um booleano indicando se o aluno foi adicionado. Se verdadeiro, o aluno foi adicionado ao pre-council. Se falso, o aluno nao foi adicionado ao pre-council
-     * O aluno nao pode ser adicionado se ele ja estiver na lista de alunos
-     * @see Student
-     */
-    public boolean addStudent(Student student) {
 
-        if ( students.contains(student) ) {
-            return false;
-        } else {
-            students.add(student);
-            return true;
-        }
-    }
-
-    /**
-     * Método para remover um aluno ao pre-council
-     * @param student aluno a ser removido em formato de {@link Student}
-     * @return um booleano indicando se o aluno foi removido. Se verdadeiro, o aluno foi removido ao pre-council. Se falso, o aluno nao foi removido ao pre-council
-     * O aluno nao pode ser removido se ele nao estiver na lista de alunos
-     * @see Student
-     */
-    public boolean removeStudent(Student student) {
-
-        if ( students.contains(student) ) {
-            students.remove(student);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 }

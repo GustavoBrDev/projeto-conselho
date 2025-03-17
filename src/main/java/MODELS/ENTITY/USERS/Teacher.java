@@ -3,27 +3,53 @@ package MODELS.ENTITY.USERS;
 import MODELS.ENTITY.ADMINISTRATION.Course;
 import MODELS.ENTITY.ADMINISTRATION.Shift;
 import MODELS.ENTITY.ADMINISTRATION.Subject;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Classe model da entidade Professor
  * @author Gustavo Stinghen
  * @since 10/03/2025
+ *
+ * Atualizado em 13/03/2025
+ * @author Gustavo Stinghen
  */
 
-@EqualsAndHashCode (callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Data
-public class Teacher extends Staff {
+public class Teacher implements User {
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String image;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private Date createdAt;
+
+    @Column(nullable = false)
+    private Long register;
 
     @ManyToMany
     private List<Course> courses;

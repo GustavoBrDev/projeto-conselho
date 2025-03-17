@@ -1,40 +1,43 @@
 package MODELS.ENTITY.EDUCATIONAL;
 
-import MODELS.ENTITY.ADMINISTRATION.Classe;
+import MODELS.ENTITY.USERS.Advisor;
+import MODELS.ENTITY.USERS.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
- * Classe model da entidade Feedback de grupo
+ * Classe model da entidade Feedback de melhoria de orientador
  * @author Gustavo Stinghen
  * @since 13/03/2025
- * @see PersonalFeedback, ClassFeedback
+ * @see Advisor
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class ClassFeedback {
+public class AdvisorFeeback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Date createdAt;
+    @ManyToOne
+    private Advisor advisor;
 
     @ManyToOne
     private Council council;
 
-    @ManyToOne
-    private Classe classe;
-
     @Column(nullable = false)
-    private String text;
+    private Date createdAt;
+
+    private String strengthsText;
+
+    private String weaknessesText;
+
+    private String suggestionsText;
 }

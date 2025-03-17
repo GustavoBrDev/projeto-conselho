@@ -1,12 +1,11 @@
 package MODELS.ENTITY.LOGS;
 
-import MODELS.ENTITY.ADMINISTRATION.Course;
+import MODELS.ENTITY.ADMINISTRATION.Subject;
 import MODELS.ENTITY.USERS.User;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,12 +17,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Classe model da entidade CourseLogs
+ * Classe model da entidade SubjectLogs
  * É uma subclasse de {@link Log}
  * É um documento do mongodb
  * @author Gustavo Stinghen
  * @since 10/03/2025
- * @see Log, Course
+ * @see Log, Subject
  *
  * Atualizado em 17/03/2025
  * Adicionado remoção automatica de logs
@@ -34,8 +33,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Document
-@Builder
-public class CourseLogs implements Log {
+public class SubjectLogs implements Log {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -43,7 +41,7 @@ public class CourseLogs implements Log {
 
     private User actor;
 
-    private Course target;
+    private Subject target;
 
     private String type;
 
