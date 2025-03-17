@@ -1,7 +1,5 @@
 package REPOSITORIES.USERS;
 
-import MODELS.DTO.RESPONSE.TechniqueResponseDTO;
-import MODELS.ENTITY.USERS.Technique;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

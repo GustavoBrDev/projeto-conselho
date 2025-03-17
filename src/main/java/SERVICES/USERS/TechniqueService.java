@@ -2,7 +2,6 @@ package SERVICES.USERS;
 
 import MODELS.DTO.REQUEST.TechniqueRequestDTO;
 import MODELS.DTO.RESPONSE.TechniqueResponseDTO;
-import MODELS.ENTITY.USERS.Technique;
 import MODELS.EXCEPTIONS.DadosDuplicadosException;
 import REPOSITORIES.USERS.TechniqueRepository;
 import lombok.AllArgsConstructor;
