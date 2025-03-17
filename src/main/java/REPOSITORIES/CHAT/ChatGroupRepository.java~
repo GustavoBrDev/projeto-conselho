@@ -1,0 +1,2 @@
+package REPOSITORIES.CHAT;public interface ChatGroupRepository {
+}
