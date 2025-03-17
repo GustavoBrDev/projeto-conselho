@@ -1,6 +1,5 @@
 package MODELS.ENTITY.EDUCATIONAL;
 
-import MODELS.ENTITY.USERS.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

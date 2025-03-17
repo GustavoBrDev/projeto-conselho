@@ -2,7 +2,6 @@ package MODELS.ENTITY.EDUCATIONAL;
 
 import MODELS.ENTITY.ADMINISTRATION.Classe;
 import MODELS.ENTITY.ADMINISTRATION.Subject;
-import MODELS.ENTITY.USERS.Student;
 import MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
