@@ -22,13 +22,18 @@ import java.util.List;
  * Atualizado em 13/03/2025
  * Removido lista de estudantes
  * @author Gustavo Stinghen
+ *
+ * Atualizado em 17/03/2025
+ * Utilização de uma interface
+ * @author Gustavo Stinghen
+ * @see PreCouncil
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class TeacherPreCouncil {
+public class TeacherPreCouncil implements PreCouncil {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

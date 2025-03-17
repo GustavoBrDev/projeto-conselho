@@ -13,17 +13,22 @@ import java.util.Date;
  * Classe model da entidade Feedback pessoal
  * @author Gustavo Stinghen
  * @since 10/03/2025
- * @see Student
+ * @see Student, Feedback
  *
  * Atualizado em 13/03/2025
  * @author Gustavo Stinghen
+ *
+ * Atualizado em 17/03/2025
+ * Utilização de uma interface
+ * @author Gustavo Stinghen
+ * @see Feedback
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class PersonalFeedback {
+public class PersonalFeedback implements Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

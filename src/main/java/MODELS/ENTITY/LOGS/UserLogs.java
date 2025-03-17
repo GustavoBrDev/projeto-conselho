@@ -5,10 +5,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,12 +22,17 @@ import java.util.List;
  * @author Gustavo Stinghen
  * @since 10/03/2025
  * @see Log, User
+ *
+ * Atualizado em 17/03/2025
+ * Adicionado remoção automatica de logs
+ * @author Gustavo Stinghen
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Document
+@Builder
 public class UserLogs implements Log {
 
     @Id
@@ -37,6 +46,10 @@ public class UserLogs implements Log {
     private String type;
 
     private Instant timestamp;
+
+    @CreatedDate
+    @Indexed ( expireAfter = "60d" )
+    private Date createdAt;
 
     private List<EditableItem> changes;
 

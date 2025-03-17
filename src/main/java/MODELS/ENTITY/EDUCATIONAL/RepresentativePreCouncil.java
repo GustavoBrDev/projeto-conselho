@@ -16,13 +16,18 @@ import java.util.List;
  * @author Gustavo Stinghen
  * @since 13/03/2025
  * @see Council, TeacherFeeback, AdvisorFeeback, SupervisorFeeback
+ *
+ * Atualizado em 17/03/2025
+ * Utilização de uma interface
+ * @author Gustavo Stinghen
+ * @see PreCouncil
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class RepresentativePreCouncil {
+public class RepresentativePreCouncil implements PreCouncil{
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)

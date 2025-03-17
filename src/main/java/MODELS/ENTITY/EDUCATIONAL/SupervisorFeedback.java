@@ -14,13 +14,18 @@ import java.util.Date;
  * @author Gustavo Stinghen
  * @since 13/03/2025
  * @see Supervisor
+ *
+ * Atualizado em 17/03/2025
+ * Adicionado uma interface de feedback
+ * @author Gustavo Stinghen
+ * @see Feedback
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class SupervisorFeedback {
+public class SupervisorFeedback implements Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

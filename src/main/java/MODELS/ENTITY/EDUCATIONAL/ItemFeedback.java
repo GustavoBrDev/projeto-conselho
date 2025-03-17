@@ -15,13 +15,18 @@ import java.util.Date;
  *
  * Atualizado em 13/03/2025
  * @author Gustavo Stinghen
+ *
+ * Atualizado em 17/03/2025
+ * Utilização de uma interface
+ * @author Gustavo Stinghen
+ * @see Feedback
  */
 @EqualsAndHashCode()
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ItemFeedback {
+public class ItemFeedback implements Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
