@@ -13,8 +13,7 @@ import lombok.Builder;
  * @see Student
  */
 
-@Builder
-public record StudentRequestDTO(
+
     @NotNull
     @Positive
     Long registration,
