@@ -15,7 +15,7 @@ import lombok.Builder;
  */
 
 @Builder
-
+public record SupervisorRequestDTO(
         @NotBlank
         String name,
         @NotBlank
