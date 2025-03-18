@@ -3,6 +3,7 @@ package MODELS.ENTITY.ADMINISTRATION;
 import MODELS.ENTITY.USERS.User;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Document
+@Builder
 public class ResetSession {
 
     @Id
