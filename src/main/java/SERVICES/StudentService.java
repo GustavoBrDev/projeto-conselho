@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 
 /**
+ * Classe de serviços para a entidade Student
+ * Responsável por operações de CRUD e manipulação de dados do aluno
  * Classe de servicos da entidade Student
  * @author Camilly Chelest
  * @since 12/03/2025
@@ -28,9 +30,10 @@ public class StudentService {
     private StudentRepository repository;
 
     /**
-     * Cria um aluno
-     * @param studentRequestDTO aluno a ser criado em formato de {@link StudentRequestDTO}
-     * @return aluno criado em formato de {@link StudentResponseDTO}
+     * Cria um novo {@link Student}
+     * @param studentRequestDTO os dados do estudante a ser criado
+     * @return {@link StudentResponseDTO} o estudante criado
+     * @throws DadosDuplicadosException se o email ou matrícula já estiverem cadastrados
      */
     public StudentResponseDTO create(StudentRequestDTO studentRequestDTO) {
         Student student = studentRequestDTO.convert();
@@ -42,6 +45,13 @@ public class StudentService {
         return repository.save(student).convert();
     }
 
+    /**
+     * Atualiza um {@link Student} existente
+     * @param id o identificador do estudante
+     * @param studentRequestDTO os novos dados do estudante
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     * @throws NaoEncontradoException se o estudante não for encontrado
+     */
     public StudentResponseDTO update(Long id, StudentRequestDTO studentRequestDTO) {
         Student student = studentRequestDTO.convert();
         if (repository.existsById(id)) {
@@ -56,36 +66,71 @@ public class StudentService {
         throw new NaoEncontradoException("Aluno nao encontrado");
     }
 
+    /**
+     * Edita o nome de um {@link Student}
+     * @param id o identificador do estudante
+     * @param name o novo nome do estudante
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     */
     public StudentResponseDTO editName(Long id, String name) {
         Student student = repository.findById(id).get();
         student.setName(name);
         return repository.save(student).convert();
     }
 
+    /**
+     * Edita o email de um {@link Student}
+     * @param id o identificador do estudante
+     * @param email o novo email do estudante
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     */
     public StudentResponseDTO editEmail(Long id, String email) {
         Student student = repository.findById(id).get();
         student.setEmail(email);
         return repository.save(student).convert();
     }
 
+    /**
+     * Edita a matrícula de um {@link Student}
+     * @param id o identificador do estudante
+     * @param registration a nova matrícula do estudante
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     */
     public StudentResponseDTO editRegistration(Long id, String registration) {
         Student student = repository.findById(id).get();
         student.setRegistration(registration);
         return repository.save(student).convert();
     }
 
+    /**
+     * Edita a senha de um {@link Student}
+     * @param id o identificador do estudante
+     * @param password a nova senha do estudante
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     */
     public StudentResponseDTO editPassword(Long id, String password) {
         Student student = repository.findById(id).get();
         student.setPassword(password);
         return repository.save(student).convert();
     }
 
+    /**
+     * Edita a imagem de perfil de um {@link Student}
+     * @param id o identificador do estudante
+     * @param image a nova imagem do estudante
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     */
     public StudentResponseDTO editImage(Long id, String image) {
         Student student = repository.findById(id).get();
         student.setImage(image);
         return repository.save(student).convert();
     }
 
+    /**
+     * Busca todos os {@link Student} com paginação
+     * @param pageable as configurações de paginação
+     * @return {@link Page<StudentResponseDTO>} a página contendo os estudantes encontrados
+     */
     public Page<StudentResponseDTO> findStudents(Pageable pageable) {
         try {
             return repository.findAll(pageable).map(StudentResponseDTO::convert);
@@ -94,6 +139,14 @@ public class StudentService {
         }
     }
 
+    /**
+     * Busca estudantes de uma determinada {@link Classe} com paginação
+     *
+     * @param classe a classe desejada
+     * @param pageable as configurações de paginação
+     * @return {@link Page<StudentResponseDTO>} a página contendo os estudantes encontrados
+     * @throws NaoEncontradoException se nenhum estudante for encontrado na classe
+     */
     public Page<StudentResponseDTO> findStudentsClass(Classe classe, Pageable pageable) {
         try {
             return repository.findAllByClasses(classe, pageable).map(StudentResponseDTO::convert);
@@ -102,6 +155,14 @@ public class StudentService {
         }
     }
 
+    /**
+     * Busca as classes de um determinado {@link Student} com paginação.
+     *
+     * @param student o estudante cuja lista de classes será recuperada
+     * @param pageable as configurações de paginação
+     * @return {@link Page<StudentResponseDTO>} a página contendo os estudantes encontrados na classe
+     * @throws NaoEncontradoException se o estudante não estiver matriculado em nenhuma classe
+     */
     public Page<StudentResponseDTO> findClassStudents(Student student, Pageable pageable) {
         try{
             return student.getClasses();
@@ -110,6 +171,13 @@ public class StudentService {
         }
     }
 
+    /**
+     * Busca um {@link Student} pelo ID.
+     *
+     * @param id o identificador do estudante
+     * @return {@link StudentResponseDTO} o estudante encontrado
+     * @throws NaoEncontradoException se o estudante não for encontrado
+     */
     public StudentResponseDTO findId(Long id) {
         try {
             return repository.findById(id).convert();
@@ -118,6 +186,11 @@ public class StudentService {
         }
     }
 
+    /**
+     * Deleta um {@link Student}
+     * @param id o identificador do estudante
+     * @throws NaoEncontradoException se o estudante não for encontrado
+     */
     public void delete(Long id) {
         try {
             repository.deleteById(id);
@@ -126,7 +199,13 @@ public class StudentService {
         }
     }
 
-
+    /**
+     * Adiciona um {@link Student} a uma {@link Classe}
+     * @param student o estudante
+     * @param classe a classe a ser adicionada
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     * @throws NaoEncontradoException se a classe não for encontrada
+     */
     public StudentResponseDTO addStudentClass(Student student, Classe classe) {
         if (student.addClasse(classe)) {
             return repository.save(student).convert();
@@ -135,6 +214,13 @@ public class StudentService {
         }
     }
 
+    /**
+     * Remove um {@link Student} de uma {@link Classe}
+     * @param student o estudante
+     * @param classe a classe a ser removida
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     * @throws NaoEncontradoException se a classe não for encontrada
+     */
     public StudentResponseDTO removeStudentClass(Student student, Classe classe) {
         if (student.removeClasse(classe)) {
             return repository.save(student).convert();
@@ -143,6 +229,12 @@ public class StudentService {
         }
     }
 
+    /**
+     * Adiciona uma {@link Notification} a um {@link Student}
+     * @param id o identificador do estudante
+     * @param notification a notificação a ser adicionada
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     */
     public StudentResponseDTO addNotification(Long id, Notification notification) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
@@ -150,6 +242,12 @@ public class StudentService {
         return repository.save(student).convert();
     }
 
+    /**
+     * Remove uma {@link Notification} de um {@link Student}
+     * @param id o identificador do estudante
+     * @param notification a notificação a ser removida
+     * @return {@link StudentResponseDTO} o estudante atualizado
+     */
     public StudentResponseDTO removeNotification(Long id, Notification notification) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
@@ -157,6 +255,13 @@ public class StudentService {
         return repository.save(student).convert();
     }
 
+    /**
+     * Busca um {@link Student} pelo email.
+     *
+     * @param email o email do estudante
+     * @return {@link StudentResponseDTO} o estudante encontrado
+     * @throws NaoEncontradoException se o estudante não for encontrado
+     */
     public StudentResponseDTO findByEmail(String email) {
         try {
             return repository.findByEmail(email).convert();
@@ -165,6 +270,6 @@ public class StudentService {
         }
     }
 
-    
+
 
 }
