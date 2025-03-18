@@ -1,5 +1,6 @@
 package MODELS.DTO.REQUEST;
 
+import MODELS.ENTITY.USERS.Technique;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -27,6 +28,7 @@ public record TechniqueRequestDTO(
 ) {
         /**
          * Converte este DTO em uma entidade `Technique`.
+         *
          * @return Uma nova instância de `Technique` com os dados presentes neste DTO.
          * @see Technique
          */

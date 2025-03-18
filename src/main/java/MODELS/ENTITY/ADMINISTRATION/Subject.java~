@@ -75,12 +75,6 @@ public class Subject {
         }
     }
 
-    /**
-     * Converte a entidade Subject em um DTO de resposta SubjectResponseDTO.
-     *
-     * @return Uma instância de SubjectResponseDTO contendo os dados desta entidade.
-     * @see SubjectResponseDTO
-     */
     public SubjectResponseDTO toDTO() {
         return new SubjectResponseDTO(
                 this.id,

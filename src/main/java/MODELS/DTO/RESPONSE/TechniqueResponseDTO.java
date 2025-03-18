@@ -6,10 +6,10 @@ package MODELS.DTO.RESPONSE;
  * @since 17/03/2025
  */
 public record TechniqueResponseDTO(
-        Long id,          // Identificador único da técnica.
-        String name,      // Nome da técnica.
-        String image,     // Imagem associada à técnica, podendo ser um URL ou caminho.
-        String email,     // Endereço de email da técnica.
-        Long register     // Número de registro da técnica.
+        Long id,
+        String name,
+        String image,
+        String email,
+        Long register
 ) {
 }

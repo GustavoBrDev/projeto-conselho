@@ -1,5 +1,6 @@
 package SERVICES.USERS;
 
+import MODELS.ENTITY.USERS.Technique;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -19,7 +20,7 @@ public class TechniqueSpecification {
      * @param termo Termo de busca que pode representar parte de um nome, email ou o número de registro.
      * @return {@link Specification} para ser usada em consultas dinâmicas.
      */
-    public static Specification<Technique> TechniqueFilter(String termo) {
+    public static Specification<Technique> techniqueFilter(String termo) {
         return (root, query, criteriaBuilder) -> {
             String finalTermo = termo.toLowerCase();
 

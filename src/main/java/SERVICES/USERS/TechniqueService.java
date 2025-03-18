@@ -2,7 +2,9 @@ package SERVICES.USERS;
 
 import MODELS.DTO.REQUEST.TechniqueRequestDTO;
 import MODELS.DTO.RESPONSE.TechniqueResponseDTO;
+import MODELS.ENTITY.USERS.Technique;
 import MODELS.EXCEPTIONS.DadosDuplicadosException;
+import MODELS.EXCEPTIONS.NaoEncontradoException;
 import REPOSITORIES.USERS.TechniqueRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -63,7 +65,7 @@ public class TechniqueService {
             }
             return repository.save(technique).toDTO();
         }
-        throw new DadosDuplicadosException("Técnico nao encontrado");
+        throw new NaoEncontradoException("Técnico nao encontrado");
     }
 
     /**
@@ -198,7 +200,7 @@ public class TechniqueService {
      * @return Página de técnicas que correspondem ao termo de busca na forma de DTOs de resposta.
      */
     public Page<TechniqueResponseDTO> TechniqueFilter(String termo, Pageable pageable) {
-        return repository.findAll(TechniqueSpecification.TechniqueFilter(termo), pageable)
+        return repository.findAll(TechniqueSpecification.techniqueFilter(termo), pageable)
                 .map(Technique::toDTO);
     }
 }
