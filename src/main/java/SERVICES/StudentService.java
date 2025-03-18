@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 
 /**
  * Classe de servicos da entidade Student
@@ -33,6 +35,8 @@ public class StudentService {
      */
     public StudentResponseDTO create(StudentRequestDTO studentRequestDTO) {
         Student student = studentRequestDTO.convert();
+        Date data = new Date();
+        student.setCreatedAt(data);
         if (repository.existsByEmail(student.getEmail())) {
             throw new DadosDuplicadosException("Email ja cadastrado");
         } else if (repository.existsByRegistration(student.getRegistration())) {

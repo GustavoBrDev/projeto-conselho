@@ -130,7 +130,19 @@ public class StudentService {
 
 
     public StudentResponseDTO addStudentClass(Student student, Classe classe) {
-        student.addClasse(classe) ? return repository.save(student).convert(): throw new NaoEncontradoException("Classe nao encontrada");
+        if (student.addClasse(classe)) {
+            return repository.save(student).convert();
+        } else {
+            throw new NaoEncontradoException("Classe nao encontrada");
+        }
+    }
+
+    public StudentResponseDTO removeStudentClass(Student student, Classe classe) {
+        if (student.removeClasse(classe)) {
+            return repository.save(student).convert();
+        } else {
+            throw new NaoEncontradoException("Classe nao encontrada");
+        }
     }
 
 
