@@ -4,6 +4,7 @@ import MODELS.ENTITY.CHAT.ChatMessage;
 import MODELS.ENTITY.LOGS.ChatMessageLogs;
 import MODELS.ENTITY.LOGS.EditableItem;
 import MODELS.ENTITY.USERS.User;
+import MODELS.EXCEPTIONS.NaoEncontradoException;
 import REPOSITORIES.LOGS.ChatMessageLogsRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

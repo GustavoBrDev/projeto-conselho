@@ -2,6 +2,7 @@ package MODELS.ENTITY.EDUCATIONAL;
 
 import MODELS.ENTITY.ADMINISTRATION.Classe;
 import MODELS.ENTITY.USERS.Advisor;
+import MODELS.ENTITY.USERS.Staff;
 import MODELS.ENTITY.USERS.Teacher;
 import MODELS.ENTITY.USERS.Technique;
 import jakarta.persistence.*;

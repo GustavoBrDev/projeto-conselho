@@ -1,26 +1,28 @@
 package MODELS.ENTITY.EDUCATIONAL;
 
-import MODELS.ENTITY.ADMINISTRATION.Classe;
+import MODELS.ENTITY.USERS.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
- * Classe model da entidade Feedback de grupo
+ * Classe model da entidade Feedback pessoal
  * @author Gustavo Stinghen
- * @since 13/03/2025
- * @see PersonalFeedback, ClassFeedback
+ * @since 10/03/2025
+ * @see Student, Feedback
+ *
+ * Atualizado em 13/03/2025
+ * @author Gustavo Stinghen
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class ClassFeedback {
+public class PersonalFeedback implements Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +34,8 @@ public class ClassFeedback {
     @ManyToOne
     private Council council;
 
-    @ManyToOne
-    private Classe classe;
-
-    @Column(nullable = false)
     private String text;
+
+    @ManyToOne
+    private Student student;
 }

@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * Classe model da entidade Feedback de grupo
+ * Classe model da entidade Feedback de turma
  * @author Gustavo Stinghen
  * @since 13/03/2025
- * @see PersonalFeedback, ClassFeedback
  */
 
 @AllArgsConstructor

@@ -68,7 +68,7 @@ public class StudentService {
         return repository.save(student).convert();
     }
 
-    public StudentResponseDTO editRegistration(Long id, String registration) {
+    public StudentResponseDTO editRegistration(Long id, Long registration) {
         Student student = repository.findById(id).get();
         student.setRegistration(registration);
         return repository.save(student).convert();
