@@ -2,7 +2,6 @@ package REPOSITORIES.USERS;
 
 import MODELS.ENTITY.ADMINISTRATION.Classe;
 import MODELS.ENTITY.USERS.Student;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -19,8 +18,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     public boolean existsByEmail(String email);
 
-    public Page<Student> findAllByClasses(Classe classe, Pageable pageable);
+    public boolean findAllByClasses(Classe classe, Pageable pageable);
 
-    public Student findByEmail(String email);
+    public boolean findByEmail(String email);
 
 }

@@ -3,8 +3,10 @@ package SERVICES;
 import MODELS.DTO.REQUEST.StudentRequestDTO;
 import MODELS.DTO.RESPONSE.StudentResponseDTO;
 import MODELS.ENTITY.ADMINISTRATION.Classe;
+import MODELS.ENTITY.ADMINISTRATION.Notification;
 import MODELS.ENTITY.USERS.Student;
 import MODELS.EXCEPTIONS.DadosDuplicadosException;
+import MODELS.EXCEPTIONS.NaoEncontradoException;
 import REPOSITORIES.USERS.StudentRepository;
 import lombok.AllArgsConstructor;
 
@@ -86,7 +88,7 @@ public class StudentService {
 
     public Page<StudentResponseDTO> findStudents(Pageable pageable) {
         try {
-            return repository.findAll(pageable).map(StudentResponseDTO::convert);
+            return repository.findAll(pageable).map(Student::convert);
         } catch (Exception e) {
             throw new NaoEncontradoException("Alunos nao encontrados");
         }
@@ -94,7 +96,7 @@ public class StudentService {
 
     public Page<StudentResponseDTO> findStudentsClass(Classe classe, Pageable pageable) {
         try {
-            return repository.findAllByClasses(classe, pageable).map(StudentResponseDTO::convert);
+            return repository.findAllByClasses(classe, pageable).map(Student::convert);
         } catch (Exception e) {
             throw new NaoEncontradoException("Alunos nao encontrados");
         }
@@ -110,7 +112,7 @@ public class StudentService {
 
     public StudentResponseDTO findId(Long id) {
         try {
-            return repository.findById(id).convert();
+            return repository.findById(id).get().convert();
         } catch (Exception e) {
             throw new NaoEncontradoException("Aluno nao encontrado");
         }
