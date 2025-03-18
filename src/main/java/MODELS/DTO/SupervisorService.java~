@@ -1,2 +1,0 @@
-package MODELS.DTO;public record SupervisorService() {
-}
