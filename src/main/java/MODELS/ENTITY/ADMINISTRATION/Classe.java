@@ -1,10 +1,15 @@
 package MODELS.ENTITY.ADMINISTRATION;
 
+import MODELS.DTO.RESPONSE.ClasseResponseDTO;
+import MODELS.DTO.RESPONSE.TechniqueResponseDTO;
 import MODELS.ENTITY.USERS.Representative;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import MODELS.ENTITY.USERS.Student;
 
 import java.util.List;
 
@@ -18,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Classe {
 
     @Id
@@ -77,6 +83,22 @@ public class Classe {
         } else {
             return false;
         }
+    }
 
+    /**
+     * Converte a entidade Classe em um DTO de resposta ClasseResponseDTO.
+     *
+     * @return Uma instância de ClasseResponseDTO contendo os dados desta entidade.
+     * @see MODELS.DTO.RESPONSE.ClasseResponseDTO
+     */
+    public ClasseResponseDTO toDTO() {
+        return new ClasseResponseDTO(
+                this.id,
+                this.name,
+                this.acronym,
+                this.course,
+                this.representative,
+                this.active
+        );
     }
 }
