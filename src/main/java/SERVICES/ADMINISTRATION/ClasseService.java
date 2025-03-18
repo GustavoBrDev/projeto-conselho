@@ -198,4 +198,18 @@ public class ClasseService {
             throw new NaoEncontradoException("Aluno nao encontrado");
         }
     }
+
+    /**
+     * Deleta uma turma pelo seu ID.
+     *
+     * @param id ID da turma a ser deletada.
+     * @throws NaoEncontradoException se a turma não for deletada corretamente.
+     */
+    public void delete(Long id) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Turma nao deletada");
+        }
+    }
 }
