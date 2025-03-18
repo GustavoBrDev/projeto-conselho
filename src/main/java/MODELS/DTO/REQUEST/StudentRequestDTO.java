@@ -1,5 +1,6 @@
 package MODELS.DTO.REQUEST;
 
+import MODELS.ENTITY.USERS.Student;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -30,13 +31,13 @@ public record StudentRequestDTO(
 
     public Student convert() {
 
-        return Student.buider()
-            .registration(this.registration)
-            .isRepresentative(this.isRepresentative)
-            .name(this.name)
-            .email(this.email)
-            .password(this.password)
-            .image(this.image)
+        return Student.builder()
+            .registration(registration)
+            .isRepresentative(isRepresentative)
+            .name(name)
+            .email(email)
+            .password(password)
+            .image(image)
             .build();
     }
 }

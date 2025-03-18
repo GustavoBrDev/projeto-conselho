@@ -1,6 +1,7 @@
 package REPOSITORIES.USERS;
 
 import MODELS.ENTITY.ADMINISTRATION.Classe;
+import MODELS.ENTITY.USERS.Student;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
