@@ -1,0 +1,146 @@
+package SERVICES.LOGS;
+
+import MODELS.ENTITY.CHAT.ChatMessage;
+import MODELS.ENTITY.LOGS.ChatMessageLogs;
+import MODELS.ENTITY.LOGS.EditableItem;
+import MODELS.ENTITY.USERS.User;
+import REPOSITORIES.LOGS.ChatMessageLogsRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Classe de serviço para a entidade {@link ChatMessageLogs}
+ * @author Gustavo Stinghen
+ * @since 17/03/2025
+ * @see ChatMessageLogs
+ */
+
+@AllArgsConstructor
+@Service
+public class ChatMessageLogsService {
+
+    private ChatMessageLogsRepository repository;
+
+    /**
+     * Cria um log de um {@link ChatMessage}
+     * @param actor o usuario que criou o log
+     * @param target a classe alvo
+     * @param changes as mudanças efetuadas
+     * @param type o tipo de log
+     * @return {@link Boolean} se o log foi criado ou nao
+     */
+    public boolean create(User actor, ChatMessage target, List<EditableItem> changes, String type) {
+
+        try {
+
+            ChatMessageLogs log = ChatMessageLogs.builder().
+                    actor(actor).
+                    target(target).
+                    type(type).
+                    timestamp(Instant.now()).
+                    changes(changes).
+                    createdAt( new Date() ).
+                    build();
+
+            repository.save(log);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Metodo para buscar todos os logs
+     * @param pageable informacoes de paginacao
+     * @return {@link Page} de {@link ChatMessageLogs}
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see ChatMessageLogs
+     */
+    public Page<ChatMessageLogs> findAll(Pageable pageable) {
+
+        try {
+            return repository.findAll(pageable);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Log nao encontrado");
+        }
+    }
+
+    /**
+     * Metodo para buscar os logs de uma {@link  ChatMessage}
+     * @param actor {@link User} que criou o log
+     * @param pageable informacoes de paginacao
+     * @return {@link Page} de {@link ChatMessageLogs}
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see User, ChatMessageLogs
+     */
+    public Page<ChatMessageLogs> findByActor(User actor, Pageable pageable) {
+
+        try {
+            return repository.findByActor(actor, pageable);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Log nao encontrado");
+        }
+    }
+
+    /**
+     * Metodo para buscar os logs de uma {@link ChatMessage}
+     * @param target {@link ChatMessage} alvo do log
+     * @param pageable informacoes de paginacao
+     * @return {@link Page} de {@link ChatMessageLogs}
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see User, ChatMessageLogs
+     */
+    public Page<ChatMessageLogs> findByTarget(ChatMessage target, Pageable pageable) {
+
+        try {
+            return repository.findByTarget(target, pageable);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Log nao encontrado");
+        }
+    }
+
+    /**
+     * Metodo para buscar os logs de um {@link ChatMessage}
+     * @param type {@link String} com o tipo de log
+     * @param pageable informacoes de paginacao
+     * @return {@link Page} de {@link ChatMessageLogs}
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see User, ChatMessageLogs
+     */
+    public Page<ChatMessageLogs> findByType(String type, Pageable pageable) {
+
+        try {
+            return repository.findByType(type, pageable);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Log nao encontrado");
+        }
+    }
+
+    /**
+     * Metodo para deletar um log
+     * @param id {@link String} com o id do log
+     * @return {@link Boolean} se o log foi deletado ou nao
+     * @throws NaoEncontradoException se o log nao foi encontrado
+     * @see ChatMessageLogs
+     */
+    public boolean delete(String id) {
+        try {
+
+            if (repository.existsById(id)) {
+                repository.deleteById(id);
+                return true;
+            } else {
+                throw new NaoEncontradoException("Log nao encontrado");
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
