@@ -27,7 +27,11 @@ public class StudentService {
 
     private StudentRepository repository;
 
-
+    /**
+     * Cria um aluno
+     * @param studentRequestDTO aluno a ser criado em formato de {@link StudentRequestDTO}
+     * @return aluno criado em formato de {@link StudentResponseDTO}
+     */
     public StudentResponseDTO create(StudentRequestDTO studentRequestDTO) {
         Student student = studentRequestDTO.convert();
         if (repository.existsByEmail(student.getEmail())) {
@@ -122,6 +126,7 @@ public class StudentService {
         }
     }
 
+
     public StudentResponseDTO addStudentClass(Student student, Classe classe) {
         if (student.addClasse(classe)) {
             return repository.save(student).convert();
@@ -160,5 +165,6 @@ public class StudentService {
         }
     }
 
+    
 
 }
