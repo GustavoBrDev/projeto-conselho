@@ -4,8 +4,8 @@ package SERVICES;
 import MODELS.DTO.REQUEST.SupervisorRequestDTO;
 import MODELS.DTO.RESPONSE.SupervisorResponseDTO;
 import MODELS.ENTITY.ADMINISTRATION.Course;
-import MODELS.ENTITY.ADMINISTRATION.Notification;
 import MODELS.ENTITY.USERS.Supervisor;
+import MODELS.ENTITY.NOTIFICATION.Notification;
 import MODELS.EXCEPTIONS.DadosDuplicadosException;
 import MODELS.EXCEPTIONS.NaoEncontradoException;
 import REPOSITORIES.USERS.SupervisorRepository;
@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -151,7 +153,7 @@ public class SupervisorService {
     public Page<SupervisorResponseDTO> findSupervisors(Pageable pageable) {
         try {
             return repository.findAll(pageable)
-                    .map(Supervisor::convert);
+                    .map(SupervisorResponseDTO::convert);
         } catch (Exception e) {
             throw new NaoEncontradoException("Supervisores não encontrados");
         }
@@ -197,9 +199,9 @@ public class SupervisorService {
      * @throws NaoEncontradoException se o supervisor não for encontrado
      */
     public SupervisorResponseDTO findByEmail(String email) {
-        Supervisor supervisor = repository.findByEmail(email);
-        if (supervisor != null) {
-            return supervisor.convert();
+        Optional<Supervisor> optionalSupervisor = repository.findByEmail(email);
+        if (optionalSupervisor.isPresent()) {
+            return optionalSupervisor.get().convert();
         } else {
             throw new NaoEncontradoException("Supervisor não encontrado");
         }

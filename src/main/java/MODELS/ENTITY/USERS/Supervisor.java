@@ -1,11 +1,9 @@
 package MODELS.ENTITY.USERS;
 
+import MODELS.DTO.RESPONSE.SupervisorResponseDTO;
 import MODELS.ENTITY.ADMINISTRATION.Course;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -23,6 +21,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
+@Builder
 public class Supervisor implements User {
 
     @Id
@@ -85,5 +84,16 @@ public class Supervisor implements User {
         } else {
             return false;
         }
+    }
+
+    public SupervisorResponseDTO convert() {
+        return SupervisorResponseDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .image(this.image)
+                .register(this.register.toString())
+                .build();
     }
 }
