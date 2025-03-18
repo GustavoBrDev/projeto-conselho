@@ -1,6 +1,5 @@
 package MODELS.ENTITY.CHAT;
 
-import MODELS.DTO.RESPONSE.ChatResponseDTO;
 import MODELS.ENTITY.USERS.Student;
 import MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
@@ -40,18 +39,4 @@ public class TeacherResponseMessage implements ChatMessage{
     private Boolean isDeleted;
 
     private Instant deletedAt;
-
-    /**
-     * Método para converter um TeacherResponseMessage para um ChatResponseDTO
-     * @return ChatResponseDTO
-     */
-    public ChatResponseDTO convert () {
-
-        return ChatResponseDTO.builder()
-                .message(text)
-                .isRead(isRead)
-                .isDeleted(isDeleted)
-                .deletedAt(deletedAt)
-                .build();
-    }
 }

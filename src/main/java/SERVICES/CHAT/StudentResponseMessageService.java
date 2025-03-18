@@ -1,10 +1,13 @@
 package SERVICES.CHAT;
 
 import MODELS.DTO.REQUEST.StudentChatMessageRequestDTO;
+import MODELS.DTO.REQUEST.StudentResponseRequestDTO;
 import MODELS.DTO.RESPONSE.ChatResponseDTO;
 import MODELS.ENTITY.CHAT.StudentChatMessage;
+import MODELS.ENTITY.CHAT.StudentResponseMessage;
 import MODELS.ENTITY.USERS.Student;
 import REPOSITORIES.CHAT.StudentChatMessageRepository;
+import REPOSITORIES.CHAT.StudentResponseMessageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,19 +25,19 @@ import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 @Service
-public class StudentChatMessageService {
+public class StudentResponseMessageService {
 
-    private StudentChatMessageRepository repository;
+    private StudentResponseMessageRepository repository;
 
     /**
-     * Método para criar uma mensagem de chat de estudantes
+     * Método para criar uma mensagem de resposta de chat de estudantes
      * @param message a mensagem de chat a ser criada
      * @return a mensagem de chat criada em formato de {@link ChatResponseDTO}
      */
-    public ChatResponseDTO create (StudentChatMessageRequestDTO message) {
+    public ChatResponseDTO create (StudentResponseRequestDTO message) {
 
         try {
-            return repository.save(message.convert()).convert();
+            return repository.save( message.convert() ).convert();
         } catch (Exception e) {
            throw new NoSuchElementException("Erro ao enviar mensagem");
         }
@@ -49,7 +52,7 @@ public class StudentChatMessageService {
     public Page<ChatResponseDTO> findAll (Pageable pageable) {
 
         try {
-            return repository.findAll(pageable).map(StudentChatMessage::convert);
+            return repository.findAll(pageable).map(StudentResponseMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
         }
@@ -57,15 +60,15 @@ public class StudentChatMessageService {
     }
 
     /**
-     * Método para buscar todas as mensagens de chat de estudantes de um estudante
-     * @param sender estudante que enviou a mensagem
+     * Método para buscar todas as mensagens de chat enviadas a um estudante
+     * @param sender estudante que recebeu as mensagens
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link ChatResponseDTO}
      */
     public Page<ChatResponseDTO> findBySender (Student sender, Pageable pageable) {
 
         try {
-            return repository.findBySender(sender, pageable).map(StudentChatMessage::convert);
+            return repository.findByReceiver(sender, pageable).map(StudentResponseMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
         }
@@ -88,7 +91,7 @@ public class StudentChatMessageService {
     }
 
     /**
-     * Método para deletar uma mensagem de chat de estudantes
+     * Método para deletar uma mensagem de resposta de chat de estudantes
      * Ele não deleta a mensagem, apenas marca como deletada
      * @param id id da mensagem de chat
      * @return {@link ChatResponseDTO}
@@ -98,7 +101,7 @@ public class StudentChatMessageService {
         try {
 
             if (repository.existsById(id)) {
-                StudentChatMessage message = repository.findById(id).get();
+                StudentResponseMessage message = repository.findById(id).get();
                 message.setDeletedAt(Instant.now());
                 message.setIsDeleted(true);
                 return repository.save(message).convert();

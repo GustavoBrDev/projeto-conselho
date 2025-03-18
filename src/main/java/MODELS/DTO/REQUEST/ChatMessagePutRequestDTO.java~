@@ -1,0 +1,51 @@
+package MODELS.DTO.REQUEST;
+
+import MODELS.ENTITY.CHAT.ChatMessage;
+import MODELS.ENTITY.CHAT.StudentResponseMessage;
+import MODELS.ENTITY.CHAT.TeacherChatMessage;
+import MODELS.ENTITY.CHAT.TeacherResponseMessage;
+import MODELS.ENTITY.USERS.Student;
+import MODELS.ENTITY.USERS.Teacher;
+import MODELS.ENTITY.USERS.User;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+public record ChatMessagePutRequestDTO (
+        @NotBlank
+        String message,
+
+        @NotNull
+        User sender,
+
+        @NotNull
+        @Positive
+        Long id
+){
+
+    public ChatMessage convert ( String type ) {
+
+        if ( type.equals( "response" ) ) {
+
+            if ( this.sender instanceof TeacherResponseMessage) {
+
+                return TeacherResponseMessage.builder()
+                        .text( this.message )
+                        .receiver( (Teacher) this.sender )
+                        .id( this.id )
+                        .build();
+
+            } else {
+
+                return StudentResponseMessage.builder()
+                        .text( this.message )
+                        .receiver( (Student) this.sender )
+                        .id( this.id )
+                        .build();
+            }
+
+        } else {
+
+        }
+    }
+}

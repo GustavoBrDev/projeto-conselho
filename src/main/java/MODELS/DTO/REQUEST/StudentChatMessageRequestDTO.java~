@@ -1,0 +1,2 @@
+package MODELS.DTO.REQUEST;public record StudentChatMessageRequestDTO() {
+}

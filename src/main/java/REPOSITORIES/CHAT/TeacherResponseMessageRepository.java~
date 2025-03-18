@@ -1,7 +1,7 @@
 package REPOSITORIES.CHAT;
 
-import MODELS.ENTITY.CHAT.TeacherChatMessage;
+import MODELS.ENTITY.CHAT.TeacherResponseMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TeacherChatMessageRepository extends JpaRepository<TeacherChatMessage, Long> {
+public interface TeacherResponseMessageRepository extends JpaRepository<TeacherResponseMessage, Long> {
 }

@@ -1,8 +1,10 @@
 package MODELS.ENTITY.CHAT;
 
+import MODELS.DTO.RESPONSE.ChatResponseDTO;
 import MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,6 +22,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class TeacherChatMessage implements ChatMessage {
 
     @Id
@@ -38,4 +41,18 @@ public class TeacherChatMessage implements ChatMessage {
     private Boolean isDeleted;
 
     private Instant deletedAt;
+
+    /**
+     * Método para converter um TeacherChatMessage para um ChatResponseDTO
+     * @return ChatResponseDTO
+     */
+    public ChatResponseDTO convert () {
+
+        return ChatResponseDTO.builder()
+                .message(text)
+                .isRead(isRead)
+                .isDeleted(isDeleted)
+                .deletedAt(deletedAt)
+                .build();
+    }
 }

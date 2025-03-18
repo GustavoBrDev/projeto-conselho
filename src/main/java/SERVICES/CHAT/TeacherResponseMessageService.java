@@ -1,10 +1,11 @@
 package SERVICES.CHAT;
 
-import MODELS.DTO.REQUEST.StudentChatMessageRequestDTO;
+import MODELS.DTO.REQUEST.TeacherResponseRequestDTO;
 import MODELS.DTO.RESPONSE.ChatResponseDTO;
-import MODELS.ENTITY.CHAT.StudentChatMessage;
-import MODELS.ENTITY.USERS.Student;
-import REPOSITORIES.CHAT.StudentChatMessageRepository;
+import MODELS.ENTITY.CHAT.TeacherChatMessage;
+import MODELS.ENTITY.CHAT.TeacherResponseMessage;
+import MODELS.ENTITY.USERS.Teacher;
+import REPOSITORIES.CHAT.TeacherResponseMessageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,27 +15,27 @@ import java.time.Instant;
 import java.util.NoSuchElementException;
 
 /**
- * Classe de serviço para a entidade {@link StudentChatMessage}
+ * Classe de serviço para a entidade {@link TeacherResponseMessage}
  * @author Gustavo Stinghen
  * @since 17/03/2025
- * @see StudentChatMessage
+ * @see TeacherResponseMessage
  */
 
 @AllArgsConstructor
 @Service
-public class StudentChatMessageService {
+public class TeacherResponseMessageService {
 
-    private StudentChatMessageRepository repository;
+    private TeacherResponseMessageRepository repository;
 
     /**
-     * Método para criar uma mensagem de chat de estudantes
+     * Método para criar uma mensagem de resposta de chat de professores 
      * @param message a mensagem de chat a ser criada
      * @return a mensagem de chat criada em formato de {@link ChatResponseDTO}
      */
-    public ChatResponseDTO create (StudentChatMessageRequestDTO message) {
+    public ChatResponseDTO create (TeacherResponseRequestDTO message) {
 
         try {
-            return repository.save(message.convert()).convert();
+            return repository.save( message.convert() ).convert();
         } catch (Exception e) {
            throw new NoSuchElementException("Erro ao enviar mensagem");
         }
@@ -42,14 +43,14 @@ public class StudentChatMessageService {
     }
 
     /**
-     * Método para buscar todas as mensagens de chat de estudantes
+     * Método para buscar todas as mensagens de chat de professores
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link ChatResponseDTO}
      */
     public Page<ChatResponseDTO> findAll (Pageable pageable) {
 
         try {
-            return repository.findAll(pageable).map(StudentChatMessage::convert);
+            return repository.findAll(pageable).map(TeacherResponseMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
         }
@@ -57,15 +58,15 @@ public class StudentChatMessageService {
     }
 
     /**
-     * Método para buscar todas as mensagens de chat de estudantes de um estudante
-     * @param sender estudante que enviou a mensagem
+     * Método para buscar todas as mensagens de chat enviadas a um professor
+     * @param sender professor que recebeu as mensagens
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link ChatResponseDTO}
      */
-    public Page<ChatResponseDTO> findBySender (Student sender, Pageable pageable) {
+    public Page<ChatResponseDTO> findBySender (Teacher sender, Pageable pageable) {
 
         try {
-            return repository.findBySender(sender, pageable).map(StudentChatMessage::convert);
+            return repository.findByReceiver(sender, pageable).map(TeacherResponseMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
         }
@@ -73,7 +74,7 @@ public class StudentChatMessageService {
     }
 
     /**
-     * Método para buscar uma mensagem de chat de estudantes
+     * Método para buscar uma mensagem de chat de professores
      * @param id id da mensagem de chat
      * @return {@link ChatResponseDTO}
      */
@@ -88,7 +89,7 @@ public class StudentChatMessageService {
     }
 
     /**
-     * Método para deletar uma mensagem de chat de estudantes
+     * Método para deletar uma mensagem de resposta de chat de professores
      * Ele não deleta a mensagem, apenas marca como deletada
      * @param id id da mensagem de chat
      * @return {@link ChatResponseDTO}
@@ -98,7 +99,7 @@ public class StudentChatMessageService {
         try {
 
             if (repository.existsById(id)) {
-                StudentChatMessage message = repository.findById(id).get();
+                TeacherResponseMessage message = repository.findById(id).get();
                 message.setDeletedAt(Instant.now());
                 message.setIsDeleted(true);
                 return repository.save(message).convert();

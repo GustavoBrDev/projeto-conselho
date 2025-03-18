@@ -1,8 +1,10 @@
 package MODELS.ENTITY.CHAT;
 
+import MODELS.DTO.RESPONSE.ChatResponseDTO;
 import MODELS.ENTITY.USERS.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +20,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class StudentResponseMessage implements ChatMessage {
 
     @Id
@@ -36,4 +39,18 @@ public class StudentResponseMessage implements ChatMessage {
     private Boolean isDeleted;
 
     private Instant deletedAt;
+
+    /**
+     * Método para converter um StudentResponseMessage para um ChatResponseDTO
+     * @return ChatResponseDTO
+     */
+    public ChatResponseDTO convert () {
+
+        return ChatResponseDTO.builder()
+                .message(text)
+                .isRead(isRead)
+                .isDeleted(isDeleted)
+                .deletedAt(deletedAt)
+                .build();
+    }
 }
