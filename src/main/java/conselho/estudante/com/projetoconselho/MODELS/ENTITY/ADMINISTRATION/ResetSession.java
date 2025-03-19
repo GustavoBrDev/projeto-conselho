@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION;
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
