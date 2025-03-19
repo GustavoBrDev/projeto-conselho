@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,7 +15,9 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class LoginLog {
+@Builder
+@Data
+public class LoginLogs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,15 @@
 package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.ResetSession;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.ResetSessionRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE.TechniqueService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +28,9 @@ import java.util.Date;
 public class ResetSessionService {
 
     private ResetSessionRepository repository;
+    private SupervisorService supervisorService;
+    private TechniqueService techniqueService;
+    private StudentService studentService;
 
     /**
      * Cria um token para resetar a senha do usuário
@@ -54,7 +63,30 @@ public class ResetSessionService {
 
        try {
            ResetSession resetSession = repository.findByToken(token);
-           // Chama o service para editar a senha do usuário
+           User user = resetSession.getUser();
+
+           if ( user instanceof Student) {
+
+               if ( !  studentService.editPassword((Student) user, password) ) {
+                   return false;
+               }
+
+           } else if ( user instanceof Supervisor){
+
+               if ( !  supervisorService.editPassword((Supervisor) user, password) ) {
+                   return false;
+               }
+
+           } else if ( user instanceof Technique){
+
+               if ( !  techniqueService.editPassword((Technique) user, password) ) {
+                   return false;
+               }
+
+           } else {
+               throw new NaoEncontradoException("User nao encontrado");
+           }
+
            return this.deleteByToken(token);
        } catch (Exception e) {
            return false;

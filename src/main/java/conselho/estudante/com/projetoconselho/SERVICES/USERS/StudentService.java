@@ -6,6 +6,7 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentR
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.StudentRepository;
@@ -131,6 +132,25 @@ public class StudentService {
         return repository.save(student).convert();
     }
 
+    /**
+     * Edita a senha de um estudante específico.
+     * @param student o estudante a ser editado
+     * @param password Nova senha.
+     * @return Um booleano indicando se a edição foi bem sucedida
+     * @author Gustavo Stinghen
+     * @since 19/03/2025
+     */
+    public boolean editPassword(Student student, String password) {
+
+        try {
+            student.setPassword(password);
+            repository.save(student);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Edita a imagem de perfil de um {@link Student}
@@ -172,6 +192,22 @@ public class StudentService {
             return repository.findAllByClasses(classe, pageable).map(Student::convert);
         } catch (Exception e) {
             throw new NaoEncontradoException("Alunos nao encontrados");
+        }
+    }
+
+    /**
+     * Busca um {@link Student} pelo email
+     * @param email o email do estudante
+     * @return {@link Student} o estudante encontrado
+     * Utilizado na autenticação
+     * @author Gustavo Stinghen
+     * @since 19/03/2025
+     */
+    public Student findObjectStudent ( String email) {
+        try {
+            return repository.findByEmail(email);
+        } catch (Exception e) {
+            return null;
         }
     }
 

@@ -54,12 +54,13 @@ public class Technique implements User {
      * @see TechniqueResponseDTO
      */
     public TechniqueResponseDTO toDTO() {
-        return new TechniqueResponseDTO(
-                this.id,
-                this.name,
-                this.image,
-                this.email,
-                this.register
-        );
+        return TechniqueResponseDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .image(this.image)
+                .email(this.email)
+                .register(this.register)
+                .password(this.password)
+                .build();
     }
 }
