@@ -92,6 +92,10 @@ public class Student implements User {
         }
     }
 
+    /**
+     * Metodo para converter um aluno para um DTO de aluno
+     * @return um DTO de aluno
+     */
     public StudentResponseDTO convert() {
         return StudentResponseDTO.builder()
                 .id(id)
