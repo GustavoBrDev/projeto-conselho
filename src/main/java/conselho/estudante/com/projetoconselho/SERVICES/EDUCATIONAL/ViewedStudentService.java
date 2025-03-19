@@ -1,9 +1,9 @@
-package SERVICES.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
 import MODELS.ENTITY.EDUCATIONAL.ViewedStudents;
 import MODELS.ENTITY.EDUCATIONAL.Council;
 import MODELS.ENTITY.EDUCATIONAL.Student;
-import REPOSITORIES.EDUCATIONAL.ViewedStudentsRepository;
+import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.ViewedStudentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
