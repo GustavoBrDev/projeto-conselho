@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
 
-import conselho.estudante.com.projetoconselho.MODEL.ENTITY.ADMINISTRATION.ResetSession;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.ResetSession;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.ResetSessionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
