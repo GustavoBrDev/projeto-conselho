@@ -20,6 +20,10 @@ import java.util.List;
  * @author Gustavo Stinghen
  * @since 17/03/2025
  * @see ChatMessageLogs
+ *
+ * Atualizado em 19/03/2025
+ * Adicionado o metodo de criar um log sem mudanças
+ * @author Gustavo Stinghen
  */
 
 @AllArgsConstructor
@@ -46,6 +50,32 @@ public class ChatMessageLogsService {
                     type(type).
                     timestamp(Instant.now()).
                     changes(changes).
+                    createdAt( new Date() ).
+                    build();
+
+            repository.save(log);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Cria um log de um {@link ChatMessage}
+     * @param actor o usuario que criou o log
+     * @param target a mensagem alvo
+     * @param type o tipo de log
+     * @return {@link Boolean} se o log foi criado ou nao
+     */
+    public boolean create(User actor, ChatMessage target, String type) {
+
+        try {
+
+            ChatMessageLogs log = ChatMessageLogs.builder().
+                    actor(actor).
+                    target(target).
+                    type(type).
+                    timestamp(Instant.now()).
                     createdAt( new Date() ).
                     build();
 

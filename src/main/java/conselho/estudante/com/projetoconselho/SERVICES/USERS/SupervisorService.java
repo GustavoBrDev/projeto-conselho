@@ -5,7 +5,9 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.Superviso
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.SupervisorResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.SupervisorRepository;
@@ -123,7 +125,24 @@ public class SupervisorService {
         return repository.save(supervisor).convert();
     }
 
+    /**
+     * Edita a senha de um supervisor
+     * @param supervisor Supervisor a ser editado
+     * @param password Nova senha.
+     * @return Um booleano indicando se a edição foi bem sucedida
+     * @author Gustavo Stinghen
+     * @since 19/03/2025
+     */
+    public boolean editPassword(Supervisor supervisor, String password) {
 
+        try {
+            supervisor.setPassword(password);
+            repository.save(supervisor);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 
 
     /**
@@ -138,9 +157,6 @@ public class SupervisorService {
         supervisor.setImage(image);
         return repository.save(supervisor).convert();
     }
-
-
-
 
     /**
      * Retorna todos os supervisores cadastrados com paginação.
@@ -205,8 +221,21 @@ public class SupervisorService {
         }
     }
 
-
-
+    /**
+     * Busca um {@link Supervisor} pelo email
+     * @param email o email do supervisor
+     * @return {@link Supervisor} o supervisor encontrado
+     * Utilizado na autenticação
+     * @author Gustavo Stinghen
+     * @since 19/03/2025
+     */
+    public Supervisor findObjectSupervisor ( String email) {
+        try {
+            return repository.findByEmail(email);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     /**
      * Adiciona uma {@link Notification} a um {@link Supervisor}.

@@ -2,6 +2,7 @@ package conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.TechniqueRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TechniqueResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
@@ -121,6 +122,25 @@ public class TechniqueService {
     }
 
     /**
+     * Edita a senha de uma técnica específica.
+     * @param technique Tecnica a ser editada
+     * @param password Nova senha.
+     * @return Um booleano indicando se a edição foi bem sucedida
+     * @author Gustavo Stinghen
+     * @since 19/03/2025
+     */
+    public boolean editPassword(Technique technique, String password) {
+
+        try {
+            technique.setPassword(password);
+            repository.save(technique);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Edita a imagem de uma técnica específica.
      *
      * @param id ID da técnica.
@@ -175,6 +195,22 @@ public class TechniqueService {
             return repository.findByEmail(email).toDTO();
         } catch (Exception e) {
             throw new NaoEncontradoException("Técnico nao encontrado");
+        }
+    }
+
+    /**
+     * Busca um {@link Technique} pelo email
+     * @param email o email do tecnico
+     * @return {@link Technique} o tecnico encontrado
+     * Utilizado na autenticação
+     * @author Gustavo Stinghen
+     * @since 19/03/2025
+     */
+    public Technique findObjectTechnique ( String email) {
+        try {
+            return repository.findByEmail(email);
+        } catch (Exception e) {
+            return null;
         }
     }
 
