@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.PersonalFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,4 +39,14 @@ public class PersonalFeedback implements Feedback {
 
     @ManyToOne
     private Student student;
+
+    public PersonalFeedbackResponseDTO convert() {
+        return PersonalFeedbackResponseDTO.builder()
+                .id(this.id)
+                .councilId(this.council.getId())//.convert()
+                .studentId(this.student.getId())//.convert()
+                .createdAt(this.createdAt)
+                .text(this.text)
+                .build();
+    }
 }

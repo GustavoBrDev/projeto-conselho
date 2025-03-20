@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.TeacherFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,4 +45,16 @@ public class TeacherFeeback implements Feedback {
     private String weaknessesText;
 
     private String suggestionsText;
+
+    public TeacherFeedbackResponseDTO convert() {
+        return TeacherFeedbackResponseDTO.builder()
+                .id(this.id)
+                .councilId(this.council.getId())//.convert()
+                .teacherId(this.teacher.getId())//.convert()
+                .createdAt(this.createdAt)
+                .strengthsText(this.strengthsText)
+                .weaknessesText(this.weaknessesText)
+                .suggestionsText(this.suggestionsText)
+                .build();
+    }
 }
