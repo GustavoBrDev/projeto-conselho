@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.SERVICES.USERS.SHIFT;
+package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT;
 
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.ShiftPostRequestDTO;

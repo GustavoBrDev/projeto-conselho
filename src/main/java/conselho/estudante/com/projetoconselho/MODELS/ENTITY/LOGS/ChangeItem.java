@@ -1,9 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * Classe utilizada para log de alteração de item
@@ -19,4 +16,10 @@ public class ChangeItem extends EditableItem {
 
     private Object originalValue;
     private Object newValue;
+
+    public ChangeItem(String name, Object oldValue, Object newValue) {
+        super(name);
+        this.originalValue = oldValue;
+        this.newValue = newValue;
+    }
 }

@@ -27,7 +27,6 @@ public record StudentRequestDTO(
         String name,
         @NotBlank
         String email,
-        @NotBlank
         String password,
         String image
 ) {
