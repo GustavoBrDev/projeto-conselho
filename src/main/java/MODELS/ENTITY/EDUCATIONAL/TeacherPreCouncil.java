@@ -1,13 +1,11 @@
 package MODELS.ENTITY.EDUCATIONAL;
 
+import MODELS.DTO.RESPONSE.*;
 import MODELS.ENTITY.ADMINISTRATION.Classe;
 import MODELS.ENTITY.ADMINISTRATION.Subject;
 import MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -28,6 +26,7 @@ import java.util.List;
  * @see PreCouncil
  */
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -103,6 +102,34 @@ public class TeacherPreCouncil implements PreCouncil {
         }
     }
 
+
+    /**
+     * Converte a entidade {@link TeacherPreCouncil} para um objeto DTO {@link TeacherPreCouncilResponseDTO}.
+     * Este método mapeia os dados da entidade para a estrutura de resposta, incluindo informações de conselho,
+     * classe, professor e disciplina.
+     *
+     * @return Um objeto {@link TeacherPreCouncilResponseDTO} contendo os dados mapeados da entidade.
+     *         Inclui o ID, datas de criação, início e término, informações do conselho, classe, status de preenchimento,
+     *         professor e disciplina associados.
+     *
+     * @see CouncilResponseDTO
+     * @see ClasseResponseDTO
+     * @see TeacherResponseDTO
+     * @see SubjectResponseDTO
+     */
+    public TeacherPreCouncilResponseDTO toDTO() {
+        return new TeacherPreCouncilResponseDTO(
+                this.id,
+                this.createdAt,
+                this.startDate,
+                this.endDate,
+                new CouncilResponseDTO(this.council.getId(), this.council.getName()), // AJUSTAR QUANDO AS DTOS FOREM FEITAS
+                new ClasseResponseDTO(this.classe.getId(), this.classe.getName()), // AJUSTAR QUANDO AS DTOS FOREM FEITAS
+                this.isFilled,
+                new TeacherResponseDTO(this.teacher.getId(), this.teacher.getName()), // AJUSTAR QUANDO AS DTOS FOREM FEITAS
+                new SubjectResponseDTO(this.subject.getId(), this.subject.getName(), this.subject.getWorkLoad())
+        );
+    }
 
 
 }
