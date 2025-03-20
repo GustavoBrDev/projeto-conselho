@@ -298,9 +298,92 @@ public class StudentService {
         }
     }
 
+    /**
+     * Promove um {@link Student} para representante da turma.
+     *
+     * @param id o identificador do estudante
+     * @return {@link StudentResponseDTO} o estudante atualizado com o novo papel
+     * @throws NaoEncontradoException se o estudante não for encontrado
+     */
+    public StudentResponseDTO promoteToRepresentative(Long id) {
+        Student student = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
+
+        student.setIsRepresentative(true);
+
+        return repository.save(student).convert();
+    }
+
+    /**
+     * Demite um {@link Student} como representante da turma.
+     *
+     * @param id o identificador do estudante
+     * @return {@link StudentResponseDTO} o estudante atualizado com o novo papel
+     * @throws NaoEncontradoException se o estudante nao for encontrado
+     */
+    public StudentResponseDTO removeToRepresentative(Long id) {
+        Student student = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
+
+        student.setIsRepresentative(false);
+
+        return repository.save(student).convert();
+    }
 
 
+    /**
+     * Filtra os estudantes por turma.
+     *
+     * @param classId o identificador da turma
+     * @param pageable as configurações de paginação
+     * @return {@link Page<StudentResponseDTO>} os estudantes da turma especificada
+     * @throws NaoEncontradoException se nenhum estudante for encontrado
+     */
+    public Page<StudentResponseDTO> filterByClass(Long classId, Pageable pageable) {
+        Page<Student> students = repository.findByClasses_Id(classId, pageable);
 
+        if (students.isEmpty()) {
+            throw new NaoEncontradoException("Nenhum aluno encontrado para esta turma.");
+        }
+
+        return students.map(Student::convert);
+    }
+
+    /**
+     * Filtra os estudantes por turno.
+     *
+     * @param shift o turno desejado (ex: "Matutino", "Vespertino", "Noturno")
+     * @param pageable as configurações de paginação
+     * @return {@link Page<StudentResponseDTO>} os estudantes do turno especificado
+     * @throws NaoEncontradoException se nenhum estudante for encontrado
+     */
+    public Page<StudentResponseDTO> filterByShift(String shift, Pageable pageable) {
+        Page<Student> students = repository.findByShift(shift, pageable);
+
+        if (students.isEmpty()) {
+            throw new NaoEncontradoException("Nenhum aluno encontrado para este turno.");
+        }
+
+        return students.map(Student::convert);
+    }
+
+    /**
+     * Realiza uma pesquisa inteligente baseada em múltiplos critérios.
+     *
+     * @param searchTerm o termo de pesquisa (nome, email, matrícula, etc.)
+     * @param pageable as configurações de paginação
+     * @return {@link Page<StudentResponseDTO>} os estudantes que correspondem ao critério de pesquisa
+     * @throws NaoEncontradoException se nenhum estudante for encontrado
+     */
+    public Page<StudentResponseDTO> intelligentSearch(String searchTerm, Pageable pageable) {
+        Page<Student> students = repository.searchByMultipleFields(searchTerm, pageable);
+
+        if (students.isEmpty()) {
+            throw new NaoEncontradoException("Nenhum aluno encontrado para o critério de pesquisa fornecido.");
+        }
+
+        return students.map(Student::convert);
+    }
 
 
 }

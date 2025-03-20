@@ -18,7 +18,7 @@ import java.util.Date;
 public record FeedbackGroupResponseDTO(
         Long id,
         Date date,
-        PersonalFeedback/*ResponseDTO*/ personalFeedbackId,
-        ClassFeedback/*ResponseDTO*/ classFeedbackId
+        PersonalFeedbackResponseDTO personalFeedbackId,
+        ClassFeedbackResponseDTO classFeedbackId
 ) {
 }

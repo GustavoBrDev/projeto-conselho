@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 /**
  * Serviço responsável pela gestão dos feedbacks de orientadores ({@link AdvisorFeeback}).
  * Contém operações CRUD e manipulação de feedbacks por conselho e orientador.
- * @author
- * @since 14/03/2025
+ * @author Camilly Chelest
+ * @since 19/03/2025
  */
 @Service
 @AllArgsConstructor

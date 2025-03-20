@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 /**
  * Serviço responsável pela gestão dos feedbacks de professores ({@link TeacherFeeback}).
  * Contém operações CRUD e manipulação de feedbacks por conselho e professor.
+ * @author Camilly Chelest
+ * @since 19/03/2025
  */
 @Service
 @AllArgsConstructor

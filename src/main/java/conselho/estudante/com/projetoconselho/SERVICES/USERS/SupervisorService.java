@@ -292,5 +292,59 @@ public class SupervisorService {
 
         return repository.save(supervisor).convert();
     }
+
+    /**
+     * Filtra os supervisores por curso.
+     *
+     * @param courseId o identificador do curso
+     * @param pageable as configurações de paginação
+     * @return {@link Page<SupervisorResponseDTO>} os supervisores do curso especificado
+     * @throws NaoEncontradoException se nenhum supervisor for encontrado
+     */
+    public Page<SupervisorResponseDTO> filterByCourse(Long courseId, Pageable pageable) {
+        Page<Supervisor> supervisors = repository.findByCourses_Id(courseId, pageable);
+
+        if (supervisors.isEmpty()) {
+            throw new NaoEncontradoException("Nenhum supervisor encontrado para este curso.");
+        }
+
+        return supervisors.map(Supervisor::convert);
+    }
+
+    /**
+     * Filtra os supervisores por turma.
+     *
+     * @param classId o identificador da turma
+     * @param pageable as configurações de paginação
+     * @return {@link Page<SupervisorResponseDTO>} os supervisores da turma especificada
+     * @throws NaoEncontradoException se nenhum supervisor for encontrado
+     */
+    public Page<SupervisorResponseDTO> filterByClass(Long classId, Pageable pageable) {
+        Page<Supervisor> supervisors = repository.findByClasses_Id(classId, pageable);
+
+        if (supervisors.isEmpty()) {
+            throw new NaoEncontradoException("Nenhum supervisor encontrado para esta turma.");
+        }
+
+        return supervisors.map(Supervisor::convert);
+    }
+
+    /**
+     * Realiza uma pesquisa inteligente baseada em múltiplos critérios.
+     *
+     * @param searchTerm o termo de pesquisa (nome, email, matrícula, etc.)
+     * @param pageable as configurações de paginação
+     * @return {@link Page<SupervisorResponseDTO>} os supervisores que correspondem ao critério de pesquisa
+     * @throws NaoEncontradoException se nenhum supervisor for encontrado
+     */
+    public Page<SupervisorResponseDTO> intelligentSearch(String searchTerm, Pageable pageable) {
+        Page<Supervisor> supervisors = repository.searchByMultipleFields(searchTerm, pageable);
+
+        if (supervisors.isEmpty()) {
+            throw new NaoEncontradoException("Nenhum supervisor encontrado para o critério de pesquisa fornecido.");
+        }
+
+        return supervisors.map(Supervisor::convert);
+    }
 }
 

@@ -9,12 +9,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+
+import java.util.Date;
 
 /**
  * Serviço responsável pela gestão dos grupos de feedbacks ({@link FeedbackGroup}).
  * Contém operações CRUD e métodos para manipulação de feedbacks por conselho.
- * @author Camilly Chelest
+ * @author Camilly
  * @since 19/03/2025
  */
 @Service
@@ -81,11 +82,35 @@ public class FeedbackGroupService {
         return repository.findAll(pageable).map(FeedbackGroup::convert);
     }
 
+    /**
+     * Lista grupos de feedbacks por aluno com paginação.
+     *
+     * @param studentId ID do aluno
+     * @param pageable  Configuração da paginação
+     * @return Página contendo os grupos de feedbacks do aluno
+     */
+    public Page<FeedbackGroupResponseDTO> findByStudent(Long studentId, Pageable pageable) {
+        return repository.findByPersonalFeedback_Student_Id(studentId, pageable)
+                .map(FeedbackGroup::convert);
+    }
+
+    /**
+     * Lista grupos de feedbacks por turma com paginação.
+     *
+     * @param classId  ID da turma
+     * @param pageable Configuração da paginação
+     * @return Página contendo os grupos de feedbacks da turma
+     */
+    public Page<FeedbackGroupResponseDTO> findByClass(Long classId, Pageable pageable) {
+        return repository.findByClassFeedback_Classe_Id(classId, pageable)
+                .map(FeedbackGroup::convert);
+    }
 
     /**
      * Lista todos os grupos de feedbacks de um conselho específico com paginação.
+     *
      * @param councilId ID do conselho
-     * @param pageable Configuração da paginação
+     * @param pageable  Configuração da paginação
      * @return Página contendo os grupos de feedbacks do conselho
      */
     public Page<FeedbackGroupResponseDTO> findByCouncil(Long councilId, Pageable pageable) {
@@ -94,6 +119,7 @@ public class FeedbackGroupService {
 
     /**
      * Busca um grupo de feedbacks pelo ID.
+     *
      * @param id ID do grupo
      * @return Grupo de feedbacks encontrado
      */
@@ -104,7 +130,45 @@ public class FeedbackGroupService {
     }
 
     /**
+     * Marca um grupo de feedbacks como visualizado.
+     *
+     * @param id ID do grupo
+     * @return Grupo de feedbacks atualizado com status de visualizado
+     */
+    public FeedbackGroupResponseDTO markAsViewed(Long id) {
+        FeedbackGroup feedbackGroup = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Grupo de feedbacks não encontrado"));
+
+        feedbackGroup.setViewed(true); // Supondo que a entidade tenha um campo 'viewed'
+        return repository.save(feedbackGroup).convert();
+    }
+
+    /**
+     * Filtra os grupos de feedbacks por turma.
+     *
+     * @param classId  ID da turma
+     * @param pageable Configuração da paginação
+     * @return Página contendo os grupos de feedbacks filtrados por turma
+     */
+    public Page<FeedbackGroupResponseDTO> filterByClass(Long classId, Pageable pageable) {
+        return repository.findByClassFeedback_Classe_Id(classId, pageable).map(FeedbackGroup::convert);
+    }
+
+    /**
+     * Realiza uma pesquisa inteligente nos grupos de feedbacks.
+     * Pode buscar por atributos do feedback pessoal, como turma, curso e data.
+     *
+     * @param term     Termo de busca
+     * @param pageable Configuração da paginação
+     * @return Página contendo os grupos de feedbacks que correspondem ao termo pesquisado
+     */
+    public Page<FeedbackGroupResponseDTO> smartSearch(String term, Pageable pageable) {
+        return repository.searchByPersonalFeedbackAttributes(term, pageable).map(FeedbackGroup::convert);
+    }
+
+    /**
      * Deleta um grupo de feedbacks pelo ID.
+     *
      * @param id ID do grupo a ser deletado
      */
     public void delete(Long id) {
