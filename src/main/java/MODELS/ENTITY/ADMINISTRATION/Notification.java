@@ -2,6 +2,9 @@ package MODELS.ENTITY.ADMINISTRATION;
 
 import MODELS.DTO.RESPONSE.NotificationResponseDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.*;
 
 import java.util.Date;
