@@ -1,8 +1,7 @@
 package SERVICES.CHAT;
 
-import MODELS.DTO.REQUEST.TeacherResponseRequestDTO;
+import MODELS.DTO.RESPONSE.TeacherResponseRequestDTO;
 import MODELS.DTO.RESPONSE.ChatResponseDTO;
-import MODELS.ENTITY.CHAT.TeacherChatMessage;
 import MODELS.ENTITY.CHAT.TeacherResponseMessage;
 import MODELS.ENTITY.USERS.Teacher;
 import REPOSITORIES.CHAT.TeacherResponseMessageRepository;
