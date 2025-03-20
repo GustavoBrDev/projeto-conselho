@@ -75,7 +75,6 @@
         <dependency>
             <groupId>com.postmarkapp</groupId>
             <artifactId>postmark</artifactId>
-            <version>1.9.12</version>
         </dependency>
     </dependencies>
     <build>

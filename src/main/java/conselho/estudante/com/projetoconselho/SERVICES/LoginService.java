@@ -162,7 +162,7 @@ public class LoginService {
                 throw new RuntimeException("Erro ao criar token" );
             }
 
-            if ( ! emailService.sendResetPasswordEmail( student.getEmail(), token ) ) {
+            if (emailService.sendResetPasswordEmail(student.getEmail(), token)) {
                 throw new RuntimeException("Erro ao enviar email" );
             }
 
@@ -179,7 +179,7 @@ public class LoginService {
                 throw new RuntimeException("Erro ao criar token" );
             }
 
-            if ( ! emailService.sendResetPasswordEmail( technique.getEmail(), token ) ) {
+            if (emailService.sendResetPasswordEmail(technique.getEmail(), token)) {
                 throw new RuntimeException("Erro ao enviar email" );
             }
 
@@ -196,7 +196,7 @@ public class LoginService {
                 throw new RuntimeException("Erro ao criar token" );
             }
 
-            if ( ! emailService.sendResetPasswordEmail( supervisor.getEmail(), token ) ) {
+            if (emailService.sendResetPasswordEmail(supervisor.getEmail(), token)) {
                 throw new RuntimeException("Erro ao enviar email" );
             }
 
