@@ -1,5 +1,7 @@
 package Services;
 
+import MODELS.ENTITY.DTO.REQUEST.AdvisorRequestDTO;
+import MODELS.ENTITY.DTO.RESPONSE.AdvisorResponseDTO;
 import MODELS.ENTITY.USERS.Advisor;
 import REPOSITORIES.USERS.AdvisorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,11 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * Classe service para o advisor
+ * author Alex Zastrow
+ */
+
 @Service
 public class AdvisorService {
 
@@ -20,97 +27,103 @@ public class AdvisorService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    /**
-     * Criar novo orientador (POST)
-     * @param advisor
-     * @return
+    /*
+     * Cria um advisor
      */
-    public Advisor criarAdvisor(Advisor advisor) {
-        validarCamposObrigatorios(advisor);
+    public AdvisorResponseDTO criarAdvisor(AdvisorRequestDTO advisorRequestDTO) {
+        validarCamposObrigatorios(advisorRequestDTO);
 
-        /**
-         * Verifica se o email ou matrícula já existem
-         */
-        if (advisorRepository.findByEmail(advisor.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Orientador com o email " + advisor.getEmail() + " já existe.");
+        if (advisorRepository.findByEmail(advisorRequestDTO.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Orientador com o email " + advisorRequestDTO.getEmail() + " já existe.");
         }
 
-        advisor.setPassword(passwordEncoder.encode(advisor.getPassword())); // Criptografa a senha
-        advisor.setCreatedAt(new Date()); // Adiciona a data de criação
-        return advisorRepository.save(advisor);
+        Advisor advisor = new Advisor();
+        advisor.setName(advisorRequestDTO.getName());
+        advisor.setEmail(advisorRequestDTO.getEmail());
+        advisor.setPassword(passwordEncoder.encode(advisorRequestDTO.getPassword()));
+        advisor.setRegister(advisorRequestDTO.getRegister());
+        advisor.setImage(advisorRequestDTO.getImage());
+        advisor.setCreatedAt(new Date());
+
+        Advisor savedAdvisor = advisorRepository.save(advisor);
+        return convertToResponseDTO(savedAdvisor);
     }
 
-    /**
-     * Atualizar orientador (PUT)
-     * @param id
-     * @param novosDados
-     * @return
+    /*
+     * Atualiza um advisor
      */
-    public Advisor atualizarAdvisor(Long id, Advisor novosDados) {
+    public AdvisorResponseDTO atualizarAdvisor(Long id, AdvisorRequestDTO advisorRequestDTO) {
         Advisor advisor = buscarPorId(id);
 
-        // Atualiza os campos, criptografando a senha novamente
-        advisor.setName(novosDados.getName());
-        advisor.setEmail(novosDados.getEmail());
-        advisor.setPassword(passwordEncoder.encode(novosDados.getPassword()));
-        advisor.setImage(novosDados.getImage());
-        advisor.setRegister(novosDados.getRegister());
-        return advisorRepository.save(advisor);
+        advisor.setName(advisorRequestDTO.getName());
+        advisor.setEmail(advisorRequestDTO.getEmail());
+        advisor.setPassword(passwordEncoder.encode(advisorRequestDTO.getPassword()));
+        advisor.setRegister(advisorRequestDTO.getRegister());
+        advisor.setImage(advisorRequestDTO.getImage());
+
+        Advisor updatedAdvisor = advisorRepository.save(advisor);
+        return convertToResponseDTO(updatedAdvisor);
     }
 
-    /**
-     * Editar nome (PATCH)
-     * @param id
-     * @param novoNome
-     * @return
+    /*
+     * Edita o nome de um advisor
      */
-    public Advisor editarNome(Long id, String novoNome) {
+    public AdvisorResponseDTO editarNome(Long id, String novoNome) {
         Advisor advisor = buscarPorId(id);
         advisor.setName(novoNome);
-        return advisorRepository.save(advisor);
+        Advisor updatedAdvisor = advisorRepository.save(advisor);
+        return convertToResponseDTO(updatedAdvisor);
     }
 
-    /**
-     * Listar todos os orientadores (GET com paginação)
-     * @param pageable
-     * @return
+    /*
+     * Lista todos os advisors
      */
-    public Page<Advisor> listarTodos(Pageable pageable) {
-        return advisorRepository.findAll(pageable);
+    public Page<AdvisorResponseDTO> listarTodos(Pageable pageable) {
+        return advisorRepository.findAll(pageable).map(this::convertToResponseDTO);
     }
 
-    /**
-     * Buscar orientador por ID (GET)
-     * @param id
-     * @return
-     */
-    public Advisor buscarPorId(Long id) {
-        return advisorRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Orientador com id " + id + " não encontrado."));
-    }
-
-    /**
-     * Excluir orientador (DELETE)
-     * @param id
+    /*
+     * Deleta um advisor
      */
     public void deletarAdvisor(Long id) {
         Advisor advisor = buscarPorId(id);
         advisorRepository.delete(advisor);
     }
 
-    /**
-     * Metodo de validação de campos obrigatórios
-     * @param advisor
+    /*
+     * Valida os campos obrigatorios
      */
-    private void validarCamposObrigatorios(Advisor advisor) {
-        if (!StringUtils.hasText(advisor.getEmail()) || !advisor.getEmail().contains("@")) {
+    private void validarCamposObrigatorios(AdvisorRequestDTO advisorRequestDTO) {
+        if (!StringUtils.hasText(advisorRequestDTO.getEmail()) || !advisorRequestDTO.getEmail().contains("@")) {
             throw new IllegalArgumentException("Email inválido.");
         }
-        if (!StringUtils.hasText(advisor.getPassword()) || advisor.getPassword().length() < 6) {
+        if (!StringUtils.hasText(advisorRequestDTO.getPassword()) || advisorRequestDTO.getPassword().length() < 6) {
             throw new IllegalArgumentException("Senha deve conter pelo menos 6 caracteres.");
         }
-        if (advisor.getRegister() == null) {
+        if (advisorRequestDTO.getRegister() == null) {
             throw new IllegalArgumentException("Matrícula é obrigatória.");
         }
+    }
+
+    /*
+     * Converte um advisor para um advisorResponseDTO
+     */
+    private AdvisorResponseDTO convertToResponseDTO(Advisor advisor) {
+        AdvisorResponseDTO responseDTO = new AdvisorResponseDTO();
+        responseDTO.setId(advisor.getId());
+        responseDTO.setName(advisor.getName());
+        responseDTO.setEmail(advisor.getEmail());
+        responseDTO.setRegister(advisor.getRegister());
+        responseDTO.setImage(advisor.getImage());
+        responseDTO.setCreatedAt(advisor.getCreatedAt());
+        return responseDTO;
+    }
+
+    /*
+     * Busca um advisor pelo id
+     */
+    private Advisor buscarPorId(Long id) {
+        return advisorRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Orientador com id " + id + " não encontrado."));
     }
 }

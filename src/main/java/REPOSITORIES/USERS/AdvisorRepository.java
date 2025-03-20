@@ -8,6 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
+ * Class AdvisorRepository
+ * @author Alex Zastrow
+ */
+
+/*
  * findByEmail buscar por email
  * findByRegister buscar por matricula
  * findByNameContainingIgnoreCase buscar por nome
