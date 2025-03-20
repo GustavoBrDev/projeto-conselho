@@ -1,4 +1,4 @@
-package MODELS.DTO.request;
+package MODELS.DTO.REQUEST;
 
 import MODELS.ENTITY.ADMINISTRATION.Shift;
 import jakarta.validation.constraints.NotBlank;

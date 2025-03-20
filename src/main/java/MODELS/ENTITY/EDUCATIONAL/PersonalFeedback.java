@@ -3,6 +3,7 @@ package MODELS.ENTITY.EDUCATIONAL;
 import MODELS.ENTITY.USERS.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ import java.util.Date;
  * @author Gustavo Stinghen
  */
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

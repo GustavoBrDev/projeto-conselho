@@ -1,4 +1,4 @@
-package MODELS.DTO.response;
+package MODELS.DTO.RESPONSE;
 
 import java.util.Date;
 import java.util.List;
