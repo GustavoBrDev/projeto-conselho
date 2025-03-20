@@ -34,8 +34,6 @@ public record StudentRequestDTO(
 
 
     public Student convert() {
-
-
         return Student.builder()
                 .registration(this.registration)
                 .isRepresentative(this.isRepresentative)

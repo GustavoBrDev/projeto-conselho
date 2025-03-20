@@ -1,17 +1,17 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL;
 
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ItemFeedback;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.SupervisorFeedback;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Repositório para a entidade {@link ItemFeedback}.
- * Contém métodos de acesso ao banco de dados para feedbacks de itens.
+ * Repositório para a entidade {@link SupervisorFeedback}.
+ * Contém métodos de acesso ao banco de dados para feedbacks de supervisores.
  * @author Camilly Chelest
  * @since 19/03/2025
  */
-public interface ItemFeedbackRepository extends JpaRepository<ItemFeedback, Long> {
+public interface SupervisorFeedbackRepository extends JpaRepository<SupervisorFeedback, Long> {
 
     /**
      * Busca todos os feedbacks associados a um determinado conselho.
@@ -19,5 +19,5 @@ public interface ItemFeedbackRepository extends JpaRepository<ItemFeedback, Long
      * @param pageable Configuração de paginação
      * @return Página contendo feedbacks do conselho
      */
-    Page<ItemFeedback> findByCouncilId(Long councilId, Pageable pageable);
+    Page<SupervisorFeedback> findByCouncilId(Long councilId, Pageable pageable);
 }

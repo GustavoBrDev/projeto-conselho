@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.AdvisorFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,4 +40,16 @@ public class AdvisorFeeback {
     private String weaknessesText;
 
     private String suggestionsText;
+
+    public AdvisorFeedbackResponseDTO convert() {
+        return AdvisorFeedbackResponseDTO.builder()
+                .id(this.id)
+                .councilId(this.council.getId())//.convert()
+                .advisorId(this.advisor.getId())//.convert()
+                .createdAt(this.createdAt)
+                .strengthsText(this.strengthsText)
+                .weaknessesText(this.weaknessesText)
+                .suggestionsText(this.suggestionsText)
+                .build();
+    }
 }

@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.ClassFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,4 +36,14 @@ public class ClassFeedback {
 
     @Column(nullable = false)
     private String text;
+
+    public ClassFeedbackResponseDTO convert() {
+        return ClassFeedbackResponseDTO.builder()
+                .id(id)
+                .councilId(council.getId())
+                .classId(classe.getId())
+                .createdAt(createdAt)
+                .text(text)
+                .build();
+    }
 }
