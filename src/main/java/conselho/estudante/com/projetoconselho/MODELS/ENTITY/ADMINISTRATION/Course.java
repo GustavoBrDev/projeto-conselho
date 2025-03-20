@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.CourseResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
@@ -162,5 +163,21 @@ public class Course {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Converte a entidade Couse em um DTO de resposta CourseResponseDTO.
+     *
+     * @return Uma instância de CourseResponseDTO contendo os dados desta entidade.
+     * @see CourseResponseDTO
+     */
+    public CourseResponseDTO toDTO() {
+        return new CourseResponseDTO(
+                this.id,
+                this.name,
+                this.visualIdentity,
+                this.workLoad,
+                this.level
+        );
     }
 }

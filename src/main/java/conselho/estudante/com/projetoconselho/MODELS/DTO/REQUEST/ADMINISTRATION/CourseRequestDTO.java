@@ -12,14 +12,14 @@ import lombok.Builder;
 @Builder
 public record CourseRequestDTO(
         String name,
-        String visualldentity,
+        String visualIdentity,
         Integer workload,
         String level) {
 
     public Course convert() {
         return Course.builder()
                 .name(this.name)
-                .visualIdentity(this.visualldentity)
+                .visualIdentity(this.visualIdentity)
                 .workLoad(this.workload)
                 .level(this.level)
                 .build();
