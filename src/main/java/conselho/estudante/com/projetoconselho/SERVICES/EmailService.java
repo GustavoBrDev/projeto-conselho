@@ -36,7 +36,6 @@ public class EmailService {
                 "<h1>Bem-vindo ao Conselho do Estudante</h1>" +
                 "<p>Seja bem-vindo ao Conselho do Estudante! Sua senha de acesso é: " + password + "</p>" +
                 "<p>Atenciosamente,<br>Equipe Conselho do Estudante</p>" +
-                "<img src=\"cid:imagemId\" alt=\"Imagem Exemplo\" />" +
                 "</body>" +
                 "</html>";
         message.setHtmlBody(htmlBody);
@@ -72,7 +71,6 @@ public class EmailService {
                 "<a href=\"https://conselho-do-estudante.vercel.app/reset-password/" + token + "\">Resetar senha</a>" +
                 "<p>Se você não solicitou um reset de senha, ignore esse email.</p>" +
                 "<p>Atenciosamente,<br>Equipe Conselho do Estudante</p>" +
-                "<img src=\"cid:imagemId\" alt=\"Imagem Exemplo\" />" +
                 "</body>" +
                 "</html>";
         message.setHtmlBody(htmlBody);
