@@ -1,6 +1,5 @@
 package MODELS.DTO.RESPONSE;
 
-import MODELS.ENTITY.ADMINISTRATION.Notification;
 import lombok.Builder;
 
 import java.util.Date;

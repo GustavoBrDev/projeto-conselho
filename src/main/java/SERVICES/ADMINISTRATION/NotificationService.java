@@ -2,7 +2,6 @@ package SERVICES;
 
 import MODELS.DTO.REQUEST.NotificationRequestDTO;
 import MODELS.DTO.RESPONSE.NotificationResponseDTO;
-import MODELS.ENTITY.ADMINISTRATION.Notification;
 import MODELS.EXCEPTIONS.NaoEncontradoException;
 import REPOSITORIES.NOTIFICATION.NotificationRepository;
 import lombok.AllArgsConstructor;
