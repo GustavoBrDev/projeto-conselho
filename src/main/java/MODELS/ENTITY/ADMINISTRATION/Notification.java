@@ -1,9 +1,8 @@
 package MODELS.ENTITY.ADMINISTRATION;
 
+import MODELS.DTO.RESPONSE.NotificationResponseDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -17,6 +16,9 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Data
+@Getter
+@Setter
+@Builder
 public class Notification {
 
     @Id
@@ -34,4 +36,14 @@ public class Notification {
 
     @Column(nullable = false)
     private Date createdAt;
+
+    public NotificationResponseDTO convert() {
+        return NotificationResponseDTO.builder()
+                .id(id)
+                .message(message)
+                .isRead(isRead)
+                .isUrgent(isUrgent)
+                .createdAt(createdAt)
+                .build();
+    }
 }
