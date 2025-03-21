@@ -37,8 +37,6 @@ public class ChatMessageLogs implements Log {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private String id;
 
-    private User actor;
-
     private ChatMessage target;
 
     private String type;

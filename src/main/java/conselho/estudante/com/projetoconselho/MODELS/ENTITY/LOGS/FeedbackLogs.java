@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS;
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Feedback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import jakarta.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class FeedbackLogs implements Log {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private String id;
 
-    private User actor;
+    private Object actor;
 
     private Feedback target;
 

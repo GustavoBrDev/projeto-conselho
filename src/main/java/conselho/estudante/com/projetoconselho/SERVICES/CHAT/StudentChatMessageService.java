@@ -6,6 +6,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.StudentChatMess
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT.StudentChatMessageRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ChatMessageLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import java.util.NoSuchElementException;
  * @author Gustavo Stinghen
  * @since 17/03/2025
  * @see StudentChatMessage
+ *
  */
 
 @AllArgsConstructor

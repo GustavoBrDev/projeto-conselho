@@ -4,5 +4,4 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatResponseDT
 
 public interface ChatMessage{
 
-    public ChatResponseDTO convert ();
 }

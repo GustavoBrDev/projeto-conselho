@@ -2,7 +2,6 @@ package conselho.estudante.com.projetoconselho.SERVICES.LOGS;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Feedback;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.CouncilLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.FeedbackLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
@@ -36,13 +35,13 @@ public class FeedbackLogsService {
 
     /**
      * Cria um log de um {@link Council}
-     * @param actor o usuario que criou o log
+     * @param actor a entidade que criou o log
      * @param target o conselho alvo
      * @param changes as mudanças efetuadas
      * @param type o tipo de log
      * @return {@link Boolean} se o log foi criado ou nao
      */
-    public boolean create(User actor, Feedback target, List<EditableItem> changes, String type) {
+    public boolean create(Object actor, Feedback target, List<EditableItem> changes, String type) {
 
         try {
 
@@ -64,12 +63,12 @@ public class FeedbackLogsService {
 
     /**
      * Cria um log de um {@link Feedback}
-     * @param actor o usuario que criou o log
+     * @param actor a entidade que criou o log
      * @param target o feedback alvo
      * @param type o tipo de log
      * @return {@link Boolean} se o log foi criado ou nao
      */
-    public boolean create(User actor, Feedback target, String type) {
+    public boolean create(Object actor, Feedback target, String type) {
 
         try {
 
@@ -106,13 +105,13 @@ public class FeedbackLogsService {
 
     /**
      * Metodo para buscar os logs de um {@link  Feedback}
-     * @param actor {@link User} que criou o log
+     * @param actor {@link Object} que criou o log
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link FeedbackLogs}
      * @throws NaoEncontradoException se o log nao foi encontrado
      * @see User, FeedbackLogs
      */
-    public Page<FeedbackLogs> findByActor(User actor, Pageable pageable) {
+    public Page<FeedbackLogs> findByActor(Object actor, Pageable pageable) {
 
         try {
             return repository.findByActor(actor, pageable);
