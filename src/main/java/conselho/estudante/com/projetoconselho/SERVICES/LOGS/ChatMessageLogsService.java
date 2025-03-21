@@ -34,18 +34,16 @@ public class ChatMessageLogsService {
 
     /**
      * Cria um log de um {@link ChatMessage}
-     * @param actor o usuario que criou o log
      * @param target a classe alvo
      * @param changes as mudanças efetuadas
      * @param type o tipo de log
      * @return {@link Boolean} se o log foi criado ou nao
      */
-    public boolean create(User actor, ChatMessage target, List<EditableItem> changes, String type) {
+    public boolean create( ChatMessage target, List<EditableItem> changes, String type) {
 
         try {
 
             ChatMessageLogs log = ChatMessageLogs.builder().
-                    actor(actor).
                     target(target).
                     type(type).
                     timestamp(Instant.now()).
@@ -62,17 +60,15 @@ public class ChatMessageLogsService {
 
     /**
      * Cria um log de um {@link ChatMessage}
-     * @param actor o usuario que criou o log
      * @param target a mensagem alvo
      * @param type o tipo de log
      * @return {@link Boolean} se o log foi criado ou nao
      */
-    public boolean create(User actor, ChatMessage target, String type) {
+    public boolean create( ChatMessage target, String type) {
 
         try {
 
             ChatMessageLogs log = ChatMessageLogs.builder().
-                    actor(actor).
                     target(target).
                     type(type).
                     timestamp(Instant.now()).

@@ -1,16 +1,29 @@
 package conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.TechniqueRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TechniqueResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.AddItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.TechniqueRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.EmailService;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.UserLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Serviço para gerenciar operações relacionadas à entidade {@link Technique}.
@@ -21,6 +34,11 @@ import org.springframework.stereotype.Service;
  * @see Technique
  * @see TechniqueRequestDTO
  * @see TechniqueResponseDTO
+ *
+ * Atualizado em 20/03/2025
+ * Conexão com o UserLogsService para gerar logs
+ * @author Gustavo Stinghen
+ * @see UserLogsService
  */
 
 @Service
@@ -28,23 +46,48 @@ import org.springframework.stereotype.Service;
 public class TechniqueService {
 
     private TechniqueRepository repository;
+    private EmailService emailService;
+    private UserLogsService logsService;
+    private static final int passwordLength = 8;
 
     /**
      * Cria uma nova técnica pedagogica.
      *
      * @param techniqueRequestDTO Dados da técnica a serem criados.
+     * @param actor Usuário que criou a técnica.
      * @return DTO da resposta contendo a técnica criada.
      * @throws DadosDuplicadosException se o email ou registro já existirem.
      */
-    public TechniqueResponseDTO create(TechniqueRequestDTO techniqueRequestDTO) {
+    public TechniqueResponseDTO create(TechniqueRequestDTO techniqueRequestDTO, User actor) {
         Technique technique = techniqueRequestDTO.convert();
         if(repository.existsByEmail(technique.getEmail())) {
             throw new DadosDuplicadosException("Email ja cadastrado");
         } else if (repository.existsByRegister(technique.getRegister())) {
             throw new DadosDuplicadosException("Registro ja cadastrado");
         } else {
+            technique.setPassword(generateRandomPassword());
+            logsService.create(actor, technique, "create");
+            emailService.sendWelcomeEmail(technique.getEmail(), technique.getPassword());
             return repository.save(technique).toDTO();
         }
+    }
+
+    /**
+     * Método auxiliar para gerar uma senha aleatória com o tamanho especificado.
+     * @return uma String com a senha gerada
+     * @author Gustavo Stinghen
+     * @since 20/03/2025
+     * @see SecureRandom
+     */
+    private String generateRandomPassword() {
+        final String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+        SecureRandom random = new SecureRandom();
+        StringBuilder senha = new StringBuilder();
+        for (int i = 0; i < passwordLength; i++) {
+            int index = random.nextInt(caracteres.length());
+            senha.append(caracteres.charAt(index));
+        }
+        return senha.toString();
     }
 
     /**
@@ -55,7 +98,7 @@ public class TechniqueService {
      * @return DTO da resposta contendo a técnica atualizada.
      * @throws DadosDuplicadosException se o email ou registro já existirem ou se a técnica não for encontrada.
      */
-    public TechniqueResponseDTO update(Long id, TechniqueRequestDTO techniqueRequestDTO) {
+    public TechniqueResponseDTO update(Long id, TechniqueRequestDTO techniqueRequestDTO, User actor) {
         Technique technique = techniqueRequestDTO.convert();
         if (repository.existsById(id)) {
             technique.setId(id);
@@ -64,9 +107,44 @@ public class TechniqueService {
             } else if (repository.existsByRegister(technique.getRegister())) {
                 throw new DadosDuplicadosException("Registro ja cadastrado");
             }
+
+            logsService.create( actor, technique,getEditableItems(repository.findById(id).get(), technique), "update" );
             return repository.save(technique).toDTO();
         }
         throw new NaoEncontradoException("Técnico nao encontrado");
+    }
+
+    /**
+     * Metodo auxiliar para obter os itens editaveis de uma tecnica
+     * @param oldTechnique o objeto tecnica antigo
+     * @param newTechnique o objeto tecnica novo
+     * @return uma lista com os itens editaveis
+     */
+    public List<EditableItem> getEditableItems( Technique oldTechnique, Technique newTechnique) {
+
+        List<EditableItem> changes = new ArrayList<>();
+
+        if (! oldTechnique.getName().equals(newTechnique.getName())) {
+            changes.add(new ChangeItem("name", (Object) oldTechnique.getName(), (Object) newTechnique.getName()));
+        }
+
+        if (! oldTechnique.getEmail().equals(newTechnique.getEmail())) {
+            changes.add(new ChangeItem("email", (Object) oldTechnique.getEmail(), (Object) newTechnique.getEmail()));
+        }
+
+        if (! oldTechnique.getRegister().equals(newTechnique.getRegister())) {
+            changes.add(new ChangeItem("register", (Object) oldTechnique.getRegister(), (Object) newTechnique.getRegister()));
+        }
+
+        if (! oldTechnique.getPassword().equals(newTechnique.getPassword())) {
+            changes.add(new ChangeItem("password", (Object) oldTechnique.getPassword(), (Object) newTechnique.getPassword()));
+        }
+
+        if ( ! oldTechnique.getImage().equals( newTechnique.getImage() ) ) {
+            changes.add(new ChangeItem("image", (Object) oldTechnique.getImage(), (Object) newTechnique.getImage()));
+        }
+
+        return changes;
     }
 
     /**
@@ -74,10 +152,12 @@ public class TechniqueService {
      *
      * @param id ID da técnica.
      * @param name Novo nome.
+     * @param actor Usuário que editou a técnica.
      * @return DTO da resposta contendo a técnica atualizada.
      */
-    public TechniqueResponseDTO editName(Long id, String name) {
+    public TechniqueResponseDTO editName(Long id, String name, User actor) {
         Technique technique = repository.findById(id).get();
+        logsService.create(actor, technique, Collections.singletonList(new ChangeItem("name", (Object) technique.getName(), (Object) name)), "update");
         technique.setName(name);
         return repository.save(technique).toDTO();
     }
@@ -87,10 +167,12 @@ public class TechniqueService {
      *
      * @param id ID da técnica.
      * @param email Novo email.
+     * @param actor Usuário que editou a técnica.
      * @return DTO da resposta contendo a técnica atualizada.
      */
-    public TechniqueResponseDTO editEmail(Long id, String email) {
+    public TechniqueResponseDTO editEmail(Long id, String email, User actor) {
         Technique technique = repository.findById(id).get();
+        logsService.create(actor, technique, Collections.singletonList(new ChangeItem("email", (Object) technique.getEmail(), (Object) email)), "update");
         technique.setEmail(email);
         return repository.save(technique).toDTO();
     }
@@ -100,10 +182,12 @@ public class TechniqueService {
      *
      * @param id ID da técnica.
      * @param register Novo número de registro.
+     * @param actor Usuário que editou a técnica.
      * @return DTO da resposta contendo a técnica atualizada.
      */
-    public TechniqueResponseDTO editRegister(Long id, Long register) {
+    public TechniqueResponseDTO editRegister(Long id, Long register, User actor) {
         Technique technique = repository.findById(id).get();
+        logsService.create(actor, technique, Collections.singletonList(new ChangeItem("register", (Object) technique.getRegister(), (Object) register)), "update");
         technique.setRegister(register);
         return repository.save(technique).toDTO();
     }
@@ -113,10 +197,12 @@ public class TechniqueService {
      *
      * @param id ID da técnica.
      * @param password Nova senha.
+     * @param actor Usuário que editou a técnica.
      * @return DTO da resposta contendo a técnica atualizada.
      */
-    public TechniqueResponseDTO editPassword(Long id, String password) {
+    public TechniqueResponseDTO editPassword(Long id, String password, User actor) {
         Technique technique = repository.findById(id).get();
+        logsService.create(actor, technique, Collections.singletonList(new ChangeItem("password", (Object) technique.getPassword(), (Object) password)), "update");
         technique.setPassword(password);
         return repository.save(technique).toDTO();
     }
@@ -142,13 +228,14 @@ public class TechniqueService {
 
     /**
      * Edita a imagem de uma técnica específica.
-     *
      * @param id ID da técnica.
      * @param image Nova imagem.
+     * @param actor Usuário que editou a técnica.
      * @return DTO da resposta contendo a técnica atualizada.
      */
-    public TechniqueResponseDTO editImage(Long id, String image) {
+    public TechniqueResponseDTO editImage(Long id, String image, User actor) {
         Technique technique = repository.findById(id).get();
+        logsService.create(actor, technique, Collections.singletonList(new ChangeItem("image", (Object) technique.getImage(), (Object) image)), "update");
         technique.setImage(image);
         return repository.save(technique).toDTO();
     }
@@ -215,14 +302,47 @@ public class TechniqueService {
     }
 
     /**
+     * Adiciona uma {@link Notification} a um {@link Technique}
+     * @param id o identificador do tecnico
+     * @param notification a notificação a ser adicionada
+     * @return {@link TechniqueResponseDTO} o tecnico atualizado
+     */
+    public TechniqueResponseDTO addNotification(Long id, Notification notification) {
+        Technique technique = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Tecnico não encontrado"));
+        if (!technique.addNotification(notification)) {
+            throw new NaoEncontradoException("Notificação nao encontrada");
+        }
+        logsService.create( null, technique, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
+        return repository.save(technique).toDTO();
+    }
+
+    /**
+     * Remove uma {@link Notification} de um {@link Technique}
+     * @param id o identificador do tecnico
+     * @param notification a notificação a ser removida
+     * @return {@link StudentResponseDTO} o tecnico atualizado
+     */
+    public TechniqueResponseDTO removeNotification(Long id, Notification notification) {
+        Technique technique = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Tecnico não encontrado"));
+        if (!technique.removeNotification(notification)) {
+            throw new NaoEncontradoException("Notificação nao encontrada");
+        }
+        logsService.create( null, technique, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
+        return repository.save(technique).toDTO();
+    }
+
+    /**
      * Deleta uma técnica pelo seu ID.
-     *
      * @param id ID da técnica a ser deletada.
+     * @param actor Usuário que deletou a técnica.
      * @throws NaoEncontradoException se a técnica não for deletada corretamente.
      */
-    public void delete(Long id) {
+    public void delete(Long id, User actor) {
         try {
             repository.deleteById(id);
+            logsService.create(actor, repository.findById(id).get(), "delete");
         } catch (Exception e) {
             throw new NaoEncontradoException("Técnico nao deletado");
         }

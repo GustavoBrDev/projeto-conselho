@@ -4,11 +4,14 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.Adv
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.AdvisorFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.AdvisorFeeback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Feedback;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.FeedbackLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.AdvisorFeedbackRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.AdvisorRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.FeedbackLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +22,11 @@ import org.springframework.stereotype.Service;
  * Contém operações CRUD e manipulação de feedbacks por conselho e orientador.
  * @author Camilly Chelest
  * @since 19/03/2025
+ *
+ * Atualizado em 21/03/2025
+ * Conexão com o FeedbackLogsService para gerar logs
+ * @author Gustavo Stinghen
+ * @see FeedbackLogsService
  */
 @Service
 @AllArgsConstructor
@@ -27,6 +35,7 @@ public class AdvisorFeedbackService {
     private final AdvisorFeedbackRepository repository;
     private final CouncilRepository councilRepository;
     private final AdvisorRepository advisorRepository;
+    private final FeedbackLogsService logsService;
 
     /**
      * Cria um novo feedback de orientador.
@@ -41,6 +50,7 @@ public class AdvisorFeedbackService {
                 .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
 
         AdvisorFeeback feedback = requestDTO.convert(council, advisor);
+        logsService.create(advisor, (Feedback) feedback, "create");
         return repository.save(feedback).convert();
     }
 
@@ -51,15 +61,17 @@ public class AdvisorFeedbackService {
      * @return Feedback atualizado
      */
     public AdvisorFeedbackResponseDTO update(Long id, AdvisorFeedbackRequestDTO requestDTO) {
-        AdvisorFeeback feedback = repository.findById(id)
+        repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Feedback não encontrado"));
 
-        feedback.setCreatedAt(requestDTO.createdAt());
-        feedback.setStrengthsText(requestDTO.strengthsText());
-        feedback.setWeaknessesText(requestDTO.weaknessesText());
-        feedback.setSuggestionsText(requestDTO.suggestionsText());
+        AdvisorFeeback updatedFeedback = AdvisorFeeback.builder()
+                .createdAt(requestDTO.createdAt())
+                .strengthsText(requestDTO.strengthsText())
+                .weaknessesText(requestDTO.weaknessesText())
+                .suggestionsText(requestDTO.suggestionsText())
+                .build();
 
-        return repository.save(feedback).convert();
+        return repository.save(updatedFeedback).convert();
     }
 
     /**

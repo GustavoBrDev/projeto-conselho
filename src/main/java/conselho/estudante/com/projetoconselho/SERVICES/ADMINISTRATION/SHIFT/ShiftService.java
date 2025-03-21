@@ -1,33 +1,62 @@
-package conselho.estudante.com.projetoconselho.SERVICES.USERS.SHIFT;
+package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT;
 
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.ShiftPostRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.ShiftResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
+import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.ShiftRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ShiftLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
+
+/**
+ * Classe de serviço para a entidade {@link Shift}
+ * @author Cauã Justimiano Dutra
+ * @since 17/03/2025
+ * @see Shift
+ *
+ * Atualizado em 20/03/2025
+ * Conexão com o ShiftLogsService para gerar logs
+ * @author Gustavo Stinghen
+ * @see ShiftLogsService
+ */
 
 @Service
 @AllArgsConstructor
 public class ShiftService {
 
     private ShiftRepository repository;
+    private ShiftLogsService logsService;
 
     /**
      * Adiciona um novo turno à aplicação.
      *
      * @param shiftPostRequestDTO DTO contendo os dados do novo turno.
+     * @param actor Usuário que adicionou o turno.
      * @return DTO do turno adicionado.
      */
-    public ShiftResponseDTO addShift(ShiftPostRequestDTO shiftPostRequestDTO) {
-        Shift shift = repository.save(shiftPostRequestDTO.toEntity());
-        return shift.toDTO();
+    public ShiftResponseDTO create(ShiftPostRequestDTO shiftPostRequestDTO, User actor) {
+
+        try {
+            Shift shift = shiftPostRequestDTO.toEntity();
+            repository.save(shift);
+            logsService.create(actor, shift, "create");
+            return shift.toDTO();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao adicionar turno: " + e.getMessage());
+        }
     }
 
     /**
@@ -48,12 +77,38 @@ public class ShiftService {
      * @return DTO do turno editado.
      * @throws NoSuchElementException Caso o turno não seja encontrado.
      */
-    public ShiftResponseDTO editShift(ShiftPostRequestDTO shiftPostRequestDTO, Long id) {
-        searchShift(id);
-        Shift shift = shiftPostRequestDTO.toEntity();
-        shift.setId(id);
-        repository.save(shift);
-        return shift.toDTO();
+    public ShiftResponseDTO update(ShiftPostRequestDTO shiftPostRequestDTO, Long id, User actor) {
+
+        try {
+
+            if ( this.searchShift(id) == null ) {
+                throw new NaoEncontradoException("Turno nao encontrado");
+            }
+
+            Shift shift = shiftPostRequestDTO.toEntity();
+            shift.setId(id);
+            logsService.create(actor, shift, getEditableItems(repository.findById(id).get(), shift), "update");
+            return repository.save(shift).toDTO();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar turno: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Método auxiliar para gerar logs que mostra os campos que foram editados
+     * @param oldShift o turno antigo
+     * @param shift o turno novo
+     * @return uma lista com os campos editados
+     */
+    private List<EditableItem> getEditableItems(Shift oldShift, Shift shift) {
+
+        List<EditableItem> changes = new ArrayList<>();
+
+        if ( ! oldShift.getName().equals( shift.getName() ) ) {
+            changes.add(new ChangeItem("name", (Object) oldShift.getName(), (Object) shift.getName()));
+        }
+
+        return changes;
     }
 
     /**
@@ -256,10 +311,24 @@ public ResponseEntity<Page<CourseResponseDTO>> listarCursosPeloTurno(
      * Exclui um turno da aplicação.
      *
      * @param id ID do turno a ser excluído.
+     * @param actor Usuário que está excluindo o turno.
      * @throws NoSuchElementException Caso o turno não seja encontrado.
      */
-    public void deleteShift(Long id) {
-        searchShift(id);
+    public void deleteShift(Long id, User actor) {
+
+        try {
+
+            if ( searchShift(id) == null ) {
+                throw new NaoEncontradoException("Turno nao encontrado");
+            }
+
+            logsService.create(actor, repository.findById(id).get(), "delete");
+            repository.deleteById(id);
+
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Turno nao encontrado");
+        }
+
         repository.deleteById(id);
     }
 }

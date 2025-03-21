@@ -2,6 +2,7 @@ package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.SupervisorResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,9 +35,6 @@ public class Supervisor implements User {
     private String name;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -50,6 +48,9 @@ public class Supervisor implements User {
 
     @OneToMany
     private List<Course> courses;
+
+    @OneToMany
+    private List<Notification> notifications;
 
     /**
      * Metodo para adicionar um curso ao supervisor
@@ -85,6 +86,44 @@ public class Supervisor implements User {
             return false;
         }
     }
+
+    /**
+     * Metodo para adicionar uma notificacao ao supervisor
+     * @param notification a notificacao a ser adicionada
+     * @return um booleano indicando se a notificacao foi adicionada. Se verdadeiro, a notificacao foi adicionada ao supervisor. Se falso, a notificacao nao foi adicionada ao supervisor
+     * A notificacao nao pode ser adicionada se ela ja estiver na lista de notificacoes
+     * @see Notification
+     * @author Gustavo Stinghen
+     * @since 20/03/2025
+     */
+    public  boolean addNotification(Notification notification) {
+
+        if (this.notifications.contains(notification)) {
+            return false;
+        } else {
+            this.notifications.add(notification);
+            return true;
+        }
+    }
+
+    /**
+     * Metodo para remover uma notificacao ao supervisor
+     * @param notification a notificacao a ser removida
+     * @return um booleano indicando se a notificacao foi removida. Se verdadeiro, a notificacao foi removida ao supervisor. Se falso, a notificacao nao foi removida ao supervisor
+     * A notificacao nao pode ser removida se ela nao estiver na lista de notificacoes
+     * @see Notification
+     * @author Gustavo Stinghen
+     * @since 20/03/2025
+     */
+    public boolean removeNotification(Notification notification) {
+
+        if (this.notifications.contains(notification)) {
+            this.notifications.remove(notification);
+            return true;
+        } else {
+            return false;
+        }
+     }
 
     public SupervisorResponseDTO convert() {
         return SupervisorResponseDTO.builder()

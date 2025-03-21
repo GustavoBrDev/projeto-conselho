@@ -1,4 +1,4 @@
-package MODELS.DTO.REQUEST;
+package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

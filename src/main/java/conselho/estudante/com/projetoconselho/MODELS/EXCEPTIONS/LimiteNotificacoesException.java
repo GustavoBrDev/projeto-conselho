@@ -1,4 +1,10 @@
-package MODELS.EXCEPTIONS;
+package conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS;
+
+/**
+ * Exception para Limite de Notificacoes
+ * @author Camilly Chelest
+ * @since 12/03/2025
+ */
 
 public class LimiteNotificacoesException extends RuntimeException{
     public LimiteNotificacoesException() {

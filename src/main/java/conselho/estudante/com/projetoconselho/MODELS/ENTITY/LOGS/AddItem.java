@@ -19,5 +19,10 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class AddItem extends EditableItem{
 
-    private List<Object> addedItems;
+    private Object addedItem;
+
+    public AddItem(String name, Object addedItem) {
+        super(name);
+        this.addedItem = addedItem;
+    }
 }

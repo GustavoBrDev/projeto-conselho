@@ -2,6 +2,7 @@ package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,9 +35,6 @@ public class Student implements User {
     private String name;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -56,6 +54,9 @@ public class Student implements User {
 
     @ManyToMany
     private List<Classe> classes;
+
+    @OneToMany
+    private List<Notification> notifications;
 
     /**
      * Método para adicionar uma classe ao aluno
@@ -86,6 +87,40 @@ public class Student implements User {
 
         if (this.classes.contains(classe)) {
             this.classes.remove(classe);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Metodo para adicionar uma notificacao ao aluno
+     * @param notification a notificacao a ser adicionada em formato de {@link Notification}
+     * @return um booleano indicando se a notificacao foi adicionada. Se verdadeiro, a notificacao foi adicionada ao aluno. Se falso, a notificacao nao foi adicionada ao aluno
+     * A notificacao nao pode ser adicionada se ela ja estiver na lista de notificacoes
+     * @see Notification
+     */
+    public boolean addNotification(Notification notification) {
+
+        if (this.notifications.contains(notification)) {
+            return false;
+        } else {
+            this.notifications.add(notification);
+            return true;
+        }
+    }
+
+    /**
+     * Metodo para remover uma notificacao ao aluno
+     * @param notification a notificacao a ser removida em formato de {@link Notification}
+     * @return um booleano indicando se a notificacao foi removida. Se verdadeiro, a notificacao foi removida ao aluno. Se falso, a notificacao nao foi removida ao aluno
+     * A notificacao nao pode ser removida se ela nao estiver na lista de notificacoes
+     * @see Notification
+     */
+    public boolean removeNotification(Notification notification) {
+
+        if (this.notifications.contains(notification)) {
+            this.notifications.remove(notification);
             return true;
         } else {
             return false;

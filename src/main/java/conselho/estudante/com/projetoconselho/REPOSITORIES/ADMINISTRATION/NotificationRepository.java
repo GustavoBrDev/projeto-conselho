@@ -1,5 +1,6 @@
-package REPOSITORIES.NOTIFICATION;
+package conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION;
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
