@@ -181,8 +181,8 @@ public class StudentService {
     public StudentResponseDTO editName(Long id, String name, User actor) {
         Student student = repository.findById(id).get();
         String oldName = student.getName();
-        student.setName(name);
         logsService.create(actor, student, Collections.singletonList(new ChangeItem("name", (Object) oldName, (Object) name)), "update");
+        student.setName(name);
         return repository.save(student).convert();
     }
 
@@ -197,8 +197,8 @@ public class StudentService {
     public StudentResponseDTO editEmail(Long id, String email, User actor) {
         Student student = repository.findById(id).get();
         String oldEmail = student.getEmail();
-        student.setEmail(email);
         logsService.create(actor, student, Collections.singletonList(new ChangeItem("email", (Object) oldEmail, (Object) email)), "update");
+        student.setEmail(email);
         return repository.save(student).convert();
     }
 
@@ -213,8 +213,8 @@ public class StudentService {
     public StudentResponseDTO editRegistration(Long id, Long registration, User actor) {
         Student student = repository.findById(id).get();
         Long oldRegistration = student.getRegistration();
-        student.setRegistration(registration);
         logsService.create(actor, student, Collections.singletonList(new ChangeItem("registration", (Object) oldRegistration, (Object) registration)), "update");
+        student.setRegistration(registration);
         return repository.save(student).convert();
     }
 
@@ -229,8 +229,8 @@ public class StudentService {
     public StudentResponseDTO editPassword(Long id, String password, User actor) {
         Student student = repository.findById(id).get();
         String oldPassword = student.getPassword();
-        student.setPassword(password);
         logsService.create(actor, student, Collections.singletonList(new ChangeItem("password", (Object) oldPassword, (Object) password)), "update");
+        student.setPassword(password);
         return repository.save(student).convert();
     }
 
@@ -397,7 +397,9 @@ public class StudentService {
     public StudentResponseDTO addNotification(Long id, Notification notification) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
-        student.addNotification(notification);
+        if (!student.addNotification(notification)) {
+            throw new NaoEncontradoException("Notificação nao encontrada");
+        }
         logsService.create( null, student, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
         return repository.save(student).convert();
     }
@@ -411,7 +413,9 @@ public class StudentService {
     public StudentResponseDTO removeNotification(Long id, Notification notification) {
         Student student = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Aluno não encontrado"));
-        student.removeNotification(notification);
+        if (!student.removeNotification(notification)) {
+            throw new NaoEncontradoException("Notificação nao encontrada");
+        }
         logsService.create( null, student, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
         return repository.save(student).convert();
     }

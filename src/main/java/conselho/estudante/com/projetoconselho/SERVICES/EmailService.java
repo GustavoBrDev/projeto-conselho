@@ -3,6 +3,7 @@ package conselho.estudante.com.projetoconselho.SERVICES;
 import com.postmarkapp.postmark.Postmark;
 import com.postmarkapp.postmark.client.ApiClient;
 import com.postmarkapp.postmark.client.data.model.message.Message;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +76,28 @@ public class EmailService {
                 "</html>";
         message.setHtmlBody(htmlBody);
         message.setTextBody("O link para resetar sua senha: https://conselho-do-estudante.vercel.app/reset-password/" + token);
+        try {
+            client.deliverMessage(message);
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    /**
+     * Envia um email de alerta para o usuario
+     * @param email o email do usuario
+     * @param notification a notificação
+     * @return se o email foi enviado
+     */
+    public boolean sendAlertEmail(String email, Notification notification) {
+        ApiClient client = Postmark.getApiClient("0ee11547-2003-4db1-bce4-71a2f9866cac");
+        Message message = new Message();
+        message.setFrom("conselho-do-estudante@no-reply.com");
+        message.setTo(email);
+        message.setSubject("Alerta");
+        message.setTextBody(notification.getMessage());
         try {
             client.deliverMessage(message);
             return false;

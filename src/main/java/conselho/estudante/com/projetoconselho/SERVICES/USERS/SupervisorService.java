@@ -28,6 +28,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Classe de serviços da entidade Supervisor
+ * @author Camilly Chelest
+ * @since 20/03/2025
+ *
+ * Atualizado em 20/03/2025
+ * Conexão com o UserLogsService para gerar logs
+ * @author Gustavo Stinghen
+ * @see UserLogsService
+ */
+
 @Service
 @AllArgsConstructor
 public class SupervisorService {
@@ -319,7 +330,11 @@ public class SupervisorService {
     public SupervisorResponseDTO addNotification(Long id, Notification notification) {
         Supervisor supervisor = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Supervisor não encontrado"));
-        supervisor.addNotification(notification);
+
+        if ( ! supervisor.addNotification(notification) ) {
+            throw new NaoEncontradoException("Notificação nao encontrada");
+        }
+
         logsService.create( null, supervisor, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
         return repository.save(supervisor).convert();
     }
@@ -334,7 +349,11 @@ public class SupervisorService {
     public SupervisorResponseDTO removeNotification(Long id, Notification notification) {
         Supervisor supervisor = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Supervisor não encontrado"));
-        supervisor.removeNotification(notification);
+
+        if ( ! supervisor.removeNotification(notification) ) {
+            throw new NaoEncontradoException("Notificação nao encontrada");
+        }
+
         logsService.create( null, supervisor, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
         return repository.save(supervisor).convert();
     }

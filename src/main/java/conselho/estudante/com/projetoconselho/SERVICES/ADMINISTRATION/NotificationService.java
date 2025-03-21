@@ -1,9 +1,10 @@
-package SERVICES;
+package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
 
-import MODELS.DTO.REQUEST.NotificationRequestDTO;
-import MODELS.DTO.RESPONSE.NotificationResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.NotificationRequestDTO;
 import MODELS.EXCEPTIONS.NaoEncontradoException;
-import REPOSITORIES.NOTIFICATION.NotificationRepository;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
+import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
+import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.NotificationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
