@@ -9,6 +9,7 @@ import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoExc
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.PersonalFeedbackRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.StudentRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +26,8 @@ import org.springframework.stereotype.Service;
 public class PersonalFeedbackService {
 
     private final PersonalFeedbackRepository repository;
-    private final CouncilRepository councilRepository;
-    private final StudentRepository studentRepository;
+    private final CouncilService councilService;
+    private final StudentService studentService;
 
     /**
      * Cria um novo feedback pessoal.
@@ -34,10 +35,10 @@ public class PersonalFeedbackService {
      * @return Feedback criado
      */
     public PersonalFeedbackResponseDTO create(PersonalFeedbackRequestDTO requestDTO) {
-        Council council = councilRepository.findById(requestDTO.councilId())
+        Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
-        Student student = studentRepository.findById(requestDTO.studentId())
+        Student student = studentService.findById(requestDTO.studentId())
                 .orElseThrow(() -> new NaoEncontradoException("Estudante não encontrado"));
 
         PersonalFeedback feedback = requestDTO.convert(council, student);

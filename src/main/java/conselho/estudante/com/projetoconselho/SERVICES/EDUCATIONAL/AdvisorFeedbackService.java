@@ -25,8 +25,8 @@ import org.springframework.stereotype.Service;
 public class AdvisorFeedbackService {
 
     private final AdvisorFeedbackRepository repository;
-    private final CouncilRepository councilRepository;
-    private final AdvisorRepository advisorRepository;
+    private final CouncilService councilService;
+    private final AdvisorService advisorService;
 
     /**
      * Cria um novo feedback de orientador.
@@ -34,10 +34,10 @@ public class AdvisorFeedbackService {
      * @return Feedback criado
      */
     public AdvisorFeedbackResponseDTO create(AdvisorFeedbackRequestDTO requestDTO) {
-        Council council = councilRepository.findById(requestDTO.councilId())
+        Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
-        Advisor advisor = advisorRepository.findById(requestDTO.advisorId())
+        Advisor advisor = advisorService.findById(requestDTO.advisorId())
                 .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
 
         AdvisorFeeback feedback = requestDTO.convert(council, advisor);

@@ -9,6 +9,7 @@ import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoExc
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.SupervisorFeedbackRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.SupervisorRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +28,8 @@ import java.util.Date;
 public class SupervisorFeedbackService {
 
     private final SupervisorFeedbackRepository repository;
-    private final CouncilRepository councilRepository;
-    private final SupervisorRepository supervisorRepository;
+    private final CouncilService councilService;
+    private final SupervisorService supervisorService;
 
     /**
      * Cria um novo feedback de supervisor.
@@ -36,11 +37,11 @@ public class SupervisorFeedbackService {
      * @return Feedback criado
      */
     public SupervisorFeedbackResponseDTO create(SupervisorFeedbackRequestDTO requestDTO) {
-        Council council = councilRepository.findById(requestDTO.councilId())
+        Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
-        Supervisor supervisor = supervisorRepository.findById(requestDTO.supervisorId())
-                .orElseThrow(() -> new NaoEncontradoException("Supervisor não encontrado"));
+        Supervisor supervisor = supervisorService.findById(requestDTO.supervisorId())
+                .orElseThrow(() -> { throw new NaoEncontradoException("Supervisor não encontrado"); });
 
         SupervisorFeedback feedback = requestDTO.convert(council, supervisor);
         return repository.save(feedback).convert();

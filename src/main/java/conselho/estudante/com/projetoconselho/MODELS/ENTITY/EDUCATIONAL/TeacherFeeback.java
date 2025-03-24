@@ -4,6 +4,7 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.Te
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class TeacherFeeback implements Feedback {
 
     @Id

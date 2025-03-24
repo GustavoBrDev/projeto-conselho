@@ -2,10 +2,7 @@ package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.ItemFeedbackResponseDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -27,6 +24,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class ItemFeedback implements Feedback {
 
     @Id

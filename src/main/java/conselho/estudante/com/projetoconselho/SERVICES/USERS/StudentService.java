@@ -200,7 +200,7 @@ public class StudentService {
      * @return {@link StudentResponseDTO} o estudante encontrado
      * @throws NaoEncontradoException se o estudante não for encontrado
      */
-    public StudentResponseDTO findId(Long id) {
+    public StudentResponseDTO findById(Long id) {
         try {
             return repository.findById(id).get().convert();
         } catch (Exception e) {

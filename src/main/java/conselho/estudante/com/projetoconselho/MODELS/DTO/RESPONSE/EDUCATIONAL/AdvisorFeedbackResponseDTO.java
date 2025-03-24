@@ -14,11 +14,22 @@ import java.util.Date;
 @Builder
 public record AdvisorFeedbackResponseDTO(
         Long id,
-        Long councilId,
+        CouncilResponseDTO council,
         Long advisorId,
         Date createdAt,
         String strengthsText,
         String weaknessesText,
         String suggestionsText
 ) {
+    public AdvisorFeeback convert() {
+        return AdvisorFeeback.builder()
+                .id(this.id)
+                .councilId(this.councilId)
+                .advisorId(this.advisorId)
+                .createdAt(this.createdAt)
+                .strengthsText(this.strengthsText)
+                .weaknessesText(this.weaknessesText)
+                .suggestionsText(this.suggestionsText)
+                .build();
+    }
 }
