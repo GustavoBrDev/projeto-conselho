@@ -42,8 +42,8 @@ public class TeacherChatMessage implements ChatMessage {
     private Instant deletedAt;
 
     /**
-     * Método para converter um TeacherChatMessage para um ChatMessageResponseDTO
-     * @return ChatMessageResponseDTO
+     * Método para converter um TeacherChatMessage para um ChatResponseDTO
+     * @return ChatResponseDTO
      */
     public ChatMessageResponseDTO convert () {
 

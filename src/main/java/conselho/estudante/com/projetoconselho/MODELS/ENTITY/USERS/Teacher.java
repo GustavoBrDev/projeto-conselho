@@ -62,7 +62,6 @@ public class Teacher implements User {
     @ManyToMany
     private List<Shift> shifts;
 
-    /*
      * Metodo para adicionar um curso ao professor
      * @param course o curso a ser adicionado em formato de {@link Course}
      * @return um booleano indicando se o curso foi adicionado. Se verdadeiro, o curso foi adicionado ao professor. Se falso, o curso nao foi adicionado ao professor
@@ -80,7 +79,7 @@ public class Teacher implements User {
 
     }
 
-    /*
+     /**
      * Metodo para remover um curso ao professor
      * @param course o curso a ser removido em formato de {@link Course}
      * @return um booleano indicando se o curso foi removido. Se verdadeiro, o curso foi removido ao professor. Se falso, o curso nao foi removido ao professor
@@ -98,8 +97,8 @@ public class Teacher implements User {
 
     }
 
-    /*
-     * Metodo para adicionar uma materia ao professor
+    /**
+     * Método para adicionar uma materia ao professor
      * @param subject a materia a ser adicionada em formato de {@link Subject}
      * @return um booleano indicando se a materia foi adicionada. Se verdadeiro, a materia foi adicionada ao professor. Se falso, a materia nao foi adicionada ao professor
      * A materia nao pode ser adicionada se ela ja estiver na lista de materias
@@ -115,7 +114,7 @@ public class Teacher implements User {
         }
     }
 
-    /*
+    /**
      * Metodo para remover uma materia ao professor
      * @param subject a materia a ser removida em formato de {@link Subject}
      * @return um booleano indicando se a materia foi removida. Se verdadeiro, a materia foi removida ao professor. Se falso, a materia nao foi removida ao professor
@@ -133,8 +132,8 @@ public class Teacher implements User {
 
     }
 
-    /*
-     * Metodo para adicionar um turno ao professor
+    /**
+     * Método para adicionar um turno ao professor
      * @param shift o turno a ser adicionado em formato de {@link Shift}
      * @return um booleano indicando se o turno foi adicionado. Se verdadeiro, o turno foi adicionado ao professor. Se falso, o turno nao foi adicionado ao professor
      * O turno nao pode ser adicionado se ele ja estiver na lista de turnos
@@ -151,8 +150,8 @@ public class Teacher implements User {
 
     }
 
-    /*
-     * Metodo para remover um turno ao professor
+    /**
+     * Método para remover um turno ao professor
      * @param shift o turno a ser removido em formato de {@link Shift}
      * @return um booleano indicando se o turno foi removido. Se verdadeiro, o turno foi removido ao professor. Se falso, o turno nao foi removido ao professor
      * O turno nao pode ser removido se ele nao estiver na lista de turnos

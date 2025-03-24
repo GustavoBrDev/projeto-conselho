@@ -26,15 +26,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     public Page<Student> findAllByClasses(Classe classe, Pageable pageable);
 
     public Student findByEmail(String email);
-
-    Page<Student> findByClasses_Id(Long classId, Pageable pageable);
-
-    Page<Student> findByShift(String shift, Pageable pageable);
-
-    @Query("SELECT s FROM Student s WHERE " +
-            "LOWER(s.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-            "LOWER(s.email) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-            "CAST(s.registration AS string) LIKE CONCAT('%', :searchTerm, '%')")
-    Page<Student> searchByMultipleFields(@Param("searchTerm") String searchTerm, Pageable pageable);
-
 }

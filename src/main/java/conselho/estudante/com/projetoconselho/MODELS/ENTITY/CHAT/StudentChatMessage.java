@@ -41,9 +41,10 @@ public class StudentChatMessage implements ChatMessage {
     private Instant deletedAt;
 
     /**
-     * Método para converter um StudentChatMessage para um ChatMessageResponseDTO
-     * @return ChatMessageResponseDTO
+     * Método para converter um StudentChatMessage para um ChatResponseDTO
+     * @return ChatResponseDTO
      */
+  
     public ChatMessageResponseDTO convert () {
 
         return ChatMessageResponseDTO.builder()
