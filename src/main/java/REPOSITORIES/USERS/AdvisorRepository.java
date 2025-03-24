@@ -1,25 +1,25 @@
 package REPOSITORIES.USERS;
 
-import MODELS.ENTITY.USERS.Advisor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
- * Class AdvisorRepository
- * @author Alex Zastrow
+ * Repositório para a entidade {@link Advisor}, responsável por realizar operações
+ * de persistência e recuperação no banco de dados para instâncias de orientadores.
  */
+public interface AdvisorRepository extends JpaRepository<Advisor, Long>, JpaSpecificationExecutor<Advisor> {
+    /**
+     * Verifica a existência de um orientador com o email fornecido no banco de dados.
+     */
+    boolean existsByEmail(String email);
 
-/*
- * findByEmail buscar por email
- * findByRegister buscar por matricula
- * findByNameContainingIgnoreCase buscar por nome
- */
+    /**
+     * Verifica a existência de um orientador com a matrícula fornecida no banco de dados.
+     */
+    boolean existsByRegistration(Long registration);
 
-public interface AdvisorRepository extends JpaRepository<Advisor, Long> {
-    Optional<Advisor> findByEmail(String email);
-    Optional<Advisor> findByRegister(Long register);
-    Page<Advisor> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    /**
+     * Encontra um orientador pelo seu email.
+     */
+    Advisor findByEmail(String email);
 }

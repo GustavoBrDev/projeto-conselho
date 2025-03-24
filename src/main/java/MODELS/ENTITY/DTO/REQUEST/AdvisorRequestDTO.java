@@ -1,60 +1,35 @@
 package MODELS.ENTITY.DTO.REQUEST;
 
-import java.util.Date;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 
 /**
- * Classe DTO para receber dados de requisição relacionados ao Advisor
- * @author Alex Zastrow
+ * DTO (Data Transfer Object) para representar uma solicitação de dados ao criar ou atualizar uma entidade Advisor.
  */
-public class AdvisorRequestDTO {
-
-    private String name;
-    private String email;
-    private String password;
-    private Long register;
-    private String image;
-
-    /*
-     * Getters and Setters
+@Builder
+public record AdvisorRequestDTO(
+        @NotBlank
+        String name,
+        @NotBlank
+        String image,
+        @NotBlank
+        String email,
+        @NotNull
+        @Positive
+        Long registration
+) {
+    /**
+     * Converte este DTO em uma entidade `Advisor`.
+     * @return Uma nova instância de `Advisor` com os dados presentes neste DTO.
      */
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Long getRegister() {
-        return register;
-    }
-
-    public void setRegister(Long register) {
-        this.register = register;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
+    public Advisor convert() {
+        return Advisor.builder()
+                .name(this.name)
+                .image(this.image)
+                .email(this.email)
+                .registration(this.registration)
+                .build();
     }
 }
