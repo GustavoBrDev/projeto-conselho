@@ -1,7 +1,10 @@
 package REPOSITORIES.USERS;
 
+import MODELS.ENTITY.USERS.Advisor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.Optional;
 
 /**
  * Repositório para a entidade {@link Advisor}, responsável por realizar operações
@@ -21,5 +24,10 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long>, JpaSpec
     /**
      * Encontra um orientador pelo seu email.
      */
-    Advisor findByEmail(String email);
+    Optional<Advisor> findByEmail(String email);
+
+    /**
+     * Encontra um orientador pela sua matrícula.
+     */
+    Optional<Advisor> findByRegistration(Long registration);
 }
