@@ -1,14 +1,8 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/USERS/Student.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.StudentResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.USERS;
-
-import conselho.estudante.com.projetoconselho.DTO.RESPONSE.StudentResponseDTO;
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Classe;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/USERS/Student.java
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,9 +35,6 @@ public class Student implements User {
     private String name;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -63,6 +54,9 @@ public class Student implements User {
 
     @ManyToMany
     private List<Classe> classes;
+
+    @OneToMany
+    private List<Notification> notifications;
 
     /**
      * Método para adicionar uma classe ao aluno
@@ -99,6 +93,44 @@ public class Student implements User {
         }
     }
 
+    /**
+     * Metodo para adicionar uma notificacao ao aluno
+     * @param notification a notificacao a ser adicionada em formato de {@link Notification}
+     * @return um booleano indicando se a notificacao foi adicionada. Se verdadeiro, a notificacao foi adicionada ao aluno. Se falso, a notificacao nao foi adicionada ao aluno
+     * A notificacao nao pode ser adicionada se ela ja estiver na lista de notificacoes
+     * @see Notification
+     */
+    public boolean addNotification(Notification notification) {
+
+        if (this.notifications.contains(notification)) {
+            return false;
+        } else {
+            this.notifications.add(notification);
+            return true;
+        }
+    }
+
+    /**
+     * Metodo para remover uma notificacao ao aluno
+     * @param notification a notificacao a ser removida em formato de {@link Notification}
+     * @return um booleano indicando se a notificacao foi removida. Se verdadeiro, a notificacao foi removida ao aluno. Se falso, a notificacao nao foi removida ao aluno
+     * A notificacao nao pode ser removida se ela nao estiver na lista de notificacoes
+     * @see Notification
+     */
+    public boolean removeNotification(Notification notification) {
+
+        if (this.notifications.contains(notification)) {
+            this.notifications.remove(notification);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Metodo para converter um aluno para um DTO de aluno
+     * @return um DTO de aluno
+     */
     public StudentResponseDTO convert() {
         return StudentResponseDTO.builder()
                 .id(id)

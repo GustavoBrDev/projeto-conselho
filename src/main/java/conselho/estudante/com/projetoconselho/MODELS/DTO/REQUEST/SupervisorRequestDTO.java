@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/DTO/REQUEST/SupervisorRequestDTO.java
-package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST;
+package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS;
 
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
-========
-package conselho.estudante.com.projetoconselho.DTO.REQUEST;
-
-
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Supervisor;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/DTO/REQUEST/SupervisorRequestDTO.java
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

@@ -1,4 +1,5 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION;
+
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

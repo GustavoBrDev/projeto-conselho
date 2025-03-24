@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/ADMINISTRATION/Classe.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Representative;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION;
-
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Representative;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Student;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/ADMINISTRATION/Classe.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

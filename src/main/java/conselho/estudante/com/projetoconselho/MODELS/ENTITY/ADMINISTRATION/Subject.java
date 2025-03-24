@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/ADMINISTRATION/Subject.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.SubjectResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION;
-
-import conselho.estudante.com.projetoconselho.DTO.RESPONSE.SubjectResponseDTO;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Teacher;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/ADMINISTRATION/Subject.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

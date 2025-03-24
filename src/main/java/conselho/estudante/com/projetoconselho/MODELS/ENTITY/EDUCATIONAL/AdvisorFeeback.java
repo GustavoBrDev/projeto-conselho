@@ -1,14 +1,10 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/EDUCATIONAL/AdvisorFeeback.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.AdvisorFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL;
-
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Advisor;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/EDUCATIONAL/AdvisorFeeback.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class AdvisorFeeback {
 
     @Id
@@ -45,4 +42,16 @@ public class AdvisorFeeback {
     private String weaknessesText;
 
     private String suggestionsText;
+
+    public AdvisorFeedbackResponseDTO convert() {
+        return AdvisorFeedbackResponseDTO.builder()
+                .id(this.id)
+                .councilId(this.council.getId())//.convert()
+                .advisorId(this.advisor.getId())//.convert()
+                .createdAt(this.createdAt)
+                .strengthsText(this.strengthsText)
+                .weaknessesText(this.weaknessesText)
+                .suggestionsText(this.suggestionsText)
+                .build();
+    }
 }

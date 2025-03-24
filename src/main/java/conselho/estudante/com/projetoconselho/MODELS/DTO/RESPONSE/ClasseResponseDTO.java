@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE;
+package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.LOGIN;
 
-public record ClasseResponseDTO() {
+public interface LoginResponse {
 }

@@ -1,16 +1,8 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/EDUCATIONAL/RepresentativePreCouncil.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL;
-
-
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Classe;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Teacher;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/EDUCATIONAL/RepresentativePreCouncil.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,7 +41,6 @@ public class RepresentativePreCouncil implements PreCouncil {
     private Date endDate;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Classe classe;
 
     @Column(nullable = false)

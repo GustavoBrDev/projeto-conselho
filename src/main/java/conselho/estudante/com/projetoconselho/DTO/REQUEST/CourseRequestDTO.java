@@ -1,12 +1,6 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/DTO/REQUEST/CourseRequestDTO.java
-package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST;
+package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
-========
-package conselho.estudante.com.projetoconselho.DTO.REQUEST;
-
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Course;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/DTO/REQUEST/CourseRequestDTO.java
 import lombok.Builder;
 
 /**
@@ -18,15 +12,15 @@ import lombok.Builder;
 @Builder
 public record CourseRequestDTO(
         String name,
-        String visualldentity,
+        String visualIdentity,
         Integer workload,
         String level) {
 
     public Course convert() {
         return Course.builder()
                 .name(this.name)
-                .visualldentity(this.visualldentity)
-                .workload(this.workload)
+                .visualIdentity(this.visualIdentity)
+                .workLoad(this.workload)
                 .level(this.level)
                 .build();
     }

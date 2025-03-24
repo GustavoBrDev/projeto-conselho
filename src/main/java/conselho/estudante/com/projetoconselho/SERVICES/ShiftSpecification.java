@@ -1,8 +1,8 @@
-package conselho.estudante.com.projetoconselho.SERVICES;
+package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT;
 
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Course;
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Shift;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Teacher;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;

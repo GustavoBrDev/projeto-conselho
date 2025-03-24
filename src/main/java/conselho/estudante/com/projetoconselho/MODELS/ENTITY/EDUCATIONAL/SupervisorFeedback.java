@@ -1,12 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/EDUCATIONAL/SupervisorFeedback.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.SupervisorFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL;
-
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Supervisor;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/EDUCATIONAL/SupervisorFeedback.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,4 +45,16 @@ public class SupervisorFeedback implements Feedback {
     private String weaknessesText;
 
     private String suggestionsText;
+
+    public SupervisorFeedbackResponseDTO convert() {
+        return SupervisorFeedbackResponseDTO.builder()
+                .id(this.id)
+                .councilId(this.council.getId())  //os que são objetos, tem q da um .convert(), ou getId()?
+                .supervisorId(this.supervisor.convert())  //os que são objetos, tem q da um .convert(), ou getId()?
+                .createdAt(this.createdAt)
+                .strengthsText(this.strengthsText)
+                .weaknessesText(this.weaknessesText)
+                .suggestionsText(this.suggestionsText)
+                .build();
+    }
 }

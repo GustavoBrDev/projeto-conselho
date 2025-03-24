@@ -1,4 +1,5 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.LOGS;
+
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ShiftLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;

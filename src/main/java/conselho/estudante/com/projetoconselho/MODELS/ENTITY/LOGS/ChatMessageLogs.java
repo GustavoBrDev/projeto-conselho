@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/LOGS/ChatMessageLogs.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.ChatMessage;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.LOGS;
-
-import conselho.estudante.com.projetoconselho.ENTITY.CHAT.ChatMessage;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.User;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/LOGS/ChatMessageLogs.java
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,8 +37,6 @@ public class ChatMessageLogs implements Log {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private String id;
 
-    private User actor;
-
     private ChatMessage target;
 
     private String type;
@@ -55,14 +46,4 @@ public class ChatMessageLogs implements Log {
     @CreatedDate
     @Indexed( expireAfter = "60d" )
     private Date createdAt;
-
-    private List<EditableItem> changes;
-
-    /**
-     * Adiciona um item ao log
-     * @param change item a ser adicionado ao log em formato de {@link EditableItem}
-     */
-    public void addChange(EditableItem change) {
-        changes.add(change);
-    }
 }

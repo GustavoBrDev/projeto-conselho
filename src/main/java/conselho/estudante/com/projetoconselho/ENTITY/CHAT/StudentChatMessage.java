@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/CHAT/StudentChatMessage.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.CHAT;
-
-import conselho.estudante.com.projetoconselho.DTO.RESPONSE.ChatResponseDTO;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Student;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/CHAT/StudentChatMessage.java
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatMessageResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +11,9 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 
 /**
- * Classe model da entidade StudentChatMessage ( mensagem de chat de estudantes )
+ * Classe model da entidade AdvisorChatMessage ( mensagem de chat de orientadores )
  * @author Gustavo Stinghen
- * @since 17/03/2025
+ * @since 24/03/2025
  * @see ChatMessage
  */
 @AllArgsConstructor
@@ -28,7 +21,7 @@ import java.time.Instant;
 @Data
 @Entity
 @Builder
-public class StudentChatMessage implements ChatMessage {
+public class AdvisorChatMessage implements ChatMessage {
 
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
@@ -37,7 +30,7 @@ public class StudentChatMessage implements ChatMessage {
     private String text;
 
     @OneToOne
-    private Student sender;
+    private Advisor advisor;
 
     private Instant timestamp;
 
@@ -48,12 +41,12 @@ public class StudentChatMessage implements ChatMessage {
     private Instant deletedAt;
 
     /**
-     * Método para converter um StudentChatMessage para um ChatResponseDTO
-     * @return ChatResponseDTO
+     * Método para converter um StudentChatMessage para um ChatMessageResponseDTO
+     * @return ChatMessageResponseDTO
      */
-    public ChatResponseDTO convert () {
+    public ChatMessageResponseDTO convert () {
 
-        return ChatResponseDTO.builder()
+        return ChatMessageResponseDTO.builder()
             .message(text)
             .isRead(isRead)
             .isDeleted(isDeleted)

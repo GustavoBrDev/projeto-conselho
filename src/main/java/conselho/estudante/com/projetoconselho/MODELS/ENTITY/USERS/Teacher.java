@@ -1,16 +1,8 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/USERS/Teacher.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.USERS;
-
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Course;
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Shift;
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Subject;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/USERS/Teacher.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +18,9 @@ import java.util.List;
  *
  * Atualizado em 13/03/2025
  * @author Gustavo Stinghen
+ *
+ * Atualizado em 20/03/2025
+ * @author Alex Zastrow
  */
 
 @AllArgsConstructor

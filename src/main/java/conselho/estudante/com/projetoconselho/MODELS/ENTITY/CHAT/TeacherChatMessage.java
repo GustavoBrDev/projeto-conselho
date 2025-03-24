@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/CHAT/TeacherChatMessage.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatMessageResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.CHAT;
-
-import conselho.estudante.com.projetoconselho.DTO.RESPONSE.ChatResponseDTO;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Teacher;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/CHAT/TeacherChatMessage.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

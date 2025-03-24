@@ -1,4 +1,5 @@
-package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
+package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SUBJECT;
+
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/DTO/RESPONSE/ShiftResponseDTO.java
-package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE;
-========
-package conselho.estudante.com.projetoconselho.DTO.RESPONSE;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/DTO/RESPONSE/ShiftResponseDTO.java
+package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION;
 
 import java.util.Date;
 import java.util.List;

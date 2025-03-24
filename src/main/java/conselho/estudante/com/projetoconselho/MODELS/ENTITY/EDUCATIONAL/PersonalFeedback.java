@@ -1,15 +1,9 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/EDUCATIONAL/PersonalFeedback.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.PersonalFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL;
-
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Student;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/EDUCATIONAL/PersonalFeedback.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -46,4 +40,14 @@ public class PersonalFeedback implements Feedback {
 
     @ManyToOne
     private Student student;
+
+    public PersonalFeedbackResponseDTO convert() {
+        return PersonalFeedbackResponseDTO.builder()
+                .id(this.id)
+                .councilId(this.council.getId())//.convert()
+                .studentId(this.student.getId())//.convert()
+                .createdAt(this.createdAt)
+                .text(this.text)
+                .build();
+    }
 }

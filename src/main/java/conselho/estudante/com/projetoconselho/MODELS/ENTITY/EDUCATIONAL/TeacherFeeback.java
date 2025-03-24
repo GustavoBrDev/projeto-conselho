@@ -1,12 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/EDUCATIONAL/TeacherFeeback.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.TeacherFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL;
-
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Teacher;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/EDUCATIONAL/TeacherFeeback.java
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,4 +45,16 @@ public class TeacherFeeback implements Feedback {
     private String weaknessesText;
 
     private String suggestionsText;
+
+    public TeacherFeedbackResponseDTO convert() {
+        return TeacherFeedbackResponseDTO.builder()
+                .id(this.id)
+                .councilId(this.council.getId())//.convert()
+                .teacherId(this.teacher.getId())//.convert()
+                .createdAt(this.createdAt)
+                .strengthsText(this.strengthsText)
+                .weaknessesText(this.weaknessesText)
+                .suggestionsText(this.suggestionsText)
+                .build();
+    }
 }

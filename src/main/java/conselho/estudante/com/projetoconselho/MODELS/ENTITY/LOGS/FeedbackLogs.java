@@ -1,14 +1,8 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/LOGS/FeedbackLogs.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS;
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Feedback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.LOGS;
-
-import conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL.Feedback;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.User;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/LOGS/FeedbackLogs.java
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -48,7 +42,7 @@ public class FeedbackLogs implements Log {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private String id;
 
-    private User actor;
+    private Object actor;
 
     private Feedback target;
 

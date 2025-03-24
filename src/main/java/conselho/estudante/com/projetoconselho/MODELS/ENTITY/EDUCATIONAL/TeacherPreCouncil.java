@@ -1,22 +1,12 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/EDUCATIONAL/TeacherPreCouncil.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
-import MODELS.DTO.RESPONSE.*;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.*;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL;
-
-import MODELS.DTO.RESPONSE.*;
-import conselho.estudante.com.projetoconselho.DTO.RESPONSE.*;
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Classe;
-import conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION.Subject;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.Teacher;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/EDUCATIONAL/TeacherPreCouncil.java
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +27,6 @@ import java.util.List;
  * @see PreCouncil
  */
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -58,22 +47,18 @@ public class TeacherPreCouncil implements PreCouncil {
     private Date endDate;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Council council;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Classe classe;
 
     @Column(nullable = false)
     private Boolean isFilled;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Teacher teacher;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
     private Subject subject;
 
     @OneToMany

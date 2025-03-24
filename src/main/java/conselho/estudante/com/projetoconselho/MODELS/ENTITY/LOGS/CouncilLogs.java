@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/LOGS/CouncilLogs.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.LOGS;
-
-import conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL.Council;
-import conselho.estudante.com.projetoconselho.ENTITY.USERS.User;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/LOGS/CouncilLogs.java
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;

@@ -1,9 +1,6 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/EDUCATIONAL/ItemFeedback.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.EDUCATIONAL;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/EDUCATIONAL/ItemFeedback.java
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.ItemFeedbackResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,4 +42,13 @@ public class ItemFeedback implements Feedback {
     private String text;
 
     private String item;
+
+    public ItemFeedbackResponseDTO convert() {
+        return ItemFeedbackResponseDTO.builder()
+                .id(this.id)
+                .createdAt(this.createdAt)
+                .text(this.text)
+                .item(this.item)
+                .build();
+    }
 }

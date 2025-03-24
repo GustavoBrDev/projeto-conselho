@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/ENTITY/ADMINISTRATION/Notification.java
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION;
-========
-package conselho.estudante.com.projetoconselho.ENTITY.ADMINISTRATION;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/ENTITY/ADMINISTRATION/Notification.java
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
