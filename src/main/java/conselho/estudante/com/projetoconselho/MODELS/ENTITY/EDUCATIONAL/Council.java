@@ -4,6 +4,7 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.CouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import jakarta.persistence.*;
@@ -63,6 +64,12 @@ public class Council {
 
     @OneToOne
     private RepresentativePreCouncil representativePreCouncil;
+
+    @OneToOne
+    private ClassFeedback classFeedback;
+
+    @OneToMany
+    private List<PersonalFeedback> feedbacks;
 
     private Boolean representativePreCouncilFinished;
 
@@ -198,6 +205,7 @@ public class Council {
                 this.date,
                 this.advisor,
                 this.representativePreCouncil,
+                this.classFeedback,
                 this.representativePreCouncilFinished,
                 this.teacherPreCouncilFinished,
                 this.representativePreCouncilStarted,
@@ -210,4 +218,6 @@ public class Council {
     public Boolean getCouncilFinished() {
         return councilFinished;
     }
+
+
 }
