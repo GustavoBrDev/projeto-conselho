@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.TeacherPreCouncil;
 
 import org.springframework.data.jpa.domain.Specification;

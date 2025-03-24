@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT;
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.TeacherChatMessage;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import org.springframework.data.domain.Page;

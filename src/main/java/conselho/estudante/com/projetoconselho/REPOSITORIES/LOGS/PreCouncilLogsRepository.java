@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.LOGS;
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.PreCouncil;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.PreCouncilLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;

@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
-
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.SubjectRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.SubjectResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;

@@ -1,10 +1,10 @@
 package conselho.estudante.com.projetoconselho.SERVICES.USERS;
 
+import conselho.estudante.com.projetoconselho.ENTITY.USERS.Technique;
+import conselho.estudante.com.projetoconselho.EXCEPTIONS.DadosDuplicadosException;
+import conselho.estudante.com.projetoconselho.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.TechniqueRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.TechniqueResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
-import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
-import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.TechniqueRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

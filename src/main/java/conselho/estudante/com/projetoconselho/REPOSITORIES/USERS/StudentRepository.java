@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.USERS;
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import org.springframework.data.domain.Page;

@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.SERVICES.LOGS;
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.CourseLogs;

@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.SERVICES.LOGS;
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ShiftLogs;

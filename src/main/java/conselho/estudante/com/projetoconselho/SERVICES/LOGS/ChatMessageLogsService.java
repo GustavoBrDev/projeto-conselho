@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.SERVICES.LOGS;
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.ChatMessage;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChatMessageLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;

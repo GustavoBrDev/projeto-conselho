@@ -1,5 +1,4 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.LOGS;
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.UserLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import org.springframework.data.domain.Page;
