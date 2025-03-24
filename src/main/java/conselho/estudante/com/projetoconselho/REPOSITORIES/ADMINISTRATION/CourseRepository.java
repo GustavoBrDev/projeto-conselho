@@ -18,5 +18,4 @@ public interface CourseRepository extends JpaRepository<Course, Long>, JpaSpecif
      */
     public boolean existsByName(String name);
 
-public interface CourseRepository extends JpaRepository<Course, Long> {
 }

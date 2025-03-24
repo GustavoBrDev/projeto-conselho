@@ -30,7 +30,7 @@ public class StudentChatMessage implements ChatMessage {
     private String text;
 
     @OneToOne
-    private Student sender;
+    private Student student;
 
     private Instant timestamp;
 
@@ -44,9 +44,10 @@ public class StudentChatMessage implements ChatMessage {
      * Método para converter um StudentChatMessage para um ChatResponseDTO
      * @return ChatResponseDTO
      */
-    public ChatResponseDTO convert () {
+  
+    public ChatMessageResponseDTO convert () {
 
-        return ChatResponseDTO.builder()
+        return ChatMessageResponseDTO.builder()
             .message(text)
             .isRead(isRead)
             .isDeleted(isDeleted)

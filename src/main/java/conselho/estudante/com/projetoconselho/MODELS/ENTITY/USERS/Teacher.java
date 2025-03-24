@@ -62,8 +62,7 @@ public class Teacher implements User {
     @ManyToMany
     private List<Shift> shifts;
 
-    /**
-     * Método para adicionar um curso ao professor
+     * Metodo para adicionar um curso ao professor
      * @param course o curso a ser adicionado em formato de {@link Course}
      * @return um booleano indicando se o curso foi adicionado. Se verdadeiro, o curso foi adicionado ao professor. Se falso, o curso nao foi adicionado ao professor
      * O curso nao pode ser adicionado se ele ja estiver na lista de cursos
@@ -80,8 +79,8 @@ public class Teacher implements User {
 
     }
 
-    /**
-     * Método para remover um curso ao professor
+     /**
+     * Metodo para remover um curso ao professor
      * @param course o curso a ser removido em formato de {@link Course}
      * @return um booleano indicando se o curso foi removido. Se verdadeiro, o curso foi removido ao professor. Se falso, o curso nao foi removido ao professor
      * O curso nao pode ser removido se ele nao estiver na lista de cursos
@@ -116,7 +115,7 @@ public class Teacher implements User {
     }
 
     /**
-     * Método para remover uma materia ao professor
+     * Metodo para remover uma materia ao professor
      * @param subject a materia a ser removida em formato de {@link Subject}
      * @return um booleano indicando se a materia foi removida. Se verdadeiro, a materia foi removida ao professor. Se falso, a materia nao foi removida ao professor
      * A materia nao pode ser removida se ela nao estiver na lista de materias

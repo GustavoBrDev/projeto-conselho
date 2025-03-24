@@ -126,6 +126,4 @@ public class TeacherPreCouncil implements PreCouncil {
                 new SubjectResponseDTO(this.subject.getId(), this.subject.getName(), this.subject.getWorkLoad())
         );
     }
-
-
 }

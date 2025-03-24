@@ -26,6 +26,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Course {
 
     @Id
@@ -57,7 +58,6 @@ public class Course {
     private Shift shift;
 
     @OneToMany (mappedBy = "course")
-    @JoinColumn(nullable = false)
     private List<Classe> classes;
 
     @ManyToOne
@@ -163,5 +163,21 @@ public class Course {
         } else {
             return false;
         }
+    }
+  
+    /**
+     * Converte a entidade Couse em um DTO de resposta CourseResponseDTO.
+     *
+     * @return Uma instância de CourseResponseDTO contendo os dados desta entidade.
+     * @see CourseResponseDTO
+     */
+    public CourseResponseDTO toDTO() {
+        return new CourseResponseDTO(
+                this.id,
+                this.name,
+                this.visualIdentity,
+                this.workLoad,
+                this.level
+        );
     }
 }
