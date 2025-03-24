@@ -3,6 +3,7 @@ package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,18 +11,16 @@ import java.util.List;
 
 /**
  * Classe model da entidade Representante
- * @author Gustavo Stinghen
- * @since 10/03/2025
- * @see Student
  */
+
 @Entity
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
+@Builder
 public class Representative {
-
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany
@@ -29,5 +28,4 @@ public class Representative {
 
     @OneToOne
     private Classe representativeOf;
-
 }
