@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatMessageResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class StudentChatMessage implements ChatMessage {
     private String text;
 
     @OneToOne
-    private Student sender;
+    private Student student;
 
     private Instant timestamp;
 
@@ -41,12 +41,12 @@ public class StudentChatMessage implements ChatMessage {
     private Instant deletedAt;
 
     /**
-     * Método para converter um StudentChatMessage para um ChatResponseDTO
-     * @return ChatResponseDTO
+     * Método para converter um StudentChatMessage para um ChatMessageResponseDTO
+     * @return ChatMessageResponseDTO
      */
-    public ChatResponseDTO convert () {
+    public ChatMessageResponseDTO convert () {
 
-        return ChatResponseDTO.builder()
+        return ChatMessageResponseDTO.builder()
             .message(text)
             .isRead(isRead)
             .isDeleted(isDeleted)

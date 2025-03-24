@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatMessageResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,18 +11,17 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 
 /**
- * Classe model da entidade TeacherChatMessage ( mensagem de chat de professores )
+ * Classe model da entidade TechniqueChatMessage ( mensagem de chat de tecnicos )
  * @author Gustavo Stinghen
- * @since 17/03/2025
+ * @since 24/03/2025
  * @see ChatMessage
  */
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Builder
-public class TeacherChatMessage implements ChatMessage {
+public class TechniqueChatMessage implements ChatMessage {
 
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
@@ -31,7 +30,7 @@ public class TeacherChatMessage implements ChatMessage {
     private String text;
 
     @OneToOne
-    private Teacher teacher;
+    private Technique technique;
 
     private Instant timestamp;
 
@@ -42,16 +41,16 @@ public class TeacherChatMessage implements ChatMessage {
     private Instant deletedAt;
 
     /**
-     * Método para converter um TeacherChatMessage para um ChatMessageResponseDTO
+     * Método para converter um StudentChatMessage para um ChatMessageResponseDTO
      * @return ChatMessageResponseDTO
      */
     public ChatMessageResponseDTO convert () {
 
         return ChatMessageResponseDTO.builder()
-                .message(text)
-                .isRead(isRead)
-                .isDeleted(isDeleted)
-                .deletedAt(deletedAt)
-                .build();
+            .message(text)
+            .isRead(isRead)
+            .isDeleted(isDeleted)
+            .deletedAt(deletedAt)
+            .build();
     }
 }

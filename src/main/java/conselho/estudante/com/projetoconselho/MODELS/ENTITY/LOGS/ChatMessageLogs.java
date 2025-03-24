@@ -46,14 +46,4 @@ public class ChatMessageLogs implements Log {
     @CreatedDate
     @Indexed( expireAfter = "60d" )
     private Date createdAt;
-
-    private List<EditableItem> changes;
-
-    /**
-     * Adiciona um item ao log
-     * @param change item a ser adicionado ao log em formato de {@link EditableItem}
-     */
-    public void addChange(EditableItem change) {
-        changes.add(change);
-    }
 }

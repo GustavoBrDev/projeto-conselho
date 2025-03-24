@@ -24,6 +24,10 @@ import java.util.List;
  * Atualizado em 19/03/2025
  * Adicionado o metodo de criar um log sem mudanças
  * @author Gustavo Stinghen
+ *
+ * Atualizado em 24/03/2025
+ * Removido o método de achar por ator
+ * @author Gustavo Stinghen
  */
 
 @AllArgsConstructor
@@ -31,32 +35,6 @@ import java.util.List;
 public class ChatMessageLogsService {
 
     private ChatMessageLogsRepository repository;
-
-    /**
-     * Cria um log de um {@link ChatMessage}
-     * @param target a classe alvo
-     * @param changes as mudanças efetuadas
-     * @param type o tipo de log
-     * @return {@link Boolean} se o log foi criado ou nao
-     */
-    public boolean create( ChatMessage target, List<EditableItem> changes, String type) {
-
-        try {
-
-            ChatMessageLogs log = ChatMessageLogs.builder().
-                    target(target).
-                    type(type).
-                    timestamp(Instant.now()).
-                    changes(changes).
-                    createdAt( new Date() ).
-                    build();
-
-            repository.save(log);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     /**
      * Cria um log de um {@link ChatMessage}
@@ -93,23 +71,6 @@ public class ChatMessageLogsService {
 
         try {
             return repository.findAll(pageable);
-        } catch (Exception e) {
-            throw new NaoEncontradoException("Log nao encontrado");
-        }
-    }
-
-    /**
-     * Metodo para buscar os logs de uma {@link  ChatMessage}
-     * @param actor {@link User} que criou o log
-     * @param pageable informacoes de paginacao
-     * @return {@link Page} de {@link ChatMessageLogs}
-     * @throws NaoEncontradoException se o log nao foi encontrado
-     * @see User, ChatMessageLogs
-     */
-    public Page<ChatMessageLogs> findByActor(User actor, Pageable pageable) {
-
-        try {
-            return repository.findByActor(actor, pageable);
         } catch (Exception e) {
             throw new NaoEncontradoException("Log nao encontrado");
         }

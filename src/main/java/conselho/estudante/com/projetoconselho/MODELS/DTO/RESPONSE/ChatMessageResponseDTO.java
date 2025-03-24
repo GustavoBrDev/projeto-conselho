@@ -14,7 +14,7 @@ import java.time.Instant;
  * @since 19/03/2025
  */
 @Builder
-public record ChatResponseDTO (
+public record ChatMessageResponseDTO(
     String message,
     Boolean isRead,
     Boolean isDeleted,
