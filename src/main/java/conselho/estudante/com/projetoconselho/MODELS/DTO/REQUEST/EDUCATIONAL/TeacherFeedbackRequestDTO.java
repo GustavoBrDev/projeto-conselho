@@ -32,8 +32,8 @@ public record TeacherFeedbackRequestDTO(
 ) {
     public TeacherFeeback convert(Council council, Teacher teacher) {
         return TeacherFeeback.builder()
-                .council(this.council)//.convert()
-                .teacher(this.teacher)//.convert()
+                /*.council(this.council)//.convert()
+                .teacher(this.teacher)//.convert()*/
                 .createdAt(this.createdAt)
                 .strengthsText(this.strengthsText)
                 .weaknessesText(this.weaknessesText)

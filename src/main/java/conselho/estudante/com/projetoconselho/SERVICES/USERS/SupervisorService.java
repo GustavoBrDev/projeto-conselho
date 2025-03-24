@@ -8,9 +8,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notif
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.AddItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;

@@ -1,14 +1,12 @@
-package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
-import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.TeacherPreCouncilRequestDTO;
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.StudentResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.TeacherPreCouncilResponseDTO;
+package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.TEACHER_PRE_COUNCIL;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.TeacherPreCouncilRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.TeacherPreCouncilResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.TeacherPreCouncil;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.SubjectRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.TeacherPreCouncilRepository;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.StudentRepository;
-import conselho.estudante.com.projetoconselho.SERVICES.USERS.TeacherService;
+import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SUBJECT.SubjectService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -34,9 +32,8 @@ import java.util.NoSuchElementException;
 public class TeacherPreCouncilService {
 
     TeacherPreCouncilRepository repository;
-    SubjectRepository subjectRepository;
-    StudentRepository studentRepository;
     StudentService studentService;
+    SubjectService subjectService;
 
     /**
      * Adiciona um novo pré-conselho de professor à aplicação.
@@ -153,8 +150,7 @@ public class TeacherPreCouncilService {
                 .orElseThrow(() -> new NoSuchElementException("TeacherPreCouncil not found"));
 
         // Você pode usar um serviço para buscar a matéria (Subject) se necessário
-        Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new NoSuchElementException("Subject not found"));
+        Subject subject = subjectService.findSubjectById(subjectId).convert();
 
         teacherPreCouncil.setSubject(subject);
         teacherPreCouncil = repository.save(teacherPreCouncil);
@@ -179,8 +175,7 @@ public class TeacherPreCouncilService {
      * @return Página contendo os alunos, convertidos para DTO.
      */
     public Page<StudentResponseDTO> listAllStudents(Pageable pageable) {
-        return studentRepository.findAll(pageable)
-                .map(Student::convert);
+        return studentService.findStudents(pageable);
     }
 
 
@@ -213,7 +208,7 @@ public class TeacherPreCouncilService {
      */
     public TeacherPreCouncil toEntity(TeacherPreCouncilRequestDTO requestDTO) {
         return TeacherPreCouncil.builder()
-                .teacher(TeacherService.buscarProfessorEntidade(requestDTO.teacher_id())) // TROCAR QUANDO A TEACHER SERVICE ESTIVER FEITA
+                //.teacher(TeacherService.buscarProfessorEntidade(requestDTO.teacher_id())) // TROCAR QUANDO A TEACHER SERVICE ESTIVER FEITA
                 .createdAt(new Date()) // Define a data de criação
                 .startDate(null) // Será definido depois
                 .endDate(null) // Será definido depois

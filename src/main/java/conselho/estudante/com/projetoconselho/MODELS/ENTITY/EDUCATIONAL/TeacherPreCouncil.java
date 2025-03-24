@@ -1,10 +1,14 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.TeacherPreCouncilResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +35,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class TeacherPreCouncil implements PreCouncil {
 
     @Id
@@ -108,22 +113,20 @@ public class TeacherPreCouncil implements PreCouncil {
      *         Inclui o ID, datas de criação, início e término, informações do conselho, classe, status de preenchimento,
      *         professor e disciplina associados.
      *
-     * @see CouncilResponseDTO
-     * @see ClasseResponseDTO
      * @see TeacherResponseDTO
      * @see SubjectResponseDTO
      */
     public TeacherPreCouncilResponseDTO toDTO() {
-        return new TeacherPreCouncilResponseDTO(
-                this.id,
-                this.createdAt,
-                this.startDate,
-                this.endDate,
-                new CouncilResponseDTO(this.council.getId(), this.council.getName()), // AJUSTAR QUANDO AS DTOS FOREM FEITAS
-                new ClasseResponseDTO(this.classe.getId(), this.classe.getName()), // AJUSTAR QUANDO AS DTOS FOREM FEITAS
-                this.isFilled,
-                new TeacherResponseDTO(this.teacher.getId(), this.teacher.getName()), // AJUSTAR QUANDO AS DTOS FOREM FEITAS
-                new SubjectResponseDTO(this.subject.getId(), this.subject.getName(), this.subject.getWorkLoad())
-        );
+        return TeacherPreCouncilResponseDTO.builder()
+                .id(this.id)
+                .createdAt(this.createdAt)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                /*.council(this.council.toDTO())
+                .classe(this.classe.toDTO())*/
+                .isFilled(this.isFilled)
+                //.teacher(this.teacher.toDTO())
+                //.subject(this.subject.toDTO())
+                .build();
     }
 }

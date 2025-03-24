@@ -1,8 +1,11 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/DTO/RESPONSE/TeacherPreCouncilResponseDTO.java
-package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE;
-========
-package conselho.estudante.com.projetoconselho.DTO.RESPONSE;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/DTO/RESPONSE/TeacherPreCouncilResponseDTO.java
+package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -14,6 +17,8 @@ import java.util.Date;
  * @author Cauã Justimiano Dutra
  * @since 19/03/2025
  */
+@AllArgsConstructor
+@Builder
 public record TeacherPreCouncilResponseDTO(
 
         /**
@@ -39,12 +44,12 @@ public record TeacherPreCouncilResponseDTO(
         /**
          * DTO do Conselho ao qual o pré-conselho está vinculado.
          */
-        CouncilResponseDTO councilDTO,
+        Council councilDTO,
 
         /**
          * DTO da Classe relacionada ao pré-conselho.
          */
-        ClasseResponseDTO classeDTO,
+        Classe classeDTO,
 
         /**
          * Indica se o pré-conselho foi preenchido pelo professor.

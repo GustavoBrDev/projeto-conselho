@@ -1,8 +1,6 @@
 package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT;
 
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.ShiftPostRequestDTO;
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.ShiftResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;

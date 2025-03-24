@@ -18,9 +18,9 @@ import java.util.Date;
 @Builder
 public record AdvisorFeedbackRequestDTO(
         @NotNull
-        Long councilId,
+        Council council,
         @NotNull
-        Long advisorId,
+        Advisor advisor,
         @NotNull
         Date createdAt,
         @NotBlank

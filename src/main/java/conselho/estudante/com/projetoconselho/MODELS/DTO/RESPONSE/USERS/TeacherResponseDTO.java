@@ -1,5 +1,7 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
  * @author Alex Zastrow
  */
 @Data
+@Builder
+@AllArgsConstructor
 public class TeacherResponseDTO {
 
     private Long id;

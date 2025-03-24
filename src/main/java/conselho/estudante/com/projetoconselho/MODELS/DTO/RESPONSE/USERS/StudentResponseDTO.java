@@ -25,4 +25,5 @@ public class StudentResponseDTO implements UserResponseDTO {
     String image;
     Boolean isRepresentative;
     Boolean isHidden;
+
 }

@@ -1,9 +1,4 @@
-<<<<<<<< HEAD:src/main/java/conselho/estudante/com/projetoconselho/MODELS/DTO/REQUEST/TeacherPreCouncilRequestDTO.java
-package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST;
-========
-package conselho.estudante.com.projetoconselho.DTO.REQUEST;
->>>>>>>> 2883d1ba51d6f2ad915f17c95b5cc0a8f5f3cbf2:src/main/java/conselho/estudante/com/projetoconselho/DTO/REQUEST/TeacherPreCouncilRequestDTO.java
-
+package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL;
 import jakarta.validation.constraints.NotNull;
 
 /**

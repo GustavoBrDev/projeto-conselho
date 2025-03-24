@@ -17,8 +17,8 @@ import java.util.Date;
  */
 @Builder
 public record PersonalFeedbackRequestDTO(
-        @NotNull Long councilId,
-        @NotNull Long studentId,
+        @NotNull Council council,
+        @NotNull Student student,
         @NotNull Date createdAt,
         @NotBlank String text
 ) {
