@@ -73,9 +73,14 @@
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        <dependency>
+        <dependency>
             <groupId>com.postmarkapp</groupId>
             <artifactId>postmark</artifactId>
-        </dependency>
+            <version>1.9.12</version>
+      </dependency>
     </dependencies>
     <build>
         <plugins>
