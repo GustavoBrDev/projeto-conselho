@@ -46,7 +46,7 @@ public class RepresentativePreCouncil implements PreCouncil {
     @Column(nullable = false)
     private Boolean isFilled;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Teacher> teachers;
 
     @ManyToOne
@@ -55,10 +55,10 @@ public class RepresentativePreCouncil implements PreCouncil {
     @ManyToOne
     private SupervisorFeedback supervisorFeeback;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<TeacherFeeback> teacherFeebacks;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<ItemFeedback> itemFeedbacks;
 
 }
