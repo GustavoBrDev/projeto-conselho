@@ -22,7 +22,7 @@ public class StudentChatMessageRequestDTO implements ChatMessage {
 
         return StudentChatMessage.builder()
                 .text(message)
-                .sender(student)
+                .student(student)
                 .build();
     }
 }

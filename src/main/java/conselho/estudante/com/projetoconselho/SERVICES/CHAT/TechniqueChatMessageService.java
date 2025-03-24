@@ -1,11 +1,11 @@
 package conselho.estudante.com.projetoconselho.SERVICES.CHAT;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.CHAT.TeacherChatMessageRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.CHAT.TechniqueChatMessageRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatMessageResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.TeacherChatMessage;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.TechniqueChatMessage;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT.TeacherChatMessageRepository;
+import conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT.TechniqueChatMessageRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ChatMessageLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,30 +16,25 @@ import java.time.Instant;
 import java.util.NoSuchElementException;
 
 /**
- * Classe de serviço para a entidade {@link TeacherChatMessage}
+ * Classe de serviço para a entidade {@link TechniqueChatMessage}
  * @author Gustavo Stinghen
- * @since 17/03/2025
- * @see TeacherChatMessage
- *
- * Atualizado em 24/03/2025
- * Conexão com o ChatMessageLogsService para gerar logs
- * @author Gustavo Stinghen
- * @see ChatMessageLogsService
+ * @since 24/03/2025
+ * @see TechniqueChatMessage
  */
 
 @AllArgsConstructor
 @Service
-public class TeacherChatMessageService {
+public class TechniqueChatMessageService {
 
-    private TeacherChatMessageRepository repository;
+    private TechniqueChatMessageRepository repository;
     private ChatMessageLogsService logsService;
 
     /**
-     * Método para criar uma mensagem de chat de professores
+     * Método para criar uma mensagem de chat de estudantes
      * @param message a mensagem de chat a ser criada
      * @return a mensagem de chat criada em formato de {@link ChatMessageResponseDTO}
      */
-    public ChatMessageResponseDTO create (TeacherChatMessageRequestDTO message) {
+    public ChatMessageResponseDTO create (TechniqueChatMessageRequestDTO message) {
 
         try {
             logsService.create(message, "create");
@@ -51,14 +46,14 @@ public class TeacherChatMessageService {
     }
 
     /**
-     * Método para buscar todas as mensagens de chat de professores
+     * Método para buscar todas as mensagens de chat de estudantes
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link ChatMessageResponseDTO}
      */
     public Page<ChatMessageResponseDTO> findAll (Pageable pageable) {
 
         try {
-            return repository.findAll(pageable).map(TeacherChatMessage::convert);
+            return repository.findAll(pageable).map(TechniqueChatMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
         }
@@ -66,15 +61,15 @@ public class TeacherChatMessageService {
     }
 
     /**
-     * Método para buscar todas as mensagens de chat de professores de um professor
-     * @param teacher professor que enviou a mensagem
+     * Método para buscar todas as mensagens de chat de estudantes de um estudante
+     * @param technique estudante que enviou a mensagem
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link ChatMessageResponseDTO}
      */
-    public Page<ChatMessageResponseDTO> findByTeacher (Teacher teacher, Pageable pageable) {
+    public Page<ChatMessageResponseDTO> findByTechnique (Technique technique, Pageable pageable) {
 
         try {
-            return repository.findByTeacher(teacher, pageable).map(TeacherChatMessage::convert);
+            return repository.findByTechnique(technique, pageable).map(TechniqueChatMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
         }
@@ -82,7 +77,7 @@ public class TeacherChatMessageService {
     }
 
     /**
-     * Método para buscar uma mensagem de chat de professores
+     * Método para buscar uma mensagem de chat de estudantes
      * @param id id da mensagem de chat
      * @return {@link ChatMessageResponseDTO}
      */
@@ -97,7 +92,7 @@ public class TeacherChatMessageService {
     }
 
     /**
-     * Método para deletar uma mensagem de chat de professores
+     * Método para deletar uma mensagem de chat de estudantes
      * Ele não deleta a mensagem, apenas marca como deletada
      * @param id id da mensagem de chat
      * @return {@link ChatMessageResponseDTO}
@@ -107,7 +102,7 @@ public class TeacherChatMessageService {
         try {
 
             if (repository.existsById(id)) {
-                TeacherChatMessage message = repository.findById(id).get();
+                TechniqueChatMessage message = repository.findById(id).get();
                 message.setDeletedAt(Instant.now());
                 message.setIsDeleted(true);
                 logsService.create(message, "delete");
