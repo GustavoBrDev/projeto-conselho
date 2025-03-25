@@ -2,6 +2,7 @@ package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.CourseRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.CourseResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
@@ -318,6 +319,26 @@ public class CourseService {
     }
 
     /**
+     * Adiciona uma classe ao curso.
+     *
+     * @param course o curso ao qual a classe sera adicionada
+     * @param classe a classe a ser adicionada
+     * @param actor o usuario que adicionou a classe
+     * @return DTO contendo os detalhes do curso atualizado.
+     * @throws NaoEncontradoException Se a classe nao for encontrada ou nao puder ser adicionada.
+     * @author Gustavo Stinghen
+     * @since 25/03/2024
+     */
+    public CourseResponseDTO addClassToCourse(Course course, Classe classe, User actor) {
+        if(course.addClasse(classe)){
+            logsService.create( actor, course, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "add" );
+            return repository.save(course).toDTO();
+        } else {
+            throw new NaoEncontradoException("Materia nao encontrada");
+        }
+    }
+
+    /**
      *  Remove um professor ao curso.
      *
      * @param course o curso ao qual o professor sera removido
@@ -347,6 +368,26 @@ public class CourseService {
     public CourseResponseDTO removeSubjectFromCourse(Course course, Subject subject, User actor) {
         if(course.removeSubject(subject)){
             logsService.create( actor, course, Collections.singletonList( new AddItem("subjects", (Object) subject ) ), "remove" );
+            return repository.save(course).toDTO();
+        } else {
+            throw new NaoEncontradoException("Materia nao encontrada");
+        }
+    }
+
+    /**
+     * Remove uma classe ao curso.
+     *
+     * @param course o curso ao qual a classe sera removida
+     * @param classe a classe a ser removida
+     * @param actor o usuario que removeu a classe
+     * @return DTO contendo os detalhes do curso atualizado.
+     * @throws NaoEncontradoException Se a classe nao for encontrada ou nao puder ser adicionada.
+     * @author Gustavo Stinghen
+     * @since 25/03/2024
+     */
+    public CourseResponseDTO removeClassFromCourse(Course course, Classe classe, User actor) {
+        if(course.removeClasse(classe)){
+            logsService.create( actor, course, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "remove" );
             return repository.save(course).toDTO();
         } else {
             throw new NaoEncontradoException("Materia nao encontrada");

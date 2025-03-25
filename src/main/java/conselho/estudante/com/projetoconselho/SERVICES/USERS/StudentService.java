@@ -365,7 +365,7 @@ public class StudentService {
     public StudentResponseDTO addStudentClass(Student student, Classe classe, User actor) {
         if (student.addClasse(classe)) {
             logsService.create( actor, student, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "add" );
-            classeService.addStudentToClasse(classe, student);
+            classeService.addStudentToClasse(classe, student, actor);
             return repository.save(student).convert();
         } else {
             throw new NaoEncontradoException("Classe nao encontrada");
@@ -384,7 +384,7 @@ public class StudentService {
     public StudentResponseDTO removeStudentClass(Student student, Classe classe, User actor) {
         if (student.removeClasse(classe)) {
             logsService.create( actor, student, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "remove" );
-            classeService.removeStudentFromClasse(classe, student);
+            classeService.removeStudentFromClasse(classe, student, actor);
             return repository.save(student).convert();
         } else {
             throw new NaoEncontradoException("Classe nao encontrada");
