@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
@@ -39,9 +40,6 @@ public class Teacher implements User {
     private String name;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -62,7 +60,7 @@ public class Teacher implements User {
     @ManyToMany
     private List<Shift> shifts;
 
-     * Metodo para adicionar um curso ao professor
+     /** Metodo para adicionar um curso ao professor
      * @param course o curso a ser adicionado em formato de {@link Course}
      * @return um booleano indicando se o curso foi adicionado. Se verdadeiro, o curso foi adicionado ao professor. Se falso, o curso nao foi adicionado ao professor
      * O curso nao pode ser adicionado se ele ja estiver na lista de cursos
@@ -166,5 +164,15 @@ public class Teacher implements User {
             return false;
         }
 
+    }
+
+    public TeacherResponseDTO toDTO() {
+        return TeacherResponseDTO.builder()
+                .id(this.getId())
+                .name(this.getName())
+                .email(this.getEmail())
+                .image(this.getImage())
+                .register(this.getRegister())
+                .build();
     }
 }

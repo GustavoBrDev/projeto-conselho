@@ -1,8 +1,12 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.List;
+
 /**
  * Repositório para a entidade {@link Course}.
  *

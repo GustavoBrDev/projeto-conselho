@@ -3,6 +3,7 @@ package conselho.estudante.com.projetoconselho.SERVICES.USERS;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.SupervisorRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.SupervisorResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.AddItem;
@@ -13,6 +14,8 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.SupervisorRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ClasseService;
+import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.CourseService;
 import conselho.estudante.com.projetoconselho.SERVICES.EmailService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.UserLogsService;
 import lombok.AllArgsConstructor;
@@ -45,6 +48,7 @@ public class SupervisorService {
     private SupervisorRepository repository;
     private UserLogsService logsService;
     private EmailService emailService;
+    private CourseService courseService;
 
     private static final int passwordLength = 8;
 
@@ -319,6 +323,22 @@ public class SupervisorService {
     }
 
     /**
+     * Busca um {@link Supervisor} pelo email
+     * @param id o identificador do supervisor
+     * @return {@link Supervisor} o supervisor encontrado
+     * Utilizado na autenticação
+     * @author Gustavo Stinghen
+     * @since 24/03/2025
+     */
+    public Supervisor findObjectSupervisor ( Long id) {
+        try {
+            return repository.findById(id).get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
      * Adiciona uma {@link Notification} a um {@link Supervisor}.
      * @param id o identificador do supervisor
      * @param notification a notificação a ser adicionada
@@ -377,16 +397,17 @@ public class SupervisorService {
      * Adiciona um {@link Course} a um {@link Supervisor}.
      * @param supervisorId o identificador do supervisor
      * @param course o curso a ser adicionado
+     * @param actor o usuário que adicionou o curso
      * @return {@link SupervisorResponseDTO} o supervisor atualizado
      * @throws NaoEncontradoException se o supervisor não for encontrado
      */
-    public SupervisorResponseDTO addCourse(Long supervisorId, Course course) {
+    public SupervisorResponseDTO addCourse(Long supervisorId, Course course, User actor) {
         Supervisor supervisor = repository.findById(supervisorId)
                 .orElseThrow(() -> new NaoEncontradoException("Supervisor não encontrado"));
 
-
         supervisor.addCourse(course);
-
+        courseService.editSupervisor(course.getId(), supervisorId, actor);
+        logsService.create( actor, supervisor, Collections.singletonList( new AddItem("courses", (Object) course ) ), "add" );
 
         return repository.save(supervisor).convert();
     }
@@ -396,16 +417,16 @@ public class SupervisorService {
      * Remove um {@link Course} de um {@link Supervisor}.
      * @param supervisorId o identificador do supervisor
      * @param course o curso a ser removido
+     * @param actor o usuário que removeu o curso
      * @return {@link SupervisorResponseDTO} o supervisor atualizado
      * @throws NaoEncontradoException se o supervisor não for encontrado ou não estiver associado ao curso
      */
-    public SupervisorResponseDTO removeCourse(Long supervisorId, Course course) {
+    public SupervisorResponseDTO removeCourse(Long supervisorId, Course course, User actor) {
         Supervisor supervisor = repository.findById(supervisorId)
                 .orElseThrow(() -> new NaoEncontradoException("Supervisor não encontrado"));
 
-
         supervisor.removeCourse(course);
-
+        logsService.create( actor, supervisor, Collections.singletonList( new AddItem("courses", (Object) course ) ), "remove" );
 
         return repository.save(supervisor).convert();
     }
