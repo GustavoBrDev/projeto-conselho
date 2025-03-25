@@ -4,18 +4,24 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.Cou
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.CouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.*;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SUBJECT.SubjectService;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.CouncilLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +35,11 @@ import java.util.List;
  * @see Council
  * @see CouncilRequestDTO
  * @see CouncilResponseDTO
+ *
+ * Atualizado em 25/03/2025
+ * Conexão com o CouncilLogsService para gerar logs
+ * @author Gustavo Stinghen
+ * @see CouncilLogsService
  */
 @Service
 @AllArgsConstructor
@@ -37,6 +48,7 @@ public class CoucilService {
     private CouncilRepository repository;
     private CallToChatStudentService callToChatStudentService;
     private ViewedStudentService viewedStudentService;
+    private CouncilLogsService logsService;
 
     /**
      * Verifica se o conselho está finalizado.
@@ -52,15 +64,18 @@ public class CoucilService {
      * Cria um novo conselho baseado nas informações do DTO e armazena no repositório.
      *
      * @param councilRequestDTO DTO contendo os dados para criar um novo conselho.
+     * @param actor Usuário que criou o conselho
      * @return DTO de resposta contendo o conselho criado.
      * @throws DadosDuplicadosException se já existir um conselho associado à mesma classe
      *                                  e não estiver finalizado.
      */
-    public CouncilResponseDTO create(CouncilRequestDTO councilRequestDTO) {
+    public CouncilResponseDTO create(CouncilRequestDTO councilRequestDTO, User actor) {
         Council council = councilRequestDTO.convert();
         if(repository.existsByClasse(council.getClasse()) && !isCouncilFinished(council)) {
             throw new DadosDuplicadosException("Conselho já cadastrado");
         } else {
+            callToChatStudentService.createCallToChatStudents( council );
+            logsService.create(actor, council, "create");
             return repository.save(council).toDTO();
         }
     }
@@ -87,18 +102,67 @@ public class CoucilService {
         throw new NaoEncontradoException("Conselho nao encontrado");
     }
 
+    private List<EditableItem> getEditableItems(Council oldCouncil, Council newCouncil, User actor) {
+
+        List<EditableItem> changes = new ArrayList<>();
+
+        if  ( oldCouncil.getDate() != newCouncil.getDate() ) {
+            changes.add(new ChangeItem("date", oldCouncil.getDate(), newCouncil.getDate()));
+            // Chamar a service da agenda para atualizar a data do conselho
+        }
+
+        if ( oldCouncil.getAdvisor() != newCouncil.getAdvisor() ) {
+            changes.add(new ChangeItem("advisor", oldCouncil.getAdvisor(), newCouncil.getAdvisor()));
+        }
+
+        if ( oldCouncil.getCouncilFinished() != newCouncil.getCouncilFinished() ) {
+            changes.add(new ChangeItem("councilFinished", oldCouncil.getCouncilFinished(), newCouncil.getCouncilFinished()));
+        }
+
+        if ( oldCouncil.getRepresentativePreCouncilFinished() != newCouncil.getRepresentativePreCouncilFinished() ) {
+            changes.add(new ChangeItem("representativePreCouncilFinished", oldCouncil.getRepresentativePreCouncilFinished(), newCouncil.getRepresentativePreCouncilFinished()));
+        }
+
+        if ( oldCouncil.getFeedbackDelivered() != newCouncil.getFeedbackDelivered() ) {
+            changes.add(new ChangeItem("feedbackDelivered", oldCouncil.getFeedbackDelivered(), newCouncil.getFeedbackDelivered()));
+
+            if ( newCouncil.getFeedbackDelivered() ) {
+                viewedStudentService.createViewedStudents(newCouncil);
+            }
+        }
+
+        if ( oldCouncil.getTeacherPreCouncilFinished() != newCouncil.getTeacherPreCouncilFinished() ) {
+            changes.add(new ChangeItem("teacherPreCouncilFinished", oldCouncil.getTeacherPreCouncilFinished(), newCouncil.getTeacherPreCouncilFinished()));
+        }
+
+        if ( oldCouncil.getRepresentativePreCouncilStarted() != newCouncil.getRepresentativePreCouncilStarted() ) {
+            changes.add(new ChangeItem("representativePreCouncilStarted", oldCouncil.getRepresentativePreCouncilStarted(), newCouncil.getRepresentativePreCouncilStarted()));
+        }
+
+        if ( oldCouncil.getTeacherPreCouncilStarted() != newCouncil.getTeacherPreCouncilStarted() ) {
+            changes.add(new ChangeItem("teacherPreCouncilStarted", oldCouncil.getTeacherPreCouncilStarted(), newCouncil.getTeacherPreCouncilStarted()));
+        }
+
+
+        return changes;
+    }
+
     /**
      * Edita a data do conselho identificado pelo ID.
      *
      * @param id ID do conselho a ser atualizado.
      * @param date Nova data para o conselho.
+     * @param actor Usuário que editou o conselho
      * @return DTO de resposta contendo o conselho atualizado com a nova data.
      * @throws NaoEncontradoException se o conselho não for encontrado.
      */
-    public CouncilResponseDTO editDate(Long id, Date date) {
+    public CouncilResponseDTO editDate(Long id, Date date, User actor) {
         if(repository.existsById(id)) {
             Council council = repository.findById(id).get();
+            Date oldDate = council.getDate();
             council.setDate(date);
+            logsService.create(actor, council, Collections.singletonList(new ChangeItem("active", (Object) oldDate, (Object) date)), "update");
+            // Chamar service da agenda para atualizar a data do conselho
             return repository.save(council).toDTO();
         }
         throw new NaoEncontradoException("Conselho nao encontrado");
@@ -118,6 +182,10 @@ public class CoucilService {
             return repository.save(council).toDTO();
         }
         throw new NaoEncontradoException("Conselho nao encontrado");
+    }
+
+    public void generateTeacherPreCouncil() {
+
     }
 
     /**

@@ -3,7 +3,7 @@ package conselho.estudante.com.projetoconselho.Controller.ADMINISTRATION;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.ShiftPostRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.CourseResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.ShiftResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT.ShiftService;
 import jakarta.validation.Valid;
@@ -16,10 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
- * Classe controladora para gerenciar as operações dos turnos ({@link Shift}).
+ * Classe controladora para gerenciar as operações dos turnos ({@link conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift}).
  *
  * @author joana voigt
  * @since 24/03/2025
@@ -40,7 +39,7 @@ public class ShiftController {
      * @return ResponseEntity com o DTO do turno criado.
      */
     @PostMapping
-    public ResponseEntity<ShiftResponseDTO> postShift( @RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO, User actor) {
+    public ResponseEntity<ShiftResponseDTO> postShift( @RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO, @RequestParam User actor) {
         try {
             return new ResponseEntity<>(service.create(shiftPostRequestDTO, actor), HttpStatus.OK);
         } catch (Exception e) {
@@ -79,7 +78,7 @@ public class ShiftController {
      * @return ResponseEntity com o DTO do turno atualizado.
      */
     @PutMapping("/{id}")
-        public ResponseEntity<ShiftResponseDTO> putShift(@RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO, @PathVariable int id, User actor) {
+        public ResponseEntity<ShiftResponseDTO> putShift(@RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO, @PathVariable Long id, User actor) {
             try {
                 return new ResponseEntity<>(service.update(shiftPostRequestDTO, id, actor), HttpStatus.OK);
             } catch (Exception e) {
@@ -92,12 +91,13 @@ public class ShiftController {
      *
      * @param id ID do turno.
      * @param name Novo nome do turno.
+     * @param actor Usuário que esta editando o turno.
      * @return ResponseEntity com status OK em caso de sucesso.
      */
     @PutMapping("/editName/{id}")
-    public ResponseEntity<String> editName(@PathVariable Long id, @RequestParam String name) {
+    public ResponseEntity<String> editName(@PathVariable Long id, @RequestParam String name, @RequestParam User actor) {
         try {
-            service.editName(id, name);
+            service.editName(id, name, actor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -111,7 +111,7 @@ public class ShiftController {
      * @param pageable Objeto de paginação.
      * @return ResponseEntity com uma página contendo os professores.
      */
-    @GetMapping("/teachers/{id}")
+    @GetMapping("/teachers/{shiftId}")
     public ResponseEntity<Page<TeacherResponseDTO>> listarProfessoresPeloTurno(
             @PathVariable Long shiftId, Pageable pageable) {
         Page<TeacherResponseDTO> professores = service.listTeachersByShift(shiftId, pageable);
@@ -125,7 +125,7 @@ public class ShiftController {
      * @param pageable Objeto de paginação.
      * @return ResponseEntity com uma página contendo os cursos.
      */
-    @GetMapping("/courses/{id}")
+    @GetMapping("/courses/{shiftId}")
     public ResponseEntity<Page<CourseResponseDTO>> listarCursosPeloTurno(
             @PathVariable Long shiftId, Pageable pageable) {
         Page<CourseResponseDTO> cursos = service.listCourseByShift(shiftId, pageable);
@@ -152,12 +152,13 @@ public class ShiftController {
      *
      * @param shiftId ID do turno.
      * @param teacherId ID do professor.
+     * @param actor Usuário que esta adicionando o professor ao turno.
      * @return ResponseEntity com status OK em caso de sucesso.
      */
     @PostMapping("/teachers/{shiftId}/{teacherId}")
-    public ResponseEntity<String> addTeacherToShift(@PathVariable Long shiftId, @PathVariable Long teacherId) {
+    public ResponseEntity<String> addTeacherToShift(@PathVariable Long shiftId, @PathVariable Long teacherId, @RequestParam User actor) {
         try {
-            service.addTeacherToShift(shiftId, teacherId);
+            service.addTeacherToShift(shiftId, teacherId, actor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -169,12 +170,13 @@ public class ShiftController {
      *
      * @param shiftId ID do turno.
      * @param teacherId ID do professor.
+     * @param actor Usuário que esta removendo o professor do turno.
      * @return ResponseEntity com status OK em caso de sucesso.
      */
     @DeleteMapping("/teachers/{shiftId}/{teacherId}")
-    public ResponseEntity<String> removeTeacherOfShift(@PathVariable Long shiftId, @PathVariable Long teacherId) {
+    public ResponseEntity<String> removeTeacherOfShift(@PathVariable Long shiftId, @PathVariable Long teacherId, @RequestParam User actor) {
         try {
-            service.removeTeacherOfShift(shiftId, teacherId);
+            service.removeTeacherOfShift(shiftId, teacherId, actor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
@@ -186,12 +188,13 @@ public class ShiftController {
      *
      * @param shiftId ID do turno.
      * @param courseId ID do curso.
+     * @param actor Usuário que esta adicionando o curso ao turno.
      * @return ResponseEntity com status OK em caso de sucesso.
      */
     @PostMapping("/teachers/{shiftId}/{courseId}")
-    public ResponseEntity<String> addCourseToShift(@PathVariable Long shiftId, @PathVariable Long courseId) {
+    public ResponseEntity<String> addCourseToShift(@PathVariable Long shiftId, @PathVariable Long courseId, @RequestParam User actor) {
         try {
-            service.addCourseToShift(shiftId, courseId);
+            service.addCourseToShift(shiftId, courseId, actor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -203,12 +206,13 @@ public class ShiftController {
      *
      * @param shiftId ID do turno.
      * @param courseId ID do curso.
+     * @param actor Usuário que esta removendo o curso do turno.
      * @return ResponseEntity com status OK em caso de sucesso.
      */
     @DeleteMapping("/teachers/{shiftId}/{courseId}")
-    public ResponseEntity<String> removeCourseOfShift(@PathVariable Long shiftId, @PathVariable Long courseId) {
+    public ResponseEntity<String> removeCourseOfShift(@PathVariable Long shiftId, @PathVariable Long courseId, @RequestParam User actor) {
         try {
-            service.removeCourseOfShift(shiftId, courseId);
+            service.removeCourseOfShift(shiftId, courseId, actor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -223,7 +227,7 @@ public class ShiftController {
      * @return ResponseEntity com status OK em caso de sucesso.
      */
     @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteShift(@PathVariable Long id, User actor) {
+        public ResponseEntity<Void> deleteShift(@PathVariable Long id, @RequestParam User actor) {
             try {
                 service.deleteShift(id, actor);
                 return new ResponseEntity<>(HttpStatus.OK);
