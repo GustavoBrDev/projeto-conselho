@@ -132,7 +132,7 @@ public class Supervisor implements User {
                 .email(this.email)
                 .password(this.password)
                 .image(this.image)
-                .register(this.register.toString())
+                .register(this.register)
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS;
 
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
 import lombok.Builder;
 
 /**
@@ -19,6 +20,5 @@ public class SupervisorResponseDTO implements UserResponseDTO {
     String email;
     String password;
     String image;
-    String register;
-
+    Long register;
 }

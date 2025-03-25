@@ -13,6 +13,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.StudentRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ClasseService;
 import conselho.estudante.com.projetoconselho.SERVICES.EmailService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.UserLogsService;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,7 @@ public class StudentService {
     private StudentRepository repository;
     private UserLogsService logsService;
     private EmailService emailService;
+    private ClasseService classeService;
 
     private static final int passwordLength = 8;
 
@@ -363,6 +365,7 @@ public class StudentService {
     public StudentResponseDTO addStudentClass(Student student, Classe classe, User actor) {
         if (student.addClasse(classe)) {
             logsService.create( actor, student, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "add" );
+            classeService.addStudentToClasse(classe, student, actor);
             return repository.save(student).convert();
         } else {
             throw new NaoEncontradoException("Classe nao encontrada");
@@ -381,6 +384,7 @@ public class StudentService {
     public StudentResponseDTO removeStudentClass(Student student, Classe classe, User actor) {
         if (student.removeClasse(classe)) {
             logsService.create( actor, student, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "remove" );
+            classeService.removeStudentFromClasse(classe, student, actor);
             return repository.save(student).convert();
         } else {
             throw new NaoEncontradoException("Classe nao encontrada");

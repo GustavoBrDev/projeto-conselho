@@ -1,9 +1,11 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.ClasseResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Representative;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Classe {
 
     @Id
@@ -79,5 +82,16 @@ public class Classe {
             return false;
         }
 
+    }
+
+    public ClasseResponseDTO toDTO () {
+        return ClasseResponseDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .acronym(this.acronym)
+                .course(this.course)
+                .representative(this.representative)
+                .active(this.active)
+                .build();
     }
 }

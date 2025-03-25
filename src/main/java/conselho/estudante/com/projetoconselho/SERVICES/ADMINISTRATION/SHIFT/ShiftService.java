@@ -1,22 +1,34 @@
 package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT;
 
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.ShiftPostRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.CourseResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.ShiftResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.AddItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.ShiftRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.CourseService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ShiftLogsService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 /**
@@ -37,6 +49,8 @@ public class ShiftService {
 
     private ShiftRepository repository;
     private ShiftLogsService logsService;
+    private TeacherService teacherService;
+    private CourseService courseService;
 
     /**
      * Adiciona um novo turno à aplicação.
@@ -114,12 +128,15 @@ public class ShiftService {
      *
      * @param shiftId ID do turno a ser editado.
      * @param newName Novo nome do turno.
+     * @param actor Usuário que editou o turno.
      * @throws RuntimeException Caso o turno não seja encontrado.
      */
-    public void editName(Long shiftId, String newName) {
+    public void editName(Long shiftId, String newName, User actor) {
         Shift shift = repository.findById(shiftId)
                 .orElseThrow(() -> new RuntimeException("Turno não encontrado"));
+        String oldName = shift.getName();
         shift.setName(newName);
+        logsService.create(actor, shift, Collections.singletonList(new ChangeItem("name", (Object) oldName, (Object) newName)), "update");
         repository.save(shift);
     }
 
@@ -132,7 +149,7 @@ public class ShiftService {
      * @return Página contendo os professores do turno, convertidos para DTO.
      * @throws RuntimeException Caso o turno não seja encontrado.
      */
-    /*
+
     public Page<TeacherResponseDTO> listTeachersByShift(Long shiftId, Pageable pageable) {
         // Buscar o turno pelo ID
         return repository.findById(shiftId)
@@ -147,17 +164,6 @@ public class ShiftService {
                 })
                 .orElseThrow(() -> new RuntimeException("Turno não encontrado!"));
     }
-    */
-
-//    METODO NA CONTROLLER:
-//    @GetMapping("/{shiftId}/teachers")
-//public ResponseEntity<Page<TeacherResponseDTO>> listarProfessoresPeloTurno(
-//        @PathVariable Long shiftId, Pageable pageable) {
-//    // Chama a service para listar os professores do turno
-//    Page<TeacherResponseDTO> professores = shiftService.listarProfessoresPeloTurno(shiftId, pageable);
-//    return ResponseEntity.ok(professores); // Retorna a página com os professores
-//}
-
 
     /**
      * Lista todos os cursos de um turno, com paginação.
@@ -167,33 +173,17 @@ public class ShiftService {
      * @return Página contendo os cursos do turno, convertidos para DTO.
      * @throws RuntimeException Caso o turno não seja encontrado.
      */
-    /*
+
     public Page<CourseResponseDTO> listCourseByShift(Long shiftId, Pageable pageable) {
-        // Buscar o turno pelo ID
-        return shiftRepository.findById(shiftId)
-            .map(shift -> {
-                // Retornar os cursos do turno, convertendo para DTO e paginando
-                return new PageImpl<>(
-                    shift.getCourse().stream() // Fluxo dos cursos
+        Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno nao encontrado"));
+        return new PageImpl<>(
+                shift.getCourse().stream() // Fluxo dos cursos
                         .map(Course::toDTO) // Convertendo cada curso para o DTO
                         .collect(Collectors.toList()), // Coletando como lista
-                    pageable, // Paginação
-                    shift.getCourse().size()); // Total de cursos
-            })
-            .orElseThrow(() -> new RuntimeException("Turno não encontrado!"));
+                pageable, // Paginação
+                shift.getCourse().size()); // Total de cursos
     }
-    */
 
-
-/*
-@GetMapping("/{shiftId}/courses")
-public ResponseEntity<Page<CourseResponseDTO>> listarCursosPeloTurno(
-        @PathVariable Long shiftId, Pageable pageable) {
-    // Chama a service para listar os cursos do turno
-    Page<CourseResponseDTO> cursos = shiftService.listarCursosPeloTurno(shiftId, pageable);
-    return ResponseEntity.ok(cursos); // Retorna a página com os cursos
-}
- */
 
     /**
      * Busca um turno pelo ID.
@@ -212,85 +202,107 @@ public ResponseEntity<Page<CourseResponseDTO>> listarCursosPeloTurno(
      *
      * @param shiftId ID do turno ao qual o professor será adicionado.
      * @param teacherId ID do professor a ser adicionado.
+     * @param actor Usuário que adicionou o professor.
      * @throws RuntimeException Caso o turno ou o professor não sejam encontrados, ou se o professor já estiver associado a este turno.
      */
-    /*
-    public void addTeacherToShift(Long shiftId, Long teacherId) {
+
+    public void addTeacherToShift(Long shiftId, Long teacherId, User actor) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
 
-        Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado"));
+        Teacher teacher = teacherService.buscarPorId(teacherId);
+
+        if ( teacher == null ) {
+            throw new NaoEncontradoException("Professor nao encontrado");
+        }
+
         if (shift.getTeachers().contains(teacher)) {
             throw new RuntimeException("Professor já está associado a este turno");
         }
 
+        logsService.create( actor, shift, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "add" );
         shift.getTeachers().add(teacher);
-        shiftRepository.save(shift);
+        repository.save(shift);
     }
-    */
+
 
     /**
      * Remove um professor de um turno.
      *
      * @param shiftId ID do turno do qual o professor será removido.
      * @param teacherId ID do professor a ser removido.
+     * @param actor Usuário que removeu o professor.
      * @throws RuntimeException Caso o turno ou o professor não sejam encontrados, ou se o professor não estiver associado a este turno.
      */
-    /*
-    public void removeTeacherOfShift(Long shiftId, Long teacherId) {
+
+    public void removeTeacherOfShift(Long shiftId, Long teacherId, User actor) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new RuntimeException("Professor não encontrado"));
+
+        Teacher teacher = teacherService.buscarPorId(teacherId);
+
+        if ( teacher == null ) {
+            throw new NaoEncontradoException("Professor nao encontrado");
+        }
 
         if (!shift.getTeachers().contains(teacher)) {
             throw new RuntimeException("Professor não está associado a este turno");
         }
 
+        logsService.create( actor, shift, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "remove" );
         shift.getTeachers().remove(teacher);
-        shiftRepository.save(shift);
+        repository.save(shift);
     }
-    */
+
 
     /**
      * Adiciona um curso a um turno.
      *
      * @param shiftId ID do turno ao qual o curso será adicionado.
      * @param courseId ID do curso a ser adicionado.
+     * @param actor Usuário que adicionou o curso.
      * @throws RuntimeException Caso o turno ou o curso não sejam encontrados, ou se o curso já estiver associado a este turno.
      */
-    /*
-    public void addCourseToShift(Long shiftId, Long courseId) {
+
+    public void addCourseToShift(Long shiftId, Long courseId, User actor) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+
+        Course course = courseService.getObjectCourse(courseId);
 
         if (shift.getCourse().contains(course)) {
             throw new RuntimeException("Curso já está associado a este turno");
         }
 
+        logsService.create( actor, shift, Collections.singletonList( new AddItem("courses", (Object) course ) ), "add" );
         shift.getCourse().add(course);
-        shiftRepository.save(shift);
+        repository.save(shift);
     }
-    */
 
-/**
- * Remove um curso de um turno.
- *
- * @param shiftId ID do turno do qual o curso será removido.
- * @param courseId ID do curso a ser removido.
- * @throws RuntimeException Caso o turno ou o curso não sejam encontrados, ou se o curso não estiver associado a este turno.
- */
-    /*
-    public void removeCourseOfShift(Long shiftId, Long courseId) {
+
+    /**
+     * Remove um curso de um turno.
+     *
+     * @param shiftId ID do turno do qual o curso será removido.
+     * @param courseId ID do curso a ser removido.
+     * @param actor Usuário que removeu o curso.
+     * @throws RuntimeException Caso o turno ou o curso não sejam encontrados, ou se o curso não estiver associado a este turno.
+     */
+
+    public void removeCourseOfShift(Long shiftId, Long courseId, User actor) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+        Course course = courseService.getObjectCourse(courseId);
+
+        if (course == null) {
+            throw new NaoEncontradoException("Curso nao encontrado");
+        }
 
         if (!shift.getCourse().contains(course)) {
             throw new RuntimeException("Curso não está associado a este turno");
         }
 
+        logsService.create( actor, shift, Collections.singletonList( new AddItem("courses", (Object) course ) ), "remove" );
+
         shift.getCourse().remove(course);
-        shiftRepository.save(shift);
+        repository.save(shift);
     }
-    */
 
     /**
      * Busca turnos com base em uma pesquisa inteligente, considerando o nome do turno, nome do professor e nome do curso.
