@@ -3,27 +3,55 @@ package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Classe model da entidade Professor
  * @author Gustavo Stinghen
  * @since 10/03/2025
+ *
+ * Atualizado em 13/03/2025
+ * @author Gustavo Stinghen
+ *
+ * Atualizado em 20/03/2025
+ * @author Alex Zastrow
  */
 
-@EqualsAndHashCode (callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Data
-public class Teacher extends Staff {
+public class Teacher implements User {
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String image;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private Date createdAt;
+
+    @Column(nullable = false)
+    private Long register;
 
     @ManyToMany
     private List<Course> courses;
@@ -88,7 +116,7 @@ public class Teacher extends Staff {
     }
 
     /**
-     * Método para remover uma materia ao professor
+     * Metodo para remover uma materia ao professor
      * @param subject a materia a ser removida em formato de {@link Subject}
      * @return um booleano indicando se a materia foi removida. Se verdadeiro, a materia foi removida ao professor. Se falso, a materia nao foi removida ao professor
      * A materia nao pode ser removida se ela nao estiver na lista de materias

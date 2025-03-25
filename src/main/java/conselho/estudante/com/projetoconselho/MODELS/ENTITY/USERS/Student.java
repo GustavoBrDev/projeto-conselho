@@ -1,36 +1,62 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Classe model da entidade Aluno
- * É uma subclasse de {@link RegularUser}
  * @author Gustavo Stinghen
  * @since 10/03/2025
- * @see RegularUser
+ * @see User
+ *
+ * Atualizado em 13/03/2025
+ * @author Gustavo Stinghen
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode (callSuper = true) //Pedir isso ao professor
 @Data
 @Entity
-public class Student extends RegularUser {
+@Builder
+public class Student implements User {
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String image;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private Date createdAt;
 
     @Column(nullable = false)
     private Long registration;
+
     @Column(nullable = false)
-    private boolean isRepresentative;
+    private Boolean isRepresentative;
+
+    @Column(nullable = false)
+    private Boolean isHidden;
+
     @ManyToMany
     private List<Classe> classes;
+
+    @OneToMany
+    private List<Notification> notifications;
 
     /**
      * Método para adicionar uma classe ao aluno
@@ -65,5 +91,55 @@ public class Student extends RegularUser {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Metodo para adicionar uma notificacao ao aluno
+     * @param notification a notificacao a ser adicionada em formato de {@link Notification}
+     * @return um booleano indicando se a notificacao foi adicionada. Se verdadeiro, a notificacao foi adicionada ao aluno. Se falso, a notificacao nao foi adicionada ao aluno
+     * A notificacao nao pode ser adicionada se ela ja estiver na lista de notificacoes
+     * @see Notification
+     */
+    public boolean addNotification(Notification notification) {
+
+        if (this.notifications.contains(notification)) {
+            return false;
+        } else {
+            this.notifications.add(notification);
+            return true;
+        }
+    }
+
+    /**
+     * Metodo para remover uma notificacao ao aluno
+     * @param notification a notificacao a ser removida em formato de {@link Notification}
+     * @return um booleano indicando se a notificacao foi removida. Se verdadeiro, a notificacao foi removida ao aluno. Se falso, a notificacao nao foi removida ao aluno
+     * A notificacao nao pode ser removida se ela nao estiver na lista de notificacoes
+     * @see Notification
+     */
+    public boolean removeNotification(Notification notification) {
+
+        if (this.notifications.contains(notification)) {
+            this.notifications.remove(notification);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Metodo para converter um aluno para um DTO de aluno
+     * @return um DTO de aluno
+     */
+    public StudentResponseDTO convert() {
+        return StudentResponseDTO.builder()
+                .id(id)
+                .image(image)
+                .name(name)
+                .email(email)
+                .password(password)
+                .isRepresentative(isRepresentative)
+                .isHidden(isHidden)
+                .build();
     }
 }

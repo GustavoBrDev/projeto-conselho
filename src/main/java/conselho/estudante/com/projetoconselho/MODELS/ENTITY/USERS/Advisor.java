@@ -6,21 +6,45 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
+/**
+ * Classe model da entidade Orientador da equipe pedagógica
+ * @see User
+ * @author Gustavo Stinghen
+ * @since 10/03/2025
+ *
+ * Atualizado em 13/03/2025
+ * @author Gustavo Stinghen
+ */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "advisors")
-public class Advisor {
+public class Advisor implements User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
     private String image;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
     private String email;
-    private Long registration;
+
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private Date createdAt;
+
+    @Column(nullable = false)
+    private Long register;
 }
