@@ -107,6 +107,7 @@ public class SubjectService {
     }
 
     /**
+     *
      * Edita o nome de uma matéria específica.
      *
      * @param id ID da matéria.
