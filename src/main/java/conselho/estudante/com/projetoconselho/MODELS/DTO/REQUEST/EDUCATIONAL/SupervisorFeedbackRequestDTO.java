@@ -31,8 +31,8 @@ public record SupervisorFeedbackRequestDTO(
 ) {
     public SupervisorFeedback convert(Council council, Supervisor supervisor) {
         return SupervisorFeedback.builder()
-                .council(this.council)//.convert()
-                .supervisor(this.supervisor)//.convert()
+                /*.council(this.council)//.convert()
+                .supervisor(this.supervisor)//.convert()*/
                 .createdAt(this.createdAt)
                 .strengthsText(this.strengthsText)
                 .weaknessesText(this.weaknessesText)

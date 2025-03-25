@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.CHAT;
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.ChatMessage;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.StudentChatMessage;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import jakarta.validation.constraints.NotBlank;
@@ -11,18 +12,17 @@ import jakarta.validation.constraints.NotNull;
  * @since 17/03/2025
  * @see StudentChatMessage
  */
-public record StudentChatMessageRequestDTO(
+public class StudentChatMessageRequestDTO implements ChatMessage {
     @NotBlank
-    String message,
+    String message;
     @NotNull
-    Student student
-) {
+    Student student;
 
-    public StudentChatMessage convert () {
+    public StudentChatMessage convert() {
 
         return StudentChatMessage.builder()
-            .text(message)
-            .sender(student)
-            .build();
+                .text(message)
+                .student(student)
+                .build();
     }
 }

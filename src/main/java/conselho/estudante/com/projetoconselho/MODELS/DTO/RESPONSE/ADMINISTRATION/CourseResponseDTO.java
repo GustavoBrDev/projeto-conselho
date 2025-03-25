@@ -9,7 +9,7 @@ package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATIO
 public record CourseResponseDTO(
         Long id,
         String name,
-        String visualldentity,
+        String visualIdentity,
         Integer workload,
         String level ) {
 }

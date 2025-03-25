@@ -20,6 +20,7 @@ import java.util.Date;
  * @author Gustavo Stinghen
  */
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

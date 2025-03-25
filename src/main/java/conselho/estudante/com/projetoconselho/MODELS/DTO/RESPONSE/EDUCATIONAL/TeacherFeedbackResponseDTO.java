@@ -14,7 +14,7 @@ public record TeacherFeedbackResponseDTO(
         Long id,
         CouncilResponseDTO council,
         Long teacherId,
-        Date createdAt,A
+        Date createdAt,
         String strengthsText,
         String weaknessesText,
         String suggestionsText

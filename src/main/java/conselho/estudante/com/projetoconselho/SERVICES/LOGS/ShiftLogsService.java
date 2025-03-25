@@ -1,6 +1,8 @@
 package conselho.estudante.com.projetoconselho.SERVICES.LOGS;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.CouncilLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ShiftLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
@@ -20,6 +22,10 @@ import java.util.List;
  * @author Gustavo Stinghen
  * @since 17/03/2025
  * @see ShiftLogs
+ *
+ * Atualizado em 19/03/2025
+ * Adicionado o metodo de criar um log sem mudanças
+ * @author Gustavo Stinghen
  */
 
 @AllArgsConstructor
@@ -46,6 +52,32 @@ public class ShiftLogsService {
                     type(type).
                     timestamp(Instant.now()).
                     changes(changes).
+                    createdAt( new Date() ).
+                    build();
+
+            repository.save(log);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Cria um log de um {@link Shift}
+     * @param actor o usuario que criou o log
+     * @param target o turno alvo
+     * @param type o tipo de log
+     * @return {@link Boolean} se o log foi criado ou nao
+     */
+    public boolean create(User actor, Shift target, String type) {
+
+        try {
+
+            ShiftLogs log = ShiftLogs.builder().
+                    actor(actor).
+                    target(target).
+                    type(type).
+                    timestamp(Instant.now()).
                     createdAt( new Date() ).
                     build();
 

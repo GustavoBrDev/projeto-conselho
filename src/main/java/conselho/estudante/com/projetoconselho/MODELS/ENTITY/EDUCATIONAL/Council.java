@@ -1,11 +1,16 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.CouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +31,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class Council {
 
     @Id
@@ -37,6 +43,9 @@ public class Council {
 
     @Column(nullable = false)
     private Date createdAt;
+
+    @NotNull
+    private Date date;
 
     @ManyToMany
     private List<Teacher> teachers;
@@ -55,6 +64,12 @@ public class Council {
 
     @OneToOne
     private RepresentativePreCouncil representativePreCouncil;
+
+    @OneToOne
+    private ClassFeedback classFeedback;
+
+    @OneToMany
+    private List<PersonalFeedback> feedbacks;
 
     private Boolean representativePreCouncilFinished;
 
@@ -175,5 +190,34 @@ public class Council {
             return false;
         }
     }
+
+    /**
+     * Converte a entidade Council em um DTO de resposta CouncilResponseDTO.
+     *
+     * @return Uma instância de CouncilResponseDTO contendo os dados desta entidade.
+     * @see CouncilResponseDTO
+     */
+    public CouncilResponseDTO toDTO() {
+        return new CouncilResponseDTO(
+                this.id,
+                this.classe,
+                this.createdAt,
+                this.date,
+                this.advisor,
+                this.representativePreCouncil,
+                this.classFeedback,
+                this.representativePreCouncilFinished,
+                this.teacherPreCouncilFinished,
+                this.representativePreCouncilStarted,
+                this.teacherPreCouncilStarted,
+                this.councilFinished,
+                this.feedbackDelivered
+        );
+    }
+
+    public Boolean getCouncilFinished() {
+        return councilFinished;
+    }
+
 
 }

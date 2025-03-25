@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudentChatMessageRepository extends JpaRepository<StudentChatMessage, Long> {
-    Page<StudentChatMessage> findBySender(Student sender, Pageable pageable);
+    Page<StudentChatMessage> findByStudent(Student student, Pageable pageable);
 }

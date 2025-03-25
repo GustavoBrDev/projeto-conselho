@@ -1,7 +1,7 @@
-package REPOSITORIES.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL;
 
-import MODELS.ENTITY.EDUCATIONAL.ViewedStudents;
-import MODELS.ENTITY.EDUCATIONAL.Council;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ViewedStudents;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

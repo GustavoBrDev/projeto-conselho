@@ -37,8 +37,6 @@ public class ChatMessageLogs implements Log {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private String id;
 
-    private User actor;
-
     private ChatMessage target;
 
     private String type;
@@ -48,14 +46,4 @@ public class ChatMessageLogs implements Log {
     @CreatedDate
     @Indexed( expireAfter = "60d" )
     private Date createdAt;
-
-    private List<EditableItem> changes;
-
-    /**
-     * Adiciona um item ao log
-     * @param change item a ser adicionado ao log em formato de {@link EditableItem}
-     */
-    public void addChange(EditableItem change) {
-        changes.add(change);
-    }
 }

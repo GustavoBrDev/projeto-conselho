@@ -1,13 +1,17 @@
-package SERVICES.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
-import MODELS.ENTITY.EDUCATIONAL.CallToChatStudents;
-import MODELS.ENTITY.EDUCATIONAL.Council;
-import MODELS.ENTITY.EDUCATIONAL.Student;
-import REPOSITORIES.EDUCATIONAL.CallToChatStudentsRepository;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.CallToChatStudents;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
+import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
+import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CallToChatStudentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Serviço responsável por gerenciar as operações relacionadas a CallToChatStudents.
@@ -107,26 +111,42 @@ public class CallToChatStudentService {
         return repository.findAll(pageable);
     }
 
-    /**
-     * Deleta um CallToChatStudents associado a um determinado Council.
-     *
-     * @param council o conselho educacional ao qual os CallToChatStudents pertencem.
-     * @see CallToChatStudents
-     * @since 17/03/2025
-     */
+
 
     /**
      * Lista todos os estudantes de CallToChatStudents com paginação.
      *
      * @param pageable informações de paginação.
+     * @param council o conselho educacional ao qual os estudantes pertencem.
      * @return uma página contendo os estudantes.
      * @see Student
      * @since 17/03/2025
+     *
+     * Modificado em 19/03/2025
+     * Retornar page invés de list
+     * @author Gustavo Stinghen
      */
-    public Page<Student> listAllStudents(Pageable pageable) {
-        return repository.findAllStudents(pageable);
+    public Page<Student> listAllStudents(Pageable pageable, Council council) {
+        CallToChatStudents callToChatStudents = getCallToChatStudentsByCouncil(council);
+        if (callToChatStudents == null) {
+            throw new NaoEncontradoException("CallToChatStudents nao encontrado");
+        }
+
+        List<Student> students = callToChatStudents.getStudents();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), students.size());
+
+        return new PageImpl<>(students.subList(start, end), pageable, students.size());
+
     }
 
+    /**
+     * Deleta um CallToChatStudents associado a um determinado Council.
+     * @param council o conselho educacional ao qual os CallToChatStudents pertencem.
+     * @see CallToChatStudents
+     * @since 17/03/2025
+     */
     public void deleteCallToChatStudents(Council council) {
         CallToChatStudents callToChatStudents = getCallToChatStudentsByCouncil(council);
         if (callToChatStudents != null) {

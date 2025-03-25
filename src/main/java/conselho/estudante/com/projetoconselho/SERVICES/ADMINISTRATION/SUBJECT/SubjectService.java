@@ -2,18 +2,28 @@ package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SUBJECT;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.SubjectRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.AddItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.SubjectRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.TeacherRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.SubjectLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +35,11 @@ import java.util.List;
  * @see Subject
  * @see SubjectRequestDTO
  * @see SubjectResponseDTO
+ *
+ * Atualizado em 21/03/2025
+ * Conexão com o UserLogsService para gerar logs
+ * @author Gustavo Stinghen
+ * @see SubjectLogsService
  */
 @Service
 @AllArgsConstructor
@@ -32,19 +47,22 @@ public class SubjectService {
 
     private SubjectRepository repository;
     private TeacherRepository teacherRepository;
+    private SubjectLogsService logsService;
 
     /**
      * Cria uma nova matéria.
      *
      * @param subjectRequestDTO Dados da matéria a ser criada.
+     * @param actor Usuário que criou a matéria.
      * @return DTO da resposta contendo a matéria criada.
      * @throws DadosDuplicadosException se a matéria já existir.
      */
-    public SubjectResponseDTO create(SubjectRequestDTO subjectRequestDTO) {
+    public SubjectResponseDTO create(SubjectRequestDTO subjectRequestDTO, User actor) {
         Subject subject = subjectRequestDTO.convert();
         if (repository.existsByName(subject.getName())) {
             throw new DadosDuplicadosException("Matéria já cadastrada");
         } else {
+            logsService.create(actor, subject, "create");
             return repository.save(subject).toDTO();
         }
     }
@@ -54,32 +72,52 @@ public class SubjectService {
      *
      * @param id ID da matéria a ser atualizada.
      * @param subjectRequestDTO Novos dados da matéria.
+     * @param actor Usuário que atualizou a matéria.
      * @return DTO da resposta contendo a matéria atualizada.
      * @throws DadosDuplicadosException se a matéria já existir.
      * @throws NaoEncontradoException se a matéria não for encontrada.
      */
-    public SubjectResponseDTO update(Long id, SubjectRequestDTO subjectRequestDTO) {
+    public SubjectResponseDTO update(Long id, SubjectRequestDTO subjectRequestDTO, User actor) {
         Subject subject = subjectRequestDTO.convert();
         if (repository.existsById(id)) {
             subject.setId(id);
             if (repository.existsByName(subject.getName())) {
                 throw new DadosDuplicadosException("Matéria já cadastrada");
             } else {
+                logsService.create(actor, subject, getEditableItems(repository.findById(id).get(), subject), "update");
                 return repository.save(subject).toDTO();
             }
         }
         throw new NaoEncontradoException("Matéria nao encontrada");
     }
 
+    private List<EditableItem> getEditableItems(Subject oldSubject, Subject newSubject) {
+
+        List<EditableItem> changes = new ArrayList<>();
+
+        if (!oldSubject.getName().equals(newSubject.getName())) {
+            changes.add(new ChangeItem("name", oldSubject.getName(), newSubject.getName()));
+        }
+
+        if (oldSubject.getWorkLoad() != newSubject.getWorkLoad()) {
+            changes.add(new ChangeItem("workLoad", oldSubject.getWorkLoad(), newSubject.getWorkLoad()));
+        }
+
+        return changes;
+    }
+
     /**
+     *
      * Edita o nome de uma matéria específica.
      *
      * @param id ID da matéria.
      * @param name Novo nome.
+     * @param actor Usuário que editou o nome.
      * @return DTO da resposta contendo a matéria atualizada.
      */
-    public SubjectResponseDTO editName(Long id, String name) {
+    public SubjectResponseDTO editName(Long id, String name, User actor) {
         Subject subject = repository.findById(id).get();
+        logsService.create(actor, subject, Collections.singletonList(new ChangeItem("name", (Object) subject.getName(), (Object) name)), "update");
         subject.setName(name);
         return repository.save(subject).toDTO();
     }
@@ -89,10 +127,12 @@ public class SubjectService {
      *
      * @param id ID da matéria.
      * @param workLoad Nova carga horária.
+     * @param actor Usuário que editou a carga horária.
      * @return DTO da resposta contendo a matéria atualizada.
      */
-    public SubjectResponseDTO editWorkLoad(Long id, Integer workLoad) {
+    public SubjectResponseDTO editWorkLoad(Long id, Integer workLoad, User actor) {
         Subject subject = repository.findById(id).get();
+        logsService.create(actor, subject, Collections.singletonList(new ChangeItem("workLoad", (Object) subject.getWorkLoad(), (Object) workLoad)), "update");
         subject.setWorkLoad(workLoad);
         return repository.save(subject).toDTO();
     }
@@ -147,11 +187,13 @@ public class SubjectService {
      *
      * @param subject Matéria à qual o professor será adicionado.
      * @param teacher Professor a ser adicionado.
+     * @param actor Usuário que adicionou o professor.
      * @return DTO da resposta contendo a matéria atualizada.
      * @throws NaoEncontradoException se o professor não for encontrado.
      */
-    public SubjectResponseDTO addTeacherToSubject(Subject subject, Teacher teacher) {
+    public SubjectResponseDTO addTeacherToSubject(Subject subject, Teacher teacher, User actor) {
         if(subject.addTeacher(teacher)) {
+            logsService.create( actor, subject, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "add" );
             return repository.save(subject).toDTO();
         } else {
             throw new NaoEncontradoException("Professor nao encontrado");
@@ -163,11 +205,13 @@ public class SubjectService {
      *
      * @param subject Matéria da qual o professor será removido.
      * @param teacher Professor a ser removido.
+     * @param actor Usuário que removeu o professor.
      * @return DTO da resposta contendo a matéria atualizada.
      * @throws NaoEncontradoException se o professor não for encontrado.
      */
-    public SubjectResponseDTO removeTeacherFromSubject(Subject subject, Teacher teacher) {
+    public SubjectResponseDTO removeTeacherFromSubject(Subject subject, Teacher teacher, User actor) {
         if(subject.removeTeacher(teacher)) {
+            logsService.create( actor, subject, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "remove" );
             return repository.save(subject).toDTO();
         } else {
             throw new NaoEncontradoException("Professor nao encontrado");

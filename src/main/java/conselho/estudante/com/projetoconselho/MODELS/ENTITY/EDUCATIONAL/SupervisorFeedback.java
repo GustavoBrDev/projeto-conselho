@@ -52,7 +52,7 @@ public class SupervisorFeedback implements Feedback {
         return SupervisorFeedbackResponseDTO.builder()
                 .id(this.id)
                 .councilId(this.council.getId())  //os que são objetos, tem q da um .convert(), ou getId()?
-                .supervisorId(this.supervisor.convert())  //os que são objetos, tem q da um .convert(), ou getId()?
+                .supervisorId(this.supervisor.getId())  //os que são objetos, tem q da um .convert(), ou getId()?
                 .createdAt(this.createdAt)
                 .strengthsText(this.strengthsText)
                 .weaknessesText(this.weaknessesText)

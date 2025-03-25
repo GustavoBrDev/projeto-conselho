@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
@@ -18,6 +19,9 @@ import java.util.List;
  *
  * Atualizado em 13/03/2025
  * @author Gustavo Stinghen
+ *
+ * Atualizado em 20/03/2025
+ * @author Alex Zastrow
  */
 
 @AllArgsConstructor
@@ -34,9 +38,6 @@ public class Teacher implements User {
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private String username;
 
     @Column(nullable = false)
     private String email;
@@ -59,8 +60,7 @@ public class Teacher implements User {
     @ManyToMany
     private List<Shift> shifts;
 
-    /**
-     * Método para adicionar um curso ao professor
+     /** Metodo para adicionar um curso ao professor
      * @param course o curso a ser adicionado em formato de {@link Course}
      * @return um booleano indicando se o curso foi adicionado. Se verdadeiro, o curso foi adicionado ao professor. Se falso, o curso nao foi adicionado ao professor
      * O curso nao pode ser adicionado se ele ja estiver na lista de cursos
@@ -77,8 +77,8 @@ public class Teacher implements User {
 
     }
 
-    /**
-     * Método para remover um curso ao professor
+     /**
+     * Metodo para remover um curso ao professor
      * @param course o curso a ser removido em formato de {@link Course}
      * @return um booleano indicando se o curso foi removido. Se verdadeiro, o curso foi removido ao professor. Se falso, o curso nao foi removido ao professor
      * O curso nao pode ser removido se ele nao estiver na lista de cursos
@@ -164,5 +164,15 @@ public class Teacher implements User {
             return false;
         }
 
+    }
+
+    public TeacherResponseDTO toDTO() {
+        return TeacherResponseDTO.builder()
+                .id(this.getId())
+                .name(this.getName())
+                .email(this.getEmail())
+                .image(this.getImage())
+                .register(this.getRegister())
+                .build();
     }
 }

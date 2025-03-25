@@ -1,11 +1,12 @@
 package conselho.estudante.com.projetoconselho.SERVICES.CHAT;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.CHAT.TeacherResponseRequestDTO;
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.TeacherResponseMessage;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.CHAT.TechniqueChatMessageRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatMessageResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.TechniqueChatMessage;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT.TeacherResponseMessageRepository;
+import conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT.TechniqueChatMessageRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ChatMessageLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,27 +16,29 @@ import java.time.Instant;
 import java.util.NoSuchElementException;
 
 /**
- * Classe de serviço para a entidade {@link TeacherResponseMessage}
+ * Classe de serviço para a entidade {@link TechniqueChatMessage}
  * @author Gustavo Stinghen
- * @since 17/03/2025
- * @see TeacherResponseMessage
+ * @since 24/03/2025
+ * @see TechniqueChatMessage
  */
 
 @AllArgsConstructor
 @Service
-public class TeacherResponseMessageService {
+public class TechniqueChatMessageService {
 
-    private TeacherResponseMessageRepository repository;
+    private TechniqueChatMessageRepository repository;
+    private ChatMessageLogsService logsService;
 
     /**
-     * Método para criar uma mensagem de resposta de chat de professores 
+     * Método para criar uma mensagem de chat de estudantes
      * @param message a mensagem de chat a ser criada
-     * @return a mensagem de chat criada em formato de {@link ChatResponseDTO}
+     * @return a mensagem de chat criada em formato de {@link ChatMessageResponseDTO}
      */
-    public ChatResponseDTO create (TeacherResponseRequestDTO message) {
+    public ChatMessageResponseDTO create (TechniqueChatMessageRequestDTO message) {
 
         try {
-            return repository.save( message.convert() ).convert();
+            logsService.create(message, "create");
+            return repository.save(message.convert()).convert();
         } catch (Exception e) {
            throw new NoSuchElementException("Erro ao enviar mensagem");
         }
@@ -43,14 +46,14 @@ public class TeacherResponseMessageService {
     }
 
     /**
-     * Método para buscar todas as mensagens de chat de professores
+     * Método para buscar todas as mensagens de chat de estudantes
      * @param pageable informacoes de paginacao
-     * @return {@link Page} de {@link ChatResponseDTO}
+     * @return {@link Page} de {@link ChatMessageResponseDTO}
      */
-    public Page<ChatResponseDTO> findAll (Pageable pageable) {
+    public Page<ChatMessageResponseDTO> findAll (Pageable pageable) {
 
         try {
-            return repository.findAll(pageable).map(TeacherResponseMessage::convert);
+            return repository.findAll(pageable).map(TechniqueChatMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
         }
@@ -58,15 +61,15 @@ public class TeacherResponseMessageService {
     }
 
     /**
-     * Método para buscar todas as mensagens de chat enviadas a um professor
-     * @param sender professor que recebeu as mensagens
+     * Método para buscar todas as mensagens de chat de estudantes de um estudante
+     * @param technique estudante que enviou a mensagem
      * @param pageable informacoes de paginacao
-     * @return {@link Page} de {@link ChatResponseDTO}
+     * @return {@link Page} de {@link ChatMessageResponseDTO}
      */
-    public Page<ChatResponseDTO> findBySender (Teacher sender, Pageable pageable) {
+    public Page<ChatMessageResponseDTO> findByTechnique (Technique technique, Pageable pageable) {
 
         try {
-            return repository.findByReceiver(sender, pageable).map(TeacherResponseMessage::convert);
+            return repository.findByTechnique(technique, pageable).map(TechniqueChatMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
         }
@@ -74,11 +77,11 @@ public class TeacherResponseMessageService {
     }
 
     /**
-     * Método para buscar uma mensagem de chat de professores
+     * Método para buscar uma mensagem de chat de estudantes
      * @param id id da mensagem de chat
-     * @return {@link ChatResponseDTO}
+     * @return {@link ChatMessageResponseDTO}
      */
-    public ChatResponseDTO findById (Long id) {
+    public ChatMessageResponseDTO findById (Long id) {
 
         try {
             return repository.findById(id).get().convert();
@@ -89,19 +92,20 @@ public class TeacherResponseMessageService {
     }
 
     /**
-     * Método para deletar uma mensagem de resposta de chat de professores
+     * Método para deletar uma mensagem de chat de estudantes
      * Ele não deleta a mensagem, apenas marca como deletada
      * @param id id da mensagem de chat
-     * @return {@link ChatResponseDTO}
+     * @return {@link ChatMessageResponseDTO}
      */
-    public ChatResponseDTO delete (Long id) {
+    public ChatMessageResponseDTO delete (Long id) {
 
         try {
 
             if (repository.existsById(id)) {
-                TeacherResponseMessage message = repository.findById(id).get();
+                TechniqueChatMessage message = repository.findById(id).get();
                 message.setDeletedAt(Instant.now());
                 message.setIsDeleted(true);
+                logsService.create(message, "delete");
                 return repository.save(message).convert();
             } else {
                 throw new NaoEncontradoException("Chat nao encontrado");

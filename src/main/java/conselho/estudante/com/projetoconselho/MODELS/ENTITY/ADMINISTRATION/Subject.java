@@ -81,10 +81,10 @@ public class Subject {
      * @see SubjectResponseDTO
      */
     public SubjectResponseDTO toDTO() {
-        return new SubjectResponseDTO(
-                this.id,
-                this.name,
-                this.workLoad
-        );
+        return SubjectResponseDTO.builder()
+                .id(id)
+                .name(name)
+                .workLoad(workLoad)
+                .build();
     }
 }

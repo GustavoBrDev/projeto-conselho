@@ -1,11 +1,20 @@
-package SERVICES.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
 import MODELS.ENTITY.EDUCATIONAL.ViewedStudents;
 import MODELS.ENTITY.EDUCATIONAL.Council;
 import MODELS.ENTITY.EDUCATIONAL.Student;
-import REPOSITORIES.EDUCATIONAL.ViewedStudentsRepository;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.CallToChatStudents;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ViewedStudents;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
+import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
+import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.ViewedStudentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
 
 /**
  * Serviço responsável por gerenciar as operações relacionadas a {@link ViewedStudents}.
@@ -70,4 +79,28 @@ public class ViewedStudentService {
         }
         return added;
     }
+
+    /**
+     * Lista todos os ViewedStudents com suporte a paginação.
+     *
+     * @param pageable objeto de paginação e ordenação.
+     * @return uma página contendo ViewedStudents.
+     * @see ViewedStudents
+     * @since 24/03/2025
+     */
+    public Page<Student> listAllStudents(Pageable pageable, Council council) {
+        ViewedStudents viewedStudents = getViewedStudentsByCouncil(council);
+        if (viewedStudents == null) {
+            throw new NaoEncontradoException("ViewedStudents nao encontrado");
+        }
+
+        List<Student> students = viewedStudents.getStudents();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), students.size());
+
+        return new PageImpl<>(students.subList(start, end), pageable, students.size());
+    }
+
+
 }

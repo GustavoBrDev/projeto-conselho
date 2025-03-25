@@ -42,8 +42,8 @@ public class FeedbackGroup {
     public FeedbackGroupResponseDTO convert() {  /*Aqui na Entity quando fizer o metodo convert, tem q ser ResponseDTO*/
         return FeedbackGroupResponseDTO.builder()
                 .date(this.date)
-                .personalFeedback(this.personalFeedback) //os que são objetos, tem q da um .convert()
-                .classFeedback(this.classFeedback)
+                /*.personalFeedback(this.personalFeedback) //os que são objetos, tem q da um .convert()
+                .classFeedback(this.classFeedback)*/
                 .build();
     }
 

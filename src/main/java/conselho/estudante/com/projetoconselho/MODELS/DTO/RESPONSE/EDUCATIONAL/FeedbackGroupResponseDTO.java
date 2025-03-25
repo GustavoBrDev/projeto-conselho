@@ -18,8 +18,8 @@ import java.util.Date;
 public record FeedbackGroupResponseDTO(
         Long id,
         Date date,
-        PersonalFeedbackResponseDTO personalFeedback,
-        ClassFeedbackResponseDTO classFeedback
+        PersonalFeedbackResponseDTO personalFeedbackId,
+        ClassFeedbackResponseDTO classFeedbackId
 ) {
     public FeedbackGroup convert() {
         return FeedbackGroup.builder()

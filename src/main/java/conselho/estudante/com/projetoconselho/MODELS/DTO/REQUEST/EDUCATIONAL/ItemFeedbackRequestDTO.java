@@ -17,7 +17,7 @@ import java.util.Date;
 @Builder
 public record ItemFeedbackRequestDTO(
         @NotNull
-        Long councilId,
+        Council council,
         @NotNull
         Date createdAt,
         @NotBlank

@@ -20,16 +20,16 @@ public record FeedbackGroupRequestDTO(
         @NotNull
         Date date,
         @NotNull
-        PersonalFeedback personalFeedbackId,
+        PersonalFeedback personalFeedback,
         @NotNull
-        ClassFeedback classFeedbackId
+        ClassFeedback classFeedback
 ) {
 
         public FeedbackGroup convert() {
                 return FeedbackGroup.builder()
                         .date(this.date)
-                        .personalFeedbackId(this.personalFeedbackId)
-                        .classFeedbackId(this.classFeedbackId)
+                        .personalFeedback(this.personalFeedback)
+                        .classFeedback(this.classFeedback)
                         .build();
         }
 }

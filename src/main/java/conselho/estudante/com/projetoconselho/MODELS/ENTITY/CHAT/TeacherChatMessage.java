@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ChatMessageResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class TeacherChatMessage implements ChatMessage {
     private String text;
 
     @OneToOne
-    private Teacher sender;
+    private Teacher teacher;
 
     private Instant timestamp;
 
@@ -45,9 +45,9 @@ public class TeacherChatMessage implements ChatMessage {
      * Método para converter um TeacherChatMessage para um ChatResponseDTO
      * @return ChatResponseDTO
      */
-    public ChatResponseDTO convert () {
+    public ChatMessageResponseDTO convert () {
 
-        return ChatResponseDTO.builder()
+        return ChatMessageResponseDTO.builder()
                 .message(text)
                 .isRead(isRead)
                 .isDeleted(isDeleted)

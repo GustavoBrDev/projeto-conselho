@@ -10,16 +10,20 @@ import lombok.Builder;
  * Atualizado em 17/03/2025
  * Adicionado atributos isRepresentative e isHidden
  * @author Gustavo Stinghen
+ *
+ * Atualizado em 19/03/2025
+ * Alterado para uma classe para utilizar abstração (interface)
+ * @author Gustavo Stinghen
  */
 
 @Builder
-public record StudentResponseDTO(
-    Long id,
-    String name,
-    String email,
-    String password,
-    String image,
-    Boolean isRepresentative,
-    Boolean isHidden
-) {
+public class StudentResponseDTO implements UserResponseDTO {
+    Long id;
+    String name;
+    String email;
+    String password;
+    String image;
+    Boolean isRepresentative;
+    Boolean isHidden;
+
 }
