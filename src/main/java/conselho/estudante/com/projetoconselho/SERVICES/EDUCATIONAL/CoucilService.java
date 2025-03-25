@@ -1,6 +1,7 @@
 package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.CouncilRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.TeacherPreCouncilRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.CouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.*;
@@ -13,6 +14,7 @@ import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosE
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SUBJECT.SubjectService;
+import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.TEACHER_PRE_COUNCIL.TeacherPreCouncilService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.CouncilLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -128,6 +130,7 @@ public class CoucilService {
 
             if ( newCouncil.getFeedbackDelivered() ) {
                 viewedStudentService.createViewedStudents(newCouncil);
+                sendFeedbackNotification();
             }
         }
 
@@ -137,14 +140,37 @@ public class CoucilService {
 
         if ( oldCouncil.getRepresentativePreCouncilStarted() != newCouncil.getRepresentativePreCouncilStarted() ) {
             changes.add(new ChangeItem("representativePreCouncilStarted", oldCouncil.getRepresentativePreCouncilStarted(), newCouncil.getRepresentativePreCouncilStarted()));
+
+            if ( newCouncil.getRepresentativePreCouncilStarted() ) {
+                sendRepresentativeNotification();
+            }
         }
 
         if ( oldCouncil.getTeacherPreCouncilStarted() != newCouncil.getTeacherPreCouncilStarted() ) {
             changes.add(new ChangeItem("teacherPreCouncilStarted", oldCouncil.getTeacherPreCouncilStarted(), newCouncil.getTeacherPreCouncilStarted()));
+
+            if ( newCouncil.getTeacherPreCouncilStarted() ) {
+                sendTeacherNotification();
+            }
         }
 
-
         return changes;
+    }
+
+    // TODO: implementar
+    // Envia notificação de feedback para os estudantes
+    public void sendTeacherNotification() {
+
+    }
+
+    // TODO: implementar
+    // Envia notificação de feedback para os representantes
+    public void sendRepresentativeNotification() {
+    }
+
+    // TODO: implementar
+    // Envia notificação de feedback para os professores
+    public void sendFeedbackNotification() {
     }
 
     /**
@@ -184,10 +210,6 @@ public class CoucilService {
         throw new NaoEncontradoException("Conselho nao encontrado");
     }
 
-    public void generateTeacherPreCouncil() {
-
-    }
-
     /**
      * Finaliza o pré-conselho com os professores para o conselho identificado pelo ID.
      *
@@ -219,6 +241,7 @@ public class CoucilService {
         }
         throw new NaoEncontradoException("Conselho nao encontrado");
     }
+
 
     /**
      * Finaliza o pré-conselho com os representantes para o conselho identificado pelo ID.
