@@ -47,11 +47,9 @@ public class ChatMessageLogsService {
         try {
 
             ChatMessageLogs log = ChatMessageLogs.builder().
-                    actor(actor).
                     target(target).
                     type(type).
                     timestamp(Instant.now()).
-                    changes(changes).
                     createdAt( new Date() ).
                     build();
 
@@ -73,23 +71,6 @@ public class ChatMessageLogsService {
 
         try {
             return repository.findAll(pageable);
-        } catch (Exception e) {
-            throw new NaoEncontradoException("Log nao encontrado");
-        }
-    }
-
-    /**
-     * Metodo para buscar os logs de uma {@link  ChatMessage}
-     * @param actor {@link User} que criou o log
-     * @param pageable informacoes de paginacao
-     * @return {@link Page} de {@link ChatMessageLogs}
-     * @throws NaoEncontradoException se o log nao foi encontrado
-     * @see User, ChatMessageLogs
-     */
-    public Page<ChatMessageLogs> findByActor(User actor, Pageable pageable) {
-
-        try {
-            return repository.findByActor(actor, pageable);
         } catch (Exception e) {
             throw new NaoEncontradoException("Log nao encontrado");
         }

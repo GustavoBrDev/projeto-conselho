@@ -6,9 +6,9 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.SupervisorFeedback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
+
+
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.SupervisorFeedbackRepository;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.SupervisorRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

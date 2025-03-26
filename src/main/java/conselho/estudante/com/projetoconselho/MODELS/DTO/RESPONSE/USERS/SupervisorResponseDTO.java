@@ -22,4 +22,3 @@ public class SupervisorResponseDTO implements UserResponseDTO {
     String image;
     Long register;
 }
-
