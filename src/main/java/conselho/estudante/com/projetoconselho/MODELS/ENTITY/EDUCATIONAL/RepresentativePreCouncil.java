@@ -16,6 +16,11 @@ import java.util.List;
  * @author Gustavo Stinghen
  * @since 13/03/2025
  * @see Council, TeacherFeeback, AdvisorFeeback, SupervisorFeeback
+ *
+ * Atualizado em 26/03/2025
+ * Alterado para AvaliableTeacher
+ * @author Gustavo Stinghen
+ * @see AvaliableTeacher
  */
 
 @AllArgsConstructor
@@ -47,7 +52,7 @@ public class RepresentativePreCouncil implements PreCouncil {
     private Boolean isFilled;
 
     @ManyToMany
-    private List<Teacher> teachers;
+    private List<AvaliableTeacher> teachers;
 
     @ManyToOne
     private AdvisorFeeback advisorFeeback;

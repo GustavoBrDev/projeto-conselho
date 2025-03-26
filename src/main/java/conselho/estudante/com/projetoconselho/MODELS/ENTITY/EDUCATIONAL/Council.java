@@ -48,7 +48,7 @@ public class Council {
     private Date date;
 
     @ManyToMany
-    private List<Teacher> teachers;
+    private List<AvaliableTeacher> teachers;
 
     @ManyToOne
     private Advisor advisor;
@@ -83,15 +83,21 @@ public class Council {
 
     private Boolean teacherPreCouncilStarted;
 
+    private Date representativePreCouncilEndDate;
+
+    private Date teacherPreCouncilEndDate;
+
+    private Date feedbackDeliveredDate;
+
     /**
      * Método para adicionar um professor ao council
-     * @param teacher o professor a ser adicionado em formato de {@link Teacher}
+     * @param teacher a associção entre o professor e matéria em formato de {@link AvaliableTeacher}
      * @return um booleano indicando se o professor foi adicionado. Se verdadeiro, o professor foi adicionado ao council. Se falso, o professor nao foi adicionado ao council
      * O professor nao pode ser adicionado se ele ja estiver na lista de professores
      * @see Teacher
      * @since 13/03/2025
      */
-    public boolean addTeacher(Teacher teacher) {
+    public boolean addTeacher(AvaliableTeacher teacher) {
 
         if (this.teachers.contains(teacher)) {
             return false;
@@ -103,13 +109,13 @@ public class Council {
 
     /**
      * Método para remover um professor ao council
-     * @param teacher o professor a ser removido em formato de {@link Teacher}
+     * @param teacher a associção entre o professor e matéria em formato de {@link AvaliableTeacher}
      * @return um booleano indicando se o professor foi removido. Se verdadeiro, o professor foi removido ao council. Se falso, o professor nao foi removido ao council
      * O professor nao pode ser removido se ele nao estiver na lista de professores
      * @see Teacher
      * @since 13/03/2025
      */
-    public boolean removeTeacher(Teacher teacher) {
+    public boolean removeTeacher(AvaliableTeacher teacher) {
 
         if (this.teachers.contains(teacher)) {
             this.teachers.remove(teacher);
