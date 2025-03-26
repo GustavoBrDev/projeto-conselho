@@ -35,6 +35,7 @@ public class AdvisorFeedbackService {
     private final AdvisorFeedbackRepository repository;
     private final CouncilService councilService;
     private final AdvisorService advisorService;
+    private final FeedbackLogsService logsService;
 
     /**
      * Cria um novo feedback de orientador.

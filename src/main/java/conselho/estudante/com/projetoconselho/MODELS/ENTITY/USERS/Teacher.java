@@ -113,7 +113,7 @@ public class Teacher implements User {
     }
 
     /**
-     * Método para remover uma materia ao professor
+     * Metodo para remover uma materia ao professor
      * @param subject a materia a ser removida em formato de {@link Subject}
      * @return um booleano indicando se a materia foi removida. Se verdadeiro, a materia foi removida ao professor. Se falso, a materia nao foi removida ao professor
      * A materia nao pode ser removida se ela nao estiver na lista de materias

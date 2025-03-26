@@ -83,4 +83,15 @@ public class Classe {
         }
 
     }
+
+    public ClasseResponseDTO toDTO () {
+        return ClasseResponseDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .acronym(this.acronym)
+                .course(this.course)
+                .representative(this.representative)
+                .active(this.active)
+                .build();
+    }
 }
