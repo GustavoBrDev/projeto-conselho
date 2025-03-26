@@ -49,6 +49,7 @@ public class AdvisorFeedbackService {
                 .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
 
         AdvisorFeeback feedback = requestDTO.convert(council, advisor);
+        logsService.create(advisor, (Feedback) feedback, "create");
         return repository.save(feedback).convert();
     }
 
@@ -59,15 +60,17 @@ public class AdvisorFeedbackService {
      * @return Feedback atualizado
      */
     public AdvisorFeedbackResponseDTO update(Long id, AdvisorFeedbackRequestDTO requestDTO) {
-        AdvisorFeeback feedback = repository.findById(id)
+        repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Feedback não encontrado"));
 
-        feedback.setCreatedAt(requestDTO.createdAt());
-        feedback.setStrengthsText(requestDTO.strengthsText());
-        feedback.setWeaknessesText(requestDTO.weaknessesText());
-        feedback.setSuggestionsText(requestDTO.suggestionsText());
+        AdvisorFeeback updatedFeedback = AdvisorFeeback.builder()
+                .createdAt(requestDTO.createdAt())
+                .strengthsText(requestDTO.strengthsText())
+                .weaknessesText(requestDTO.weaknessesText())
+                .suggestionsText(requestDTO.suggestionsText())
+                .build();
 
-        return repository.save(feedback).convert();
+        return repository.save(updatedFeedback).convert();
     }
 
     /**

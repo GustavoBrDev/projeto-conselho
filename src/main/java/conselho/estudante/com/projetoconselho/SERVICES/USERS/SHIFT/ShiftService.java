@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.SERVICES.USERS.SHIFT;
+package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT;
 
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.ShiftPostRequestDTO;
@@ -164,17 +164,6 @@ public class ShiftService {
                 })
                 .orElseThrow(() -> new RuntimeException("Turno não encontrado!"));
     }
-    */
-
-//    METODO NA CONTROLLER:
-//    @GetMapping("/{shiftId}/teachers")
-//public ResponseEntity<Page<TeacherResponseDTO>> listarProfessoresPeloTurno(
-//        @PathVariable Long shiftId, Pageable pageable) {
-//    // Chama a service para listar os professores do turno
-//    Page<TeacherResponseDTO> professores = shiftService.listarProfessoresPeloTurno(shiftId, pageable);
-//    return ResponseEntity.ok(professores); // Retorna a página com os professores
-//}
-
 
     /**
      * Lista todos os cursos de um turno, com paginação.
@@ -194,18 +183,7 @@ public class ShiftService {
                 pageable, // Paginação
                 shift.getCourse().size()); // Total de cursos
     }
-    */
 
-
-/*
-@GetMapping("/{shiftId}/courses")
-public ResponseEntity<Page<CourseResponseDTO>> listarCursosPeloTurno(
-        @PathVariable Long shiftId, Pageable pageable) {
-    // Chama a service para listar os cursos do turno
-    Page<CourseResponseDTO> cursos = shiftService.listarCursosPeloTurno(shiftId, pageable);
-    return ResponseEntity.ok(cursos); // Retorna a página com os cursos
-}
- */
 
     /**
      * Busca um turno pelo ID.
@@ -325,7 +303,6 @@ public ResponseEntity<Page<CourseResponseDTO>> listarCursosPeloTurno(
         shift.getCourse().remove(course);
         repository.save(shift);
     }
-    */
 
     /**
      * Busca turnos com base em uma pesquisa inteligente, considerando o nome do turno, nome do professor e nome do curso.
