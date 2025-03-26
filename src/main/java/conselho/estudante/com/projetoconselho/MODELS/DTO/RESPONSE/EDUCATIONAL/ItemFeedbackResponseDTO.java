@@ -17,4 +17,13 @@ public record ItemFeedbackResponseDTO(
         String text,
         String item
 ) {
+
+    public ItemFeedback convert() {
+        return ItemFeedback.builder()
+                .id(this.id)
+                .createdAt(this.createdAt)
+                .text(this.text)
+                .item(this.item)
+                .build();
+    }
 }

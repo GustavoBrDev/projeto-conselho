@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.SupervisorFeedback;
 import lombok.Builder;
 
 import java.util.Date;
@@ -14,11 +15,23 @@ import java.util.Date;
 public record SupervisorFeedbackResponseDTO(
 
         Long id,
-        Long councilId,
+        CouncilResponseDTO council,
         Long supervisorId,
         Date createdAt,
         String strengthsText,
         String weaknessesText,
         String suggestionsText
 ) {
+
+    public SupervisorFeedback convert() {
+        return SupervisorFeedback.builder()
+                .id(this.id)
+                .councilId(this.councilId)
+                .supervisorId(this.supervisorId)
+                .createdAt(this.createdAt)
+                .strengthsText(this.strengthsText)
+                .weaknessesText(this.weaknessesText)
+                .suggestionsText(this.suggestionsText)
+                .build();
+    }
 }

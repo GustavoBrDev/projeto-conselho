@@ -25,7 +25,7 @@ import java.util.Date;
 public class ItemFeedbackService {
 
     private final ItemFeedbackRepository repository;
-    private final CouncilRepository councilRepository;
+    private final CouncilService councilService;
 
     /**
      * Cria um novo feedback de item.
@@ -33,7 +33,7 @@ public class ItemFeedbackService {
      * @return Feedback criado
      */
     public ItemFeedbackResponseDTO create(ItemFeedbackRequestDTO requestDTO) {
-        Council council = councilRepository.findById(requestDTO.councilId())
+        Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
         ItemFeedback feedback = requestDTO.convert(council);

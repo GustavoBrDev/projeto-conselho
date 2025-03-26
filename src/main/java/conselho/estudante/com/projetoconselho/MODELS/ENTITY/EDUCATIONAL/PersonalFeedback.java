@@ -25,6 +25,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class PersonalFeedback implements Feedback {
 
     @Id

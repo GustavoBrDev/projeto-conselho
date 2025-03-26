@@ -21,4 +21,11 @@ public record FeedbackGroupResponseDTO(
         PersonalFeedbackResponseDTO personalFeedbackId,
         ClassFeedbackResponseDTO classFeedbackId
 ) {
+    public FeedbackGroup convert() {
+        return FeedbackGroup.builder()
+                .date(this.date)
+                .personalFeedback(this.personalFeedback.convert())
+                .classFeedback(this.classFeedback.convert())
+                .build();
+    }
 }

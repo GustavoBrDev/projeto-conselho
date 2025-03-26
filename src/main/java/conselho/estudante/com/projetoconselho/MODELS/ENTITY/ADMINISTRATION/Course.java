@@ -164,7 +164,7 @@ public class Course {
             return false;
         }
     }
-  
+
     /**
      * Converte a entidade Couse em um DTO de resposta CourseResponseDTO.
      *
