@@ -1,9 +1,6 @@
 package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
-import MODELS.ENTITY.EDUCATIONAL.ViewedStudents;
-import MODELS.ENTITY.EDUCATIONAL.Council;
-import MODELS.ENTITY.EDUCATIONAL.Student;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.CallToChatStudents;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ViewedStudents;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
@@ -14,7 +11,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+import java.util.List;
+
 
 /**
  * Serviço responsável por gerenciar as operações relacionadas a {@link ViewedStudents}.
