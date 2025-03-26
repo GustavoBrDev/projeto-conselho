@@ -14,9 +14,18 @@ import java.util.Date;
 @Builder
 public record PersonalFeedbackResponseDTO(
         Long id,
-        Long councilId,
+        CouncilResponseDTO council,
         Long studentId,
         Date createdAt,
         String text
 ) {
+    public PersonalFeedback convert() {
+        return PersonalFeedback.builder()
+                .id(this.id)
+                .councilId(this.councilId)
+                .studentId(this.studentId)
+                .createdAt(this.createdAt)
+                .text(this.text)
+                .build();
+    }
 }

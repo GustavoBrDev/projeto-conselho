@@ -44,7 +44,6 @@ public class StudentChatMessage implements ChatMessage {
      * Método para converter um StudentChatMessage para um ChatResponseDTO
      * @return ChatResponseDTO
      */
-  
     public ChatMessageResponseDTO convert () {
 
         return ChatMessageResponseDTO.builder()

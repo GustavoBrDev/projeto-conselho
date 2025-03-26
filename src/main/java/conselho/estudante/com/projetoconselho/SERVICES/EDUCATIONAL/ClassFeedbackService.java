@@ -25,8 +25,8 @@ import org.springframework.stereotype.Service;
 public class ClassFeedbackService {
 
     private final ClassFeedbackRepository repository;
-    private final CouncilRepository councilRepository;
-    private final ClasseRepository classeRepository;
+    private final CouncilService councilService;
+    private final ClasseService classeService;
 
     /**
      * Cria um novo feedback de turma.
@@ -34,10 +34,10 @@ public class ClassFeedbackService {
      * @return Feedback criado
      */
     public ClassFeedbackResponseDTO create(ClassFeedbackRequestDTO requestDTO) {
-        Council council = councilRepository.findById(requestDTO.councilId())
+        Council council = councilService.findById(requestDTO.councilId()) //
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
-        Classe classe = classeRepository.findById(requestDTO.classId())
+        Classe classe = classeService.findById(requestDTO.classId())
                 .orElseThrow(() -> new NaoEncontradoException("Classe não encontrada"));
 
         ClassFeedback feedback = requestDTO.convert(council, classe);
