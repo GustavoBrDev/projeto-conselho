@@ -1,4 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.CouncilRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.ClasseResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
@@ -44,12 +46,12 @@ public record TeacherPreCouncilResponseDTO(
         /**
          * DTO do Conselho ao qual o pré-conselho está vinculado.
          */
-        Council councilDTO,
+        CouncilResponseDTO council,
 
         /**
          * DTO da Classe relacionada ao pré-conselho.
          */
-        Classe classeDTO,
+        ClasseResponseDTO classe,
 
         /**
          * Indica se o pré-conselho foi preenchido pelo professor.
@@ -59,11 +61,11 @@ public record TeacherPreCouncilResponseDTO(
         /**
          * DTO do Professor responsável pelo pré-conselho.
          */
-        TeacherResponseDTO teacherDTO,
+        TeacherResponseDTO teacher,
 
         /**
          * DTO da Disciplina associada ao pré-conselho.
          */
-        SubjectResponseDTO subjectDto
+        SubjectResponseDTO subject
 ) {
 }

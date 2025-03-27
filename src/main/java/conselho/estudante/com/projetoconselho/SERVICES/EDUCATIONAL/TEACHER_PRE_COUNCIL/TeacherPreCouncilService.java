@@ -4,8 +4,13 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.Te
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.TeacherPreCouncil;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
+import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.TeacherPreCouncilRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SUBJECT.SubjectService;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.PreCouncilLogsService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 
 /**
@@ -26,14 +28,20 @@ import java.util.NoSuchElementException;
  *
  * @author Cauã Justimiano Dutra
  * @since 17/03/2025
+ *
+ * Atualizado em 27/03/2025
+ * Conexão com o PreCouncilLogsService para gerar logs
+ * @author Gustavo Stinghen
+ * @see PreCouncilLogsService
  */
 @AllArgsConstructor
 @Service
 public class TeacherPreCouncilService {
 
-    TeacherPreCouncilRepository repository;
-    StudentService studentService;
-    SubjectService subjectService;
+    private TeacherPreCouncilRepository repository;
+    private StudentService studentService;
+    private SubjectService subjectService;
+    private PreCouncilLogsService logsService;
 
     /**
      * Adiciona um novo pré-conselho de professor à aplicação.
@@ -41,9 +49,22 @@ public class TeacherPreCouncilService {
      * @param teacherPreCouncilRequestDTO Objeto contendo os dados do pré-conselho a ser adicionado.
      * @return O pré-conselho adicionado, convertido para DTO.
      */
-        public TeacherPreCouncilResponseDTO add(TeacherPreCouncilRequestDTO teacherPreCouncilRequestDTO) {
-            TeacherPreCouncil teacherPreCouncil = repository.save(toEntity(teacherPreCouncilRequestDTO));
-            return teacherPreCouncil.toDTO();
+        public TeacherPreCouncilResponseDTO create(TeacherPreCouncilRequestDTO teacherPreCouncilRequestDTO) {
+
+           try {
+
+                TeacherPreCouncil teacherPreCouncil = teacherPreCouncilRequestDTO.toEntity();
+                teacherPreCouncil.setIsFilled(false);
+                teacherPreCouncil.setFeedbacks(new ArrayList<>());
+                teacherPreCouncil.setStartDate(new Date());
+                teacherPreCouncil.setCreatedAt(new Date());
+                teacherPreCouncil = repository.save(teacherPreCouncil);
+                logsService.create(teacherPreCouncil, "create");
+                return teacherPreCouncil.toDTO();
+
+            } catch (Exception e) {
+                throw new RuntimeException("Erro ao adicionar pré-conselho de professor", e);
+            }
         }
 
     /**
@@ -53,9 +74,9 @@ public class TeacherPreCouncilService {
      * @return O pré-conselho encontrado, convertido para DTO.
      * @throws NoSuchElementException Caso o pré-conselho não seja encontrado.
      */
-        public TeacherPreCouncilResponseDTO search(Long id) {
-            return repository.findById(id).orElseThrow(NoSuchElementException::new).toDTO();
-        }
+    public TeacherPreCouncilResponseDTO search(Long id) {
+        return repository.findById(id).orElseThrow(NaoEncontradoException::new).toDTO();
+    }
 
     /**
      * Atualiza os dados de um pré-conselho de professor.
@@ -65,12 +86,48 @@ public class TeacherPreCouncilService {
      * @return O pré-conselho atualizado, convertido para DTO.
      * @throws NoSuchElementException Caso o pré-conselho não seja encontrado.
      */
-        public TeacherPreCouncilResponseDTO update(TeacherPreCouncilRequestDTO teacherPreCouncilRequestDTO, Long id) {
-            search(id);
+    public TeacherPreCouncilResponseDTO update(TeacherPreCouncilRequestDTO teacherPreCouncilRequestDTO, Long id) {
 
-            TeacherPreCouncil teacherPreCouncil = repository.save(toEntity(teacherPreCouncilRequestDTO));
-            return teacherPreCouncil.toDTO();
+        try {
+
+            if ( search(id) == null ) {
+                throw new NaoEncontradoException("Pré conselho de professor nao encontrado");
+            }
+
+            TeacherPreCouncil teacherPreCouncil = teacherPreCouncilRequestDTO.toEntity();
+            teacherPreCouncil.setId(id);
+            logsService.create(teacherPreCouncil, getEditableItems(repository.findById(id).get(), teacherPreCouncil), "update");
+            return repository.save(teacherPreCouncil).toDTO();
+
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Erro ao atualizar pré-conselho de professor", e);
         }
+    }
+
+    /**
+     * Obtem os itens editáveis de um pré-conselho de professor.
+     *
+     * @param oldTeacherPreCouncil Pré-conselho de professor antigo.
+     * @param newTeacherPreCouncil Pré-conselho de professor novo.
+     * @return Lista de itens editáveis.
+     */
+    private List<EditableItem> getEditableItems(TeacherPreCouncil oldTeacherPreCouncil, TeacherPreCouncil newTeacherPreCouncil) {
+        List<EditableItem> changes = new ArrayList<>();
+
+        if ( !oldTeacherPreCouncil.getEndDate().equals(newTeacherPreCouncil.getEndDate()) ) {
+            changes.add(new ChangeItem("endDate", oldTeacherPreCouncil.getEndDate(), newTeacherPreCouncil.getEndDate()));
+        }
+
+        if ( !oldTeacherPreCouncil.getClasse().equals(newTeacherPreCouncil.getClasse()) ) {
+            changes.add(new ChangeItem("classe", oldTeacherPreCouncil.getClasse(), newTeacherPreCouncil.getClasse()));
+        }
+
+        if ( !oldTeacherPreCouncil.getStartDate().equals(newTeacherPreCouncil.getStartDate()) ) {
+            changes.add(new ChangeItem("startDate", oldTeacherPreCouncil.getStartDate(), newTeacherPreCouncil.getStartDate()));
+        }
+
+        return changes;
+    }
 
     /**
      * Exclui um pré-conselho de professor da aplicação.
@@ -79,12 +136,19 @@ public class TeacherPreCouncilService {
      * @return O pré-conselho excluído, convertido para DTO.
      * @throws NoSuchElementException Caso o pré-conselho não seja encontrado.
      */
-        public TeacherPreCouncilResponseDTO delete(Long id) {
-            TeacherPreCouncilResponseDTO teacherPreCouncilResponseDTO = search(id);
+    public TeacherPreCouncilResponseDTO delete(Long id) {
 
-            repository.deleteById(id);
-            return teacherPreCouncilResponseDTO;
+        try {
+
+            TeacherPreCouncil teacherPreCouncil = repository.findById(id).orElseThrow(NaoEncontradoException::new);
+            logsService.create( teacherPreCouncil, "delete");
+            repository.delete(teacherPreCouncil);
+            return teacherPreCouncil.toDTO();
+
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Erro ao excluir pré-conselho de professor", e);
         }
+    }
 
     /**
      * Atualiza a data de início de um pré-conselho de professor.
@@ -94,13 +158,13 @@ public class TeacherPreCouncilService {
      * @return O pré-conselho atualizado, convertido para DTO.
      * @throws NoSuchElementException Caso o pré-conselho não seja encontrado.
      */
-    public TeacherPreCouncilResponseDTO updateStartDate(Long id, Date startDate) {
+    public TeacherPreCouncilResponseDTO editStartDate(Long id, Date startDate) {
         TeacherPreCouncil teacherPreCouncil = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("TeacherPreCouncil not found"));
-
+                .orElseThrow(() -> new NoSuchElementException("Pré conselho de professor nao encontrado"));
+        Date oldStartDate = teacherPreCouncil.getStartDate();
         teacherPreCouncil.setStartDate(startDate);
-        teacherPreCouncil = repository.save(teacherPreCouncil);
-        return teacherPreCouncil.toDTO();
+        logsService.create( teacherPreCouncil, Collections.singletonList(new ChangeItem("startDate", (Object) oldStartDate, (Object) startDate)), "update");
+        return repository.save(teacherPreCouncil).toDTO();
     }
 
     /**
@@ -111,13 +175,13 @@ public class TeacherPreCouncilService {
      * @return O pré-conselho atualizado, convertido para DTO.
      * @throws NoSuchElementException Caso o pré-conselho não seja encontrado.
      */
-    public TeacherPreCouncilResponseDTO updateEndDate(Long id, Date endDate) {
+    public TeacherPreCouncilResponseDTO editEndDate(Long id, Date endDate) {
         TeacherPreCouncil teacherPreCouncil = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("TeacherPreCouncil not found"));
-
+        Date oldEndDate = teacherPreCouncil.getEndDate();
         teacherPreCouncil.setEndDate(endDate);
-        teacherPreCouncil = repository.save(teacherPreCouncil);
-        return teacherPreCouncil.toDTO();
+        logsService.create( teacherPreCouncil, Collections.singletonList(new ChangeItem("endDate", (Object) oldEndDate, (Object) endDate)), "update");
+        return repository.save(teacherPreCouncil).toDTO();
     }
 
     /**
@@ -128,13 +192,13 @@ public class TeacherPreCouncilService {
      * @return O pré-conselho atualizado, convertido para DTO.
      * @throws NoSuchElementException Caso o pré-conselho não seja encontrado.
      */
-    public TeacherPreCouncilResponseDTO updateIsFilled(Long id, Boolean isFilled) {
+    public TeacherPreCouncilResponseDTO editIsFilled(Long id, Boolean isFilled) {
         TeacherPreCouncil teacherPreCouncil = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("TeacherPreCouncil not found"));
-
+        boolean oldIsFilled = teacherPreCouncil.getIsFilled();
         teacherPreCouncil.setIsFilled(isFilled);
-        teacherPreCouncil = repository.save(teacherPreCouncil);
-        return teacherPreCouncil.toDTO();
+        logsService.create( teacherPreCouncil, Collections.singletonList(new ChangeItem("isFilled", (Object) oldIsFilled, (Object) isFilled)), "update");
+        return repository.save(teacherPreCouncil).toDTO();
     }
 
     /**
@@ -145,16 +209,15 @@ public class TeacherPreCouncilService {
      * @return O pré-conselho atualizado, convertido para DTO.
      * @throws NoSuchElementException Caso o pré-conselho ou a matéria não sejam encontrados.
      */
-    public TeacherPreCouncilResponseDTO updateSubject(Long id, Long subjectId) {
+    public TeacherPreCouncilResponseDTO editSubject(Long id, Long subjectId) {
         TeacherPreCouncil teacherPreCouncil = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("TeacherPreCouncil not found"));
 
-        // Você pode usar um serviço para buscar a matéria (Subject) se necessário
-        Subject subject = subjectService.findSubjectById(subjectId).convert();
-
+        Subject subject = subjectService.getObjectSubject(subjectId);
+        Subject oldSubject = teacherPreCouncil.getSubject();
         teacherPreCouncil.setSubject(subject);
-        teacherPreCouncil = repository.save(teacherPreCouncil);
-        return teacherPreCouncil.toDTO();
+        logsService.create( teacherPreCouncil, Collections.singletonList(new ChangeItem("subject", (Object) oldSubject, (Object) subject)), "update");
+        return repository.save(teacherPreCouncil).toDTO();
     }
 
     /**
@@ -198,26 +261,6 @@ public class TeacherPreCouncilService {
 
         // Retorna a lista de resultados com os filtros aplicados
         return repository.findAll(specification);
-    }
-
-    /**
-     * Converte um DTO de solicitação de pré-conselho de professor para a entidade correspondente.
-     *
-     * @param requestDTO DTO com os dados de solicitação de pré-conselho.
-     * @return Entidade TeacherPreCouncil correspondente.
-     */
-    public TeacherPreCouncil toEntity(TeacherPreCouncilRequestDTO requestDTO) {
-        return TeacherPreCouncil.builder()
-                //.teacher(TeacherService.buscarProfessorEntidade(requestDTO.teacher_id())) // TROCAR QUANDO A TEACHER SERVICE ESTIVER FEITA
-                .createdAt(new Date()) // Define a data de criação
-                .startDate(null) // Será definido depois
-                .endDate(null) // Será definido depois
-                .council(null) // Será definido quando vincular a um conselho
-                .classe(null) // Será definido depois
-                .isFilled(false) // Começa como não preenchido
-                .subject(null) // Será definido depois
-                .feedbacks(new ArrayList<>()) // Começa com uma lista vazia
-                .build();
     }
 }
 

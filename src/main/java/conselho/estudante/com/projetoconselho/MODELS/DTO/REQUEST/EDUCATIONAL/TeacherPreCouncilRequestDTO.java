@@ -1,5 +1,13 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.TeacherPreCouncil;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import java.util.Date;
 
 /**
  * DTO (Data Transfer Object) para representar os dados de entrada ao criar um pré-conselho de professores (TeacherPreCouncil).
@@ -8,6 +16,8 @@ import jakarta.validation.constraints.NotNull;
  * @author Cauã Justimiano Dutra
  * @since 19/03/2025
  */
+@AllArgsConstructor
+@Builder
 public record TeacherPreCouncilRequestDTO(
 
         /**
@@ -15,6 +25,28 @@ public record TeacherPreCouncilRequestDTO(
          * Não pode ser nulo.
          */
         @NotNull
-        Long teacher_id
+        Teacher teacher,
+
+        @NotNull
+        Council council,
+
+        @NotNull
+        Subject subject,
+
+        @NotNull
+        Date endDate,
+
+        @NotNull
+        Classe classe
 ) {
+
+        public TeacherPreCouncil toEntity() {
+                return TeacherPreCouncil.builder()
+                        .teacher(teacher)
+                        .council(council)
+                        .subject(subject)
+                        .endDate(endDate)
+                        .classe(classe)
+                        .build();
+        }
 }

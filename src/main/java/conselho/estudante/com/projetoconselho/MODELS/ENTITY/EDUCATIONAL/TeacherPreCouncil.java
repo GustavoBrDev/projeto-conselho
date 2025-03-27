@@ -122,11 +122,11 @@ public class TeacherPreCouncil implements PreCouncil {
                 .createdAt(this.createdAt)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
-                /*.council(this.council.toDTO())
-                .classe(this.classe.toDTO())*/
+                .council(this.council.toDTO())
+                .classe(this.classe.toDTO())
                 .isFilled(this.isFilled)
-                //.teacher(this.teacher.toDTO())
-                //.subject(this.subject.toDTO())
+                .teacher(this.teacher.toDTO())
+                .subject(this.subject.toDTO())
                 .build();
     }
 }
