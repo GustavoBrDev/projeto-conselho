@@ -13,7 +13,6 @@ import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosE
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.ClasseRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ClassLogsService;
-import conselho.estudante.com.projetoconselho.SERVICES.LOGS.CourseLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -244,16 +243,15 @@ public class ClasseService {
     /**
      * Adiciona um aluno a uma turma especificada.
      *
-     * @param classe A turma à qual o aluno será adicionado.
+     * @param classe  A turma à qual o aluno será adicionado.
      * @param student O aluno a ser adicionado.
-     * @param actor Usuário ator da solicitação.
-     * @return Uma representação DTO da turma após a adição do aluno.
+     * @param actor   Usuário ator da solicitação.
      * @throws NaoEncontradoException se o aluno não for encontrado ou não puder ser adicionado.
      */
-    public ClasseResponseDTO addStudentToClasse(Classe classe, Student student, User actor){
+    public void addStudentToClasse(Classe classe, Student student, User actor){
         if (classe.addStudent(student)) {
             logsService.create(actor, classe, Collections.singletonList(new AddItem("students", (Object) student)), "add");
-            return repository.save(classe).toDTO();
+            repository.save(classe).toDTO();
         } else {
             throw new NaoEncontradoException("Aluno nao encontrado");
         }
@@ -263,16 +261,15 @@ public class ClasseService {
     /**
      * Remove um aluno de uma turma especificada.
      *
-     * @param classe A turma da qual o aluno será removido.
+     * @param classe  A turma da qual o aluno será removido.
      * @param student O aluno a ser removido.
-     * @param actor Usuário ator da solicitação.
-     * @return Uma representação DTO da turma após a remoção do aluno.
+     * @param actor   Usuário ator da solicitação.
      * @throws NaoEncontradoException se o aluno não for encontrado ou não puder ser removido.
      */
-    public ClasseResponseDTO removeStudentFromClasse(Classe classe, Student student, User actor){
+    public void removeStudentFromClasse(Classe classe, Student student, User actor){
         if (classe.removeStudent(student)) {
             logsService.create(actor, classe, Collections.singletonList(new AddItem("students", (Object) student)), "remove");
-            return repository.save(classe).toDTO();
+            repository.save(classe).toDTO();
         } else {
             throw new NaoEncontradoException("Aluno nao encontrado");
         }

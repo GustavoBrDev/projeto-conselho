@@ -1,9 +1,12 @@
 package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.TEACHER_PRE_COUNCIL;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.PersonalFeedbackRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.TeacherPreCouncilRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.TeacherPreCouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.PersonalFeedback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.TeacherPreCouncil;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.AddItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
@@ -262,6 +265,61 @@ public class TeacherPreCouncilService {
         // Retorna a lista de resultados com os filtros aplicados
         return repository.findAll(specification);
     }
+
+    /**
+     * Adiciona um feedback ao pré-conselho de professor.
+     *
+     * @param id ID do pré-conselho de professor.
+     * @param feedback Feedback a ser adicionado.
+     * @return O pré-conselho de professor com o feedback adicionado, convertido para DTO.
+     * @throws NaoEncontradoException Caso o pré-conselho de professor nao seja encontrado.
+     * @author Gustavo Stinghen
+     * @since 27/03/2025
+     */
+    public TeacherPreCouncilResponseDTO addFeedback ( Long id, PersonalFeedbackRequestDTO feedback ) {
+
+        try {
+            TeacherPreCouncil teacherPreCouncil = repository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Pré conselho de professor nao encontrado"));
+
+            if ( ! teacherPreCouncil.addFeedback(feedback.convert())){
+                throw new NaoEncontradoException("Pré conselho de professor nao encontrado");
+            }
+
+            logsService.create( teacherPreCouncil, Collections.singletonList(new AddItem("feedbacks", (Object) feedback)), "add");
+            return repository.save(teacherPreCouncil).toDTO();
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Pré conselho de professor nao encontrado", e);
+        }
+    }
+
+    /**
+     * Remove um feedback do pré-conselho de professor.
+     *
+     * @param id ID do pré-conselho de professor.
+     * @param feedback Feedback a ser removido.
+     * @return O pré-conselho de professor com o feedback removido, convertido para DTO.
+     * @throws NaoEncontradoException Caso o pré-conselho de professor nao seja encontrado.
+     * @author Gustavo Stinghen
+     * @since 27/03/2025
+     */
+    public TeacherPreCouncilResponseDTO removeFeedback ( Long id, PersonalFeedbackRequestDTO feedback ) {
+
+        try {
+            TeacherPreCouncil teacherPreCouncil = repository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Pré conselho de professor nao encontrado"));
+
+            if ( ! teacherPreCouncil.removeFeedback(feedback.convert())){
+                throw new NaoEncontradoException("Pré conselho de professor nao encontrado");
+            }
+
+            logsService.create( teacherPreCouncil, Collections.singletonList(new AddItem("feedbacks", (Object) feedback)), "remove");
+            return repository.save(teacherPreCouncil).toDTO();
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Pré conselho de professor nao encontrado", e);
+        }
+    }
+    
 }
 
 

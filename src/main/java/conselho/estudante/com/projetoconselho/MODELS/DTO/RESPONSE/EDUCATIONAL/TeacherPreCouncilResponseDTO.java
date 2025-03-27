@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * DTO (Data Transfer Object) para representar os dados de resposta de um pré-conselho de professores (TeacherPreCouncil).
@@ -66,6 +67,8 @@ public record TeacherPreCouncilResponseDTO(
         /**
          * DTO da Disciplina associada ao pré-conselho.
          */
-        SubjectResponseDTO subject
+        SubjectResponseDTO subject,
+
+        List<PersonalFeedbackResponseDTO> feedbacks
 ) {
 }

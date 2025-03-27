@@ -127,6 +127,7 @@ public class TeacherPreCouncil implements PreCouncil {
                 .isFilled(this.isFilled)
                 .teacher(this.teacher.toDTO())
                 .subject(this.subject.toDTO())
+                .feedbacks(this.feedbacks.stream().map(PersonalFeedback::convert).toList())
                 .build();
     }
 }
