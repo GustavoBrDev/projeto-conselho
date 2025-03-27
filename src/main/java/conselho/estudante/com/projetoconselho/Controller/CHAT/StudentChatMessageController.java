@@ -19,6 +19,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller para gerenciamento de mensagens de chat de estudantes
+ * @author Cauã Dutra
+ * @since 24/03/2025
+ * @see StudentChatMessageService
+ */
+
 @RestController
 @RequestMapping("/chat/student/messages")
 @AllArgsConstructor

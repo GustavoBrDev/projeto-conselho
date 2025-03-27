@@ -19,6 +19,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+
+/**
+ * Controller para gerenciamento de mensagens de chat de orientadores
+ @author Cauã Dutra
+ @since 24/03/2025
+ @see AdvisorChatMessageService
+ */
+
 @RestController
 @RequestMapping("/chat/advisor/messages")
 @AllArgsConstructor
