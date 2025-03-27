@@ -22,7 +22,7 @@ public record AdvisorRequestDTO(
                 .image(this.image)
                 .email(this.email)
                 .registration(this.registration)
-                .password(this.password)  // A senha será criptografada no service
+                .password(this.password)
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.Date;
  * @author Gustavo Stinghen
  */
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
