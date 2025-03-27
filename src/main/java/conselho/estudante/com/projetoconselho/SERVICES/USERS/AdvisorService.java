@@ -1,6 +1,5 @@
 package conselho.estudante.com.projetoconselho.SERVICES.USERS;
 
-
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.AdvisorRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.AdvisorResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
@@ -12,31 +11,28 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-
 import jakarta.persistence.criteria.Predicate;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-
 @Service
 @AllArgsConstructor
 public class AdvisorService {
 
-
     private final AdvisorRepository repository;
     private final PasswordEncoder passwordEncoder;
-
 
     // Regex para validação de email
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
-
 
     /**
      * Cria um novo orientador com validações
@@ -44,34 +40,29 @@ public class AdvisorService {
     public AdvisorResponseDTO create(AdvisorRequestDTO advisorRequestDTO) {
         validateAdvisorRequest(advisorRequestDTO);
 
-
         Advisor advisor = advisorRequestDTO.convert();
-
 
         if (repository.existsByEmail(advisor.getEmail())) {
             throw new DadosDuplicadosException("Email já cadastrado");
         }
 
-
         if (repository.existsByRegistration(advisor.getRegister())) {
             throw new DadosDuplicadosException("Matrícula já cadastrada");
         }
-
 
         // Valida formato do email
         if (!isValidEmail(advisor.getEmail())) {
             throw new IllegalArgumentException("Formato de email inválido");
         }
 
-
         // Criptografa a senha antes de salvar
         advisor.setPassword(passwordEncoder.encode(advisor.getPassword()));
         advisor.setCreatedAt(new Date());
-
+        // Define o username como email por padrão
+        advisor.setUsername(advisor.getEmail());
 
         return convertToDTO(repository.save(advisor));
     }
-
 
     /**
      * Atualiza um orientador existente
@@ -79,14 +70,11 @@ public class AdvisorService {
     public AdvisorResponseDTO update(Long id, AdvisorRequestDTO advisorRequestDTO) {
         validateAdvisorRequest(advisorRequestDTO);
 
-
         Advisor existingAdvisor = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
 
-
         Advisor advisor = advisorRequestDTO.convert();
         advisor.setId(id);
-
 
         // Verifica se o email já está em uso por outro orientador
         repository.findByEmail(advisor.getEmail())
@@ -96,7 +84,6 @@ public class AdvisorService {
                     }
                 });
 
-
         // Verifica se a matrícula já está em uso por outro orientador
         repository.findByRegistration(advisor.getRegister())
                 .ifPresent(a -> {
@@ -105,21 +92,18 @@ public class AdvisorService {
                     }
                 });
 
-
         // Valida formato do email
         if (!isValidEmail(advisor.getEmail())) {
             throw new IllegalArgumentException("Formato de email inválido");
         }
 
-
         // Mantém dados que não devem ser alterados no update
         advisor.setPassword(existingAdvisor.getPassword());
         advisor.setCreatedAt(existingAdvisor.getCreatedAt());
-
+        advisor.setUsername(existingAdvisor.getUsername());
 
         return convertToDTO(repository.save(advisor));
     }
-
 
     /**
      * Métodos PATCH para edições específicas
@@ -129,21 +113,17 @@ public class AdvisorService {
             throw new IllegalArgumentException("Nome não pode ser vazio");
         }
 
-
         Advisor advisor = getAdvisorById(id);
         advisor.setName(name);
         return convertToDTO(repository.save(advisor));
     }
-
 
     public AdvisorResponseDTO editEmail(Long id, String email) {
         if (StringUtils.isBlank(email) || !isValidEmail(email)) {
             throw new IllegalArgumentException("Email inválido");
         }
 
-
         Advisor advisor = getAdvisorById(id);
-
 
         repository.findByEmail(email)
                 .ifPresent(a -> {
@@ -152,20 +132,20 @@ public class AdvisorService {
                     }
                 });
 
-
         advisor.setEmail(email);
+        // Atualiza também o username se for o mesmo que o email antigo
+        if (advisor.getUsername().equals(advisor.getEmail())) {
+            advisor.setUsername(email);
+        }
         return convertToDTO(repository.save(advisor));
     }
-
 
     public AdvisorResponseDTO editRegistration(Long id, Long registration) {
         if (registration == null) {
             throw new IllegalArgumentException("Matrícula não pode ser nula");
         }
 
-
         Advisor advisor = getAdvisorById(id);
-
 
         repository.findByRegistration(registration)
                 .ifPresent(a -> {
@@ -174,30 +154,25 @@ public class AdvisorService {
                     }
                 });
 
-
         advisor.setRegister(registration);
         return convertToDTO(repository.save(advisor));
     }
-
 
     public AdvisorResponseDTO editPassword(Long id, String password) {
         if (StringUtils.isBlank(password)) {
             throw new IllegalArgumentException("Senha não pode ser vazia");
         }
 
-
         Advisor advisor = getAdvisorById(id);
         advisor.setPassword(passwordEncoder.encode(password));
         return convertToDTO(repository.save(advisor));
     }
-
 
     public AdvisorResponseDTO editImage(Long id, String image) {
         Advisor advisor = getAdvisorById(id);
         advisor.setImage(image);
         return convertToDTO(repository.save(advisor));
     }
-
 
     /**
      * Métodos GET para consultas
@@ -210,11 +185,9 @@ public class AdvisorService {
         return advisors.map(this::convertToDTO);
     }
 
-
     public AdvisorResponseDTO findAdvisorById(Long id) {
         return convertToDTO(getAdvisorById(id));
     }
-
 
     public AdvisorResponseDTO findAdvisorByEmail(String email) {
         return repository.findByEmail(email)
@@ -222,14 +195,12 @@ public class AdvisorService {
                 .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
     }
 
-
     /**
      * Métodos de busca com filtros
      */
     public Page<AdvisorResponseDTO> searchAdvisors(String term, Pageable pageable) {
         Specification<Advisor> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-
 
             if (StringUtils.isNotBlank(term)) {
                 String likeTerm = "%" + term.toLowerCase() + "%";
@@ -240,14 +211,11 @@ public class AdvisorService {
                 ));
             }
 
-
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
-
         return repository.findAll(spec, pageable).map(this::convertToDTO);
     }
-
 
     /**
      * Método DELETE
@@ -259,7 +227,6 @@ public class AdvisorService {
         repository.deleteById(id);
     }
 
-
     /**
      * Métodos auxiliares
      */
@@ -268,25 +235,21 @@ public class AdvisorService {
                 .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
     }
 
-
     private boolean isValidEmail(String email) {
         return email != null && EMAIL_PATTERN.matcher(email).matches();
     }
 
-
     private void validateAdvisorRequest(AdvisorRequestDTO request) {
         Assert.notNull(request, "Dados do orientador não podem ser nulos");
-        Assert.hasText(request.getName(), "Nome é obrigatório");
-        Assert.hasText(request.getEmail(), "Email é obrigatório");
-        Assert.hasText(request.getPassword(), "Senha é obrigatória");
-        Assert.notNull(request.getRegister(), "Matrícula é obrigatória");
+        Assert.hasText(request.name(), "Nome é obrigatório");
+        Assert.hasText(request.email(), "Email é obrigatório");
+        Assert.hasText(request.password(), "Senha é obrigatória");
+        Assert.notNull(request.registration(), "Matrícula é obrigatória");
 
-
-        if (!isValidEmail(request.getEmail())) {
+        if (!isValidEmail(request.email())) {
             throw new IllegalArgumentException("Formato de email inválido");
         }
     }
-
 
     private AdvisorResponseDTO convertToDTO(Advisor advisor) {
         return new AdvisorResponseDTO(

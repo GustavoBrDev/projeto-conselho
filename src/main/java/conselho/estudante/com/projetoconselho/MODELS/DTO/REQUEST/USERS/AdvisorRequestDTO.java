@@ -1,6 +1,5 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
