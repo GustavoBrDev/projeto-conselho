@@ -1,6 +1,5 @@
 package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
-
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.RepresentativePreCouncilRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.RepresentativePreCouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,12 +24,11 @@ import java.util.stream.Collectors;
 /**
  * Serviço para operações relacionadas a pré-conselhos de representantes.
  *
- * <p>Esta classe fornece todas as operações CRUD para pré-conselhos de representantes,
+ * Esta classe fornece todas as operações CRUD para pré-conselhos de representantes,
  * incluindo criação, atualização, consulta e exclusão, além de operações específicas
- * como gestão de feedbacks e filtros avançados.</p>
+ * como gestão de feedbacks e filtros avançados.
  *
  * @author Alex Zastrow
- * @since 24/03/2025
  *
  * @see RepresentativePreCouncil
  * @see RepresentativePreCouncilRequestDTO
