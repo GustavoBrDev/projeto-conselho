@@ -7,6 +7,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT.StudentChatMessageRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ChatMessageLogsService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ public class StudentChatMessageService {
 
     private StudentChatMessageRepository repository;
     private ChatMessageLogsService logsService;
+    private StudentService studentService;
 
     /**
      * Método para criar uma mensagem de chat de estudantes
@@ -67,13 +69,19 @@ public class StudentChatMessageService {
 
     /**
      * Método para buscar todas as mensagens de chat de estudantes de um estudante
-     * @param student estudante que enviou a mensagem
+     * @param id id do estudante
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link ChatMessageResponseDTO}
      */
-    public Page<ChatMessageResponseDTO> findByStudent (Student student, Pageable pageable) {
+    public Page<ChatMessageResponseDTO> findByStudent (Long id, Pageable pageable) {
 
         try {
+            Student student = studentService.findObjectStudent(id);
+
+            if (student == null) {
+                throw new NaoEncontradoException("Estudante nao encontrado");
+            }
+
             return repository.findByStudent(student, pageable).map(StudentChatMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");

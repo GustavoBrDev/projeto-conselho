@@ -23,7 +23,7 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long>, JpaSpec
     /**
      * Verifica a existência de um orientador com a matrícula fornecida no banco de dados.
      */
-    boolean existsByRegistration(Long registration);
+    boolean existsByRegister(Long register);
 
 
     /**
@@ -35,5 +35,5 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long>, JpaSpec
     /**
      * Encontra um orientador pela sua matrícula.
      */
-    Optional<Advisor> findByRegistration(Long registration);
+    Optional<Advisor> findByRegister(Long register);
 }

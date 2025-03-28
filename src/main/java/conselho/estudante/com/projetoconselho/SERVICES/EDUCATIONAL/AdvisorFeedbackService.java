@@ -10,6 +10,7 @@ import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoExc
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.AdvisorFeedbackRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.COUNCIL.CouncilService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.FeedbackLogsService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.AdvisorService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

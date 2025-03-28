@@ -18,8 +18,6 @@ import lombok.NoArgsConstructor;
  * @see Course
  * @see Representative
  */
-@AllArgsConstructor
-@Data
 @Builder
 public record ClasseResponseDTO(
         Long id,

@@ -26,8 +26,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
      * @param username
      * @return
      */
-    Optional<Teacher> findByUsername(String username);
-
     /*
      * Filtros para listar professores por curso (usando IDs)
      * @param courseId
@@ -59,11 +57,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
      */
     boolean existsByEmail(String email);
 
-    /*
-     * Verificar se existe um professor com determinado username (para validação)
-     * @param username
-     * @return
-     */
-    boolean existsByUsername(String username);
+
 }
 

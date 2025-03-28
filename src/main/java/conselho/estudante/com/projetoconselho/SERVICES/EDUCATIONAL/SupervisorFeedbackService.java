@@ -36,14 +36,16 @@ public class SupervisorFeedbackService {
      * @return Feedback criado
      */
     public SupervisorFeedbackResponseDTO create(SupervisorFeedbackRequestDTO requestDTO) {
-        Council council = councilService.findById(requestDTO.councilId())
+        /*Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
         Supervisor supervisor = supervisorService.findById(requestDTO.supervisorId())
                 .orElseThrow(() -> { throw new NaoEncontradoException("Supervisor não encontrado"); });
 
         SupervisorFeedback feedback = requestDTO.convert(council, supervisor);
-        return repository.save(feedback).convert();
+        return repository.save(feedback).convert();*/
+
+        return null;
     }
 
     /**

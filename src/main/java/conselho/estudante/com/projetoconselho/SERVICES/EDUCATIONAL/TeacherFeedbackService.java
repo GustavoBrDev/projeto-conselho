@@ -8,6 +8,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.TeacherFeedbackRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.COUNCIL.CouncilService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,14 +34,15 @@ public class TeacherFeedbackService {
      * @return Feedback criado
      */
     public TeacherFeedbackResponseDTO create(TeacherFeedbackRequestDTO requestDTO) {
-        Council council = councilService.findById(requestDTO.councilId())
+       /* Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
         Teacher teacher = teacherService.findById(requestDTO.teacherId())
                 .orElseThrow(() -> new NaoEncontradoException("Professor não encontrado"));
 
         TeacherFeeback feedback = requestDTO.convert(council, teacher);
-        return repository.save(feedback).convert();
+        return repository.save(feedback).convert();*/
+        return null;
     }
 
     /**

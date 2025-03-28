@@ -7,6 +7,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT.AdvisorChatMessageRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ChatMessageLogsService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.AdvisorService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class AdvisorChatMessageService {
 
     private AdvisorChatMessageRepository repository;
     private ChatMessageLogsService logsService;
+    private AdvisorService advisorService;
 
     /**
      * Método para criar uma mensagem de chat de estudantes
@@ -62,13 +64,19 @@ public class AdvisorChatMessageService {
 
     /**
      * Método para buscar todas as mensagens de chat de estudantes de um estudante
-     * @param advisor estudante que enviou a mensagem
+     * @param id id do estudante
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link ChatMessageResponseDTO}
      */
-    public Page<ChatMessageResponseDTO> findByAdvisor (Advisor advisor, Pageable pageable) {
+    public Page<ChatMessageResponseDTO> findByAdvisor (Long id, Pageable pageable) {
 
         try {
+            Advisor advisor = advisorService.getAdvisorById(id);
+
+            if (advisor == null) {
+                throw new NaoEncontradoException("Orientador nao encontrado");
+            }
+
             return repository.findByAdvisor(advisor, pageable).map(AdvisorChatMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");
