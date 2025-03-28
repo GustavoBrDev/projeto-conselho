@@ -1,41 +1,30 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS;
 
-import jakarta.validation.constraints.Email;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 
-import java.util.List;
-
-/**
- * Classe DTO para receber dados de criação e atualização de Teacher.
- * @author Alex Zastrow
- */
-@Data
-public class TeacherRequestDTO {
-
-    @NotBlank(message = "O nome é obrigatório.")
-    private String name;
-
-    @NotBlank(message = "O username é obrigatório.")
-    private String username;
-
-    @Email(message = "O email deve ser válido.")
-    @NotBlank(message = "O email é obrigatório.")
-    private String email;
-
-    @NotBlank(message = "A senha é obrigatória.")
-    private String password;
-
-    @NotNull(message = "O cadastro é obrigatório.")
-    private Long register;
-
-    private String image;
-
-    /*
-     * Lista de IDs de cursos, disciplinas e turnos
-     */
-    private List<Long> courses;
-    private List<Long> subjects;
-    private List<Long> shifts;
+@Builder
+public record TeacherRequestDTO(
+        @NotNull
+        @Positive
+        Long register,
+        @NotBlank
+        String name,
+        @NotBlank
+        String email,
+        String password,
+        String image
+) {
+    public Teacher convert() {
+        return Teacher.builder()
+                .register(this.register)
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .image(this.image)
+                .build();
+    }
 }
