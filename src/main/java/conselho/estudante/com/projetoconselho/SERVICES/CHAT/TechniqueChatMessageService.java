@@ -7,6 +7,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.CHAT.TechniqueChatMessageRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.ChatMessageLogsService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE.TechniqueService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class TechniqueChatMessageService {
 
     private TechniqueChatMessageRepository repository;
     private ChatMessageLogsService logsService;
+    private TechniqueService techniqueService;
 
     /**
      * Método para criar uma mensagem de chat de estudantes
@@ -62,13 +64,14 @@ public class TechniqueChatMessageService {
 
     /**
      * Método para buscar todas as mensagens de chat de estudantes de um estudante
-     * @param technique estudante que enviou a mensagem
+     * @param id id do estudante
      * @param pageable informacoes de paginacao
      * @return {@link Page} de {@link ChatMessageResponseDTO}
      */
-    public Page<ChatMessageResponseDTO> findByTechnique (Technique technique, Pageable pageable) {
+    public Page<ChatMessageResponseDTO> findByTechnique (Long id, Pageable pageable) {
 
         try {
+            Technique technique = techniqueService.findObjectTechnique(id);
             return repository.findByTechnique(technique, pageable).map(TechniqueChatMessage::convert);
         } catch (Exception e) {
            throw new NaoEncontradoException("Chat nao encontrado");

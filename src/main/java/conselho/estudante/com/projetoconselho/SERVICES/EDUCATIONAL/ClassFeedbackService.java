@@ -6,9 +6,9 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Class
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ClassFeedback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.ClasseRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.ClassFeedbackRepository;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ClasseService;
+import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.COUNCIL.CouncilService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,14 +34,15 @@ public class ClassFeedbackService {
      * @return Feedback criado
      */
     public ClassFeedbackResponseDTO create(ClassFeedbackRequestDTO requestDTO) {
-        Council council = councilService.findById(requestDTO.councilId()) //
+        /*Council council = councilService.findById(requestDTO.councilId()) //
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
         Classe classe = classeService.findById(requestDTO.classId())
                 .orElseThrow(() -> new NaoEncontradoException("Classe não encontrada"));
 
         ClassFeedback feedback = requestDTO.convert(council, classe);
-        return repository.save(feedback).convert();
+        return repository.save(feedback).convert();*/
+        return null;
     }
 
     /**

@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.SubjectRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.TeacherFeeback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
@@ -18,9 +19,11 @@ import java.util.Date;
 @Builder
 public record TeacherFeedbackRequestDTO(
         @NotNull
-        Long councilId,
+        CouncilRequestDTO council,
         @NotNull
         Long teacherId,
+        @NotNull
+        SubjectRequestDTO subject,
         @NotNull
         Date createdAt,
         @NotBlank
@@ -30,10 +33,11 @@ public record TeacherFeedbackRequestDTO(
         @NotBlank
         String suggestionsText
 ) {
-    public TeacherFeeback convert(Council council, Teacher teacher) {
+    public TeacherFeeback convert() {
         return TeacherFeeback.builder()
-                /*.council(this.council)//.convert()
-                .teacher(this.teacher)//.convert()*/
+                .council(this.council().convert())
+                .subject(this.subject().convert())
+                //.teacher(teacher)
                 .createdAt(this.createdAt)
                 .strengthsText(this.strengthsText)
                 .weaknessesText(this.weaknessesText)

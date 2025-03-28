@@ -5,14 +5,12 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.It
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ItemFeedback;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.ItemFeedbackRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.COUNCIL.CouncilService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 /**
  * Serviço responsável pela gestão dos feedbacks de itens ({@link ItemFeedback}).
@@ -33,11 +31,12 @@ public class ItemFeedbackService {
      * @return Feedback criado
      */
     public ItemFeedbackResponseDTO create(ItemFeedbackRequestDTO requestDTO) {
-        Council council = councilService.findById(requestDTO.councilId())
+        /*Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
         ItemFeedback feedback = requestDTO.convert(council);
-        return repository.save(feedback).convert();
+        return repository.save(feedback).convert();*/
+        return null;
     }
 
     /**

@@ -2,15 +2,12 @@ package conselho.estudante.com.projetoconselho.SERVICES.USERS;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.TeacherRequestDTO;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.TeacherRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
 
 /**
  * Classe para o servico de Teacher
@@ -18,9 +15,9 @@ import java.util.stream.Collectors;
  */
 
 @Service
+@AllArgsConstructor
 public class TeacherService {
 
-    @Autowired
     private TeacherRepository teacherRepository;
 
     /*
@@ -29,7 +26,6 @@ public class TeacherService {
     public Teacher toEntity(TeacherRequestDTO dto) {
         Teacher teacher = new Teacher();
         teacher.setName(dto.getName());
-        teacher.setUsername(dto.getUsername());
         teacher.setEmail(dto.getEmail());
         teacher.setPassword(dto.getPassword());
         teacher.setRegister(dto.getRegister());
@@ -41,17 +37,14 @@ public class TeacherService {
      * Metodo para converter um Teacher para um TeacherResponseDTO
      */
     public TeacherResponseDTO toResponseDTO(Teacher teacher) {
-        TeacherResponseDTO dto = new TeacherResponseDTO();
-        dto.setId(teacher.getId());
-        dto.setName(teacher.getName());
-        dto.setUsername(teacher.getUsername());
-        dto.setEmail(teacher.getEmail());
-        dto.setImage(teacher.getImage());
-        dto.setRegister(teacher.getRegister());
+        TeacherResponseDTO dto = TeacherResponseDTO.builder()
+                .id(teacher.getId())
+                .name(teacher.getName())
+                .email(teacher.getEmail())
+                .image(teacher.getImage())
+                .register(teacher.getRegister())
+                .build();
 
-        dto.setCourses(teacher.getCourses().stream().map(Course::getName).collect(Collectors.toList()));
-        dto.setSubjects(teacher.getSubjects().stream().map(Subject::getName).collect(Collectors.toList()));
-        dto.setShifts(teacher.getShifts().stream().map(Shift::getName).collect(Collectors.toList()));
         return dto;
     }
 
@@ -75,5 +68,17 @@ public class TeacherService {
      */
     public Teacher buscarPorId(Long id) {
         return teacherRepository.findById(id).orElseThrow(() -> new RuntimeException("Teacher not found"));
+    }
+
+    /**
+     * Metodo para buscar um Teacher por id
+     * @param id id do Teacher
+     * @return Teacher em formato de {@link Teacher}
+     * @author Gustavo Stinghen
+     * @since 26/03/2025
+     * @see Teacher
+     */
+    public Teacher getObjectTeacher(Long id) {
+        return teacherRepository.findById(id).orElse(null);
     }
 }

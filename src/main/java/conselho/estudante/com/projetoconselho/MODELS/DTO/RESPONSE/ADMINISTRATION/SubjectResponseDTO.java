@@ -10,7 +10,6 @@ import lombok.Builder;
  * @since 12/03/2025
  */
 
-@AllArgsConstructor
 @Builder
 public record SubjectResponseDTO(
     Long id,
