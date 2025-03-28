@@ -169,7 +169,8 @@ public class FeedbackGroupService {
      */
     public Page<FeedbackGroupResponseDTO> smartSearch(String term, Pageable pageable) {
         // TODO: Implementar pesquisa inteligente (Camilly)
-        return repository.searchByPersonalFeedbackAttributes(term, pageable).map(FeedbackGroup::convert);
+        //return repository.searchByPersonalFeedbackAttributes(term, pageable).map(FeedbackGroup::convert);
+        return null;
     }
 
     /**

@@ -19,7 +19,7 @@ public interface SupervisorRepository extends JpaRepository<Supervisor, Long> {
 
     Page<Supervisor> findByCourses_Id(Long courseId, Pageable pageable);
 
-    Page<Supervisor> findByClasses_Id(Long classId, Pageable pageable);
+    //Page<Supervisor> findByClasses_Id(Long classId, Pageable pageable);
 
     @Query("SELECT s FROM Supervisor s WHERE " +
             "LOWER(s.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +

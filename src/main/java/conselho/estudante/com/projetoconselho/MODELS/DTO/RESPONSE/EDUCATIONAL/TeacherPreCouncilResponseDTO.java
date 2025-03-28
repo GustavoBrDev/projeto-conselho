@@ -20,7 +20,6 @@ import java.util.List;
  * @author Cauã Justimiano Dutra
  * @since 19/03/2025
  */
-@AllArgsConstructor
 @Builder
 public record TeacherPreCouncilResponseDTO(
 

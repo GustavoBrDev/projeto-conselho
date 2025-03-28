@@ -4,6 +4,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Class
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class RepresentativePreCouncil implements PreCouncil {
 
 

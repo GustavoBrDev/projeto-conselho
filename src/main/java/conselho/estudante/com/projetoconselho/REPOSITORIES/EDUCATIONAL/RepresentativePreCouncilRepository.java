@@ -36,8 +36,8 @@ public interface RepresentativePreCouncilRepository extends
      * @param pageable Configuração de paginação
      * @return Página de pré-conselhos da classe especificada
      */
-    @Query("SELECT p FROM RepresentativePreCouncil p WHERE p.classe.id = :classeId")
-    Page<RepresentativePreCouncil> findByClasse(@Param("classeId") Long classeId, Pageable pageable);
+    /*@Query("SELECT p FROM RepresentativePreCouncil p WHERE p.classe.id = :classeId")
+    Page<RepresentativePreCouncil> findByClasse(@Param("classeId") Long classeId, Pageable pageable);*/
 
 
     /**
@@ -52,14 +52,14 @@ public interface RepresentativePreCouncilRepository extends
      * @param pageable Configuração de paginação
      * @return Página de pré-conselhos que correspondem ao critério de busca
      */
-    @Query("SELECT DISTINCT p FROM RepresentativePreCouncil p " +
+    /*@Query("SELECT DISTINCT p FROM RepresentativePreCouncil p " +
             "LEFT JOIN p.classe c " +
             "LEFT JOIN p.council co " +
             "LEFT JOIN p.teachers t " +
             "WHERE (LOWER(c.name) LIKE LOWER(CONCAT('%', :term, '%')) " +
             "OR CAST(co.id AS string) LIKE CONCAT('%', :term, '%') " +
             "OR LOWER(t.name) LIKE LOWER(CONCAT('%', :term, '%'))")
-    Page<RepresentativePreCouncil> search(@Param("term") String term, Pageable pageable);
+    Page<RepresentativePreCouncil> search(@Param("term") String term, Pageable pageable);*/
 
 
     /**
@@ -75,14 +75,14 @@ public interface RepresentativePreCouncilRepository extends
      * @param pageable Configuração de paginação
      * @return Página de pré-conselhos no intervalo especificado
      */
-    @Query("SELECT p FROM RepresentativePreCouncil p WHERE " +
+    /*@Query("SELECT p FROM RepresentativePreCouncil p WHERE " +
             "(p.startDate BETWEEN :startDate AND :endDate) OR " +
             "(p.endDate BETWEEN :startDate AND :endDate) OR " +
             "(p.startDate <= :startDate AND p.endDate >= :endDate)")
     Page<RepresentativePreCouncil> findByDateRange(
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate,
-            Pageable pageable);
+            Pageable pageable);*/
 
 
     /**

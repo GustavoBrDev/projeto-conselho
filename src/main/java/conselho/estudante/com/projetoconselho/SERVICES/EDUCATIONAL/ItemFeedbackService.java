@@ -31,11 +31,12 @@ public class ItemFeedbackService {
      * @return Feedback criado
      */
     public ItemFeedbackResponseDTO create(ItemFeedbackRequestDTO requestDTO) {
-        Council council = councilService.findById(requestDTO.councilId())
+        /*Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
         ItemFeedback feedback = requestDTO.convert(council);
-        return repository.save(feedback).convert();
+        return repository.save(feedback).convert();*/
+        return null;
     }
 
     /**

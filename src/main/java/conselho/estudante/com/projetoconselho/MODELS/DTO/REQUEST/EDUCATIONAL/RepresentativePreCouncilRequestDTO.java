@@ -1,6 +1,7 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL;
 
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.AvaliableTeacher;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
@@ -15,9 +16,9 @@ public record RepresentativePreCouncilRequestDTO(
         @NotNull Date startDate,
         @NotNull Date endDate,
         @NotNull Long classeId,
-        List<Long> teacherIds,
-        Long advisorFeedbackId,
-        Long supervisorFeedbackId,
-        List<Long> itemFeedbackIds
+        List<AvaliableTeacher> teachers,
+        AdvisorFeedbackRequestDTO advisorFeedback,
+        SupervisorFeedbackRequestDTO supervisorFeedback,
+        List<ItemFeedbackRequestDTO> itemFeedback
 ) {
 }
