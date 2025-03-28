@@ -183,6 +183,24 @@ public class SubjectService {
     }
 
     /**
+     * Busca uma matéria pelo seu ID.
+     *
+     * @param id ID da matéria.
+     * @return o objeto da materia em forma de {@link Subject}.
+     * @throws NaoEncontradoException se a matéria nao for encontrada.
+     * @see Subject
+     * @author Gustavo Stinghen
+     * @since 26/03/2025
+     */
+    public Subject getObjectSubject(Long id) {
+        try {
+            return repository.findById(id).get();
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Matéria nao encontrada");
+        }
+    }
+
+    /**
      * Adiciona um professor a uma matéria.
      *
      * @param subject Matéria à qual o professor será adicionado.

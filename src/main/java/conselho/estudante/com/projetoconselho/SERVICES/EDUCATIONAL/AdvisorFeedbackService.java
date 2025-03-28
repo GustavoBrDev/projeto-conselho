@@ -5,12 +5,10 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.Ad
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.AdvisorFeeback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Feedback;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.FeedbackLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.AdvisorFeedbackRepository;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.AdvisorRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.COUNCIL.CouncilService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.FeedbackLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -43,15 +41,8 @@ public class AdvisorFeedbackService {
      * @return Feedback criado
      */
     public AdvisorFeedbackResponseDTO create(AdvisorFeedbackRequestDTO requestDTO) {
-        Council council = councilService.findById(requestDTO.councilId())
-                .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
-
-        Advisor advisor = advisorService.findById(requestDTO.advisorId())
-                .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
-
-        AdvisorFeeback feedback = requestDTO.convert(council, advisor);
-        logsService.create(advisor, (Feedback) feedback, "create");
-        return repository.save(feedback).convert();
+        AdvisorFeeback advisorFeeback = requestDTO.convert();
+        return repository.save(advisorFeeback).convert();
     }
 
     /**

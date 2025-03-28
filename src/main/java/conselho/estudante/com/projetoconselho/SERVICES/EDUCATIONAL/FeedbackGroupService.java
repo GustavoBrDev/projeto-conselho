@@ -1,8 +1,9 @@
 package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.FeedbackGroupRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.FeedbackGroupResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ClassFeedback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.FeedbackGroup;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.PersonalFeedback;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.FeedbackGroupRepository;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,10 @@ import java.util.Date;
  * Contém operações CRUD e métodos para manipulação de feedbacks por conselho.
  * @author Camilly
  * @since 19/03/2025
+ *
+ * Atualização em 27/03/2025
+ * Reestruturação da service, pois ela é interna
+ * @author Gustavo Stinghen
  */
 @Service
 @AllArgsConstructor
@@ -27,34 +32,43 @@ public class FeedbackGroupService {
     /**
      * Cria um novo grupo de feedbacks.
      *
-     * @param requestDTO Dados para criação do grupo
-     * @return Grupo de feedbacks criado
+     * @param personalFeedback PersonalFeedback associado ao grupo
+     * @param classFeedback    ClassFeedback associado ao grupo
+     * @param date             Data do grupo
      */
-    public FeedbackGroupResponseDTO create(FeedbackGroupRequestDTO requestDTO) {
-        FeedbackGroup feedbackGroup = new FeedbackGroup();
-        feedbackGroup.setDate(requestDTO.date());
-        feedbackGroup.setPersonalFeedbackId(requestDTO.personalFeedbackId());
-        feedbackGroup.setClassFeedbackId(requestDTO.classFeedbackId());
+    public void create(PersonalFeedback personalFeedback, ClassFeedback classFeedback, Date date) {
 
-        return repository.save(feedbackGroup).convert();
+        FeedbackGroup group = FeedbackGroup.builder()
+                .date(date)
+                .personalFeedback(personalFeedback)
+                .classFeedback(classFeedback)
+                .build();
+
+        repository.save(group);
     }
 
     /**
-     * Atualiza um grupo de feedbacks existente.
+     * Edita um grupo de feedbacks.
      *
-     * @param id         ID do grupo a ser atualizado
-     * @param requestDTO Dados atualizados
-     * @return Grupo de feedbacks atualizado
+     * @param id               ID do grupo
+     * @param personalFeedback PersonalFeedback associado ao grupo
+     * @param classFeedback    ClassFeedback associado ao grupo
+     * @param date             Data do grupo
      */
-    public FeedbackGroupResponseDTO update(Long id, FeedbackGroupRequestDTO requestDTO) {
-        FeedbackGroup feedbackGroup = repository.findById(id)
-                .orElseThrow(() -> new NaoEncontradoException("Grupo de feedbacks não encontrado"));
+    public void update( Long id, PersonalFeedback personalFeedback, ClassFeedback classFeedback, Date date) {
 
-        feedbackGroup.setDate(requestDTO.date());
-        feedbackGroup.setPersonalFeedbackId(requestDTO.personalFeedbackId());
-        feedbackGroup.setClassFeedbackId(requestDTO.classFeedbackId());
+        if (!repository.existsById(id)) {
+            throw new NaoEncontradoException("Grupo de feedbacks nao encontrado");
+        }
 
-        return repository.save(feedbackGroup).convert();
+        FeedbackGroup group = FeedbackGroup.builder()
+                .id(id)
+                .date(date)
+                .personalFeedback(personalFeedback)
+                .classFeedback(classFeedback)
+                .build();
+
+        repository.save(group);
     }
 
     /**
@@ -90,8 +104,12 @@ public class FeedbackGroupService {
      * @return Página contendo os grupos de feedbacks do aluno
      */
     public Page<FeedbackGroupResponseDTO> findByStudent(Long studentId, Pageable pageable) {
-        return repository.findByPersonalFeedback_Student_Id(studentId, pageable)
-                .map(FeedbackGroup::convert);
+
+        try {
+            return repository.findByPersonalFeedback_Student_Id(studentId, pageable).map(FeedbackGroup::convert);
+        } catch (NaoEncontradoException e) {
+            throw new NaoEncontradoException("Aluno nao encontrado");
+        }
     }
 
     /**
@@ -114,7 +132,7 @@ public class FeedbackGroupService {
      * @return Página contendo os grupos de feedbacks do conselho
      */
     public Page<FeedbackGroupResponseDTO> findByCouncil(Long councilId, Pageable pageable) {
-        return repository.findByClassFeedback_CouncilId(councilId, pageable).map(FeedbackGroup::convert);
+        return repository.findByClassFeedback_Council_Id(councilId, pageable).map(FeedbackGroup::convert);
     }
 
     /**
@@ -129,19 +147,6 @@ public class FeedbackGroupService {
                 .orElseThrow(() -> new NaoEncontradoException("Grupo de feedbacks não encontrado"));
     }
 
-    /**
-     * Marca um grupo de feedbacks como visualizado.
-     *
-     * @param id ID do grupo
-     * @return Grupo de feedbacks atualizado com status de visualizado
-     */
-    public FeedbackGroupResponseDTO markAsViewed(Long id) {
-        FeedbackGroup feedbackGroup = repository.findById(id)
-                .orElseThrow(() -> new NaoEncontradoException("Grupo de feedbacks não encontrado"));
-
-        feedbackGroup.setViewed(true); // Supondo que a entidade tenha um campo 'viewed'
-        return repository.save(feedbackGroup).convert();
-    }
 
     /**
      * Filtra os grupos de feedbacks por turma.
@@ -163,6 +168,7 @@ public class FeedbackGroupService {
      * @return Página contendo os grupos de feedbacks que correspondem ao termo pesquisado
      */
     public Page<FeedbackGroupResponseDTO> smartSearch(String term, Pageable pageable) {
+        // TODO: Implementar pesquisa inteligente (Camilly)
         return repository.searchByPersonalFeedbackAttributes(term, pageable).map(FeedbackGroup::convert);
     }
 
@@ -170,11 +176,23 @@ public class FeedbackGroupService {
      * Deleta um grupo de feedbacks pelo ID.
      *
      * @param id ID do grupo a ser deletado
+     * @throws NaoEncontradoException Se o grupo de feedbacks nao for encontrado
+     *
+     * Atualizado em 27/03/2025
+     * Adicionado breve tratamento de erro
+     * @author Gustavo Stinghen
      */
     public void delete(Long id) {
-        if (!repository.existsById(id)) {
-            throw new NaoEncontradoException("Grupo de feedbacks não encontrado");
+
+        try {
+
+            if (!repository.existsById(id)) {
+                throw new NaoEncontradoException("Grupo de feedbacks nao encontrado");
+            }
+
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Grupo de feedbacks nao encontrado");
         }
-        repository.deleteById(id);
     }
 }

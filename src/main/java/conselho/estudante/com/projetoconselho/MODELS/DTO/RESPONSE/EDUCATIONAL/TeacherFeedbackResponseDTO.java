@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.SubjectResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.TeacherFeeback;
 import lombok.Builder;
 
@@ -17,18 +18,8 @@ public record TeacherFeedbackResponseDTO(
         Date createdAt,
         String strengthsText,
         String weaknessesText,
-        String suggestionsText
+        String suggestionsText,
+        SubjectResponseDTO subject
 ) {
 
-    public TeacherFeeback convert() {
-        return TeacherFeeback.builder()
-                .id(this.id)
-                .councilId(this.councilId)
-                .teacherId(this.teacherId)
-                .createdAt(this.createdAt)
-                .strengthsText(this.strengthsText)
-                .weaknessesText(this.weaknessesText)
-                .suggestionsText(this.suggestionsText)
-                .build();
-    }
 }

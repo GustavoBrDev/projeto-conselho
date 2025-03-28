@@ -76,4 +76,16 @@ public class TeacherService {
     public Teacher buscarPorId(Long id) {
         return teacherRepository.findById(id).orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
+
+    /**
+     * Metodo para buscar um Teacher por id
+     * @param id id do Teacher
+     * @return Teacher em formato de {@link Teacher}
+     * @author Gustavo Stinghen
+     * @since 26/03/2025
+     * @see Teacher
+     */
+    public Teacher getObjectTeacher(Long id) {
+        return teacherRepository.findById(id).orElse(null);
+    }
 }

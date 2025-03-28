@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.PersonalFeedback;
 import lombok.Builder;
 
@@ -15,17 +16,8 @@ import java.util.Date;
 public record PersonalFeedbackResponseDTO(
         Long id,
         CouncilResponseDTO council,
-        Long studentId,
+        StudentResponseDTO student,
         Date createdAt,
         String text
 ) {
-    public PersonalFeedback convert() {
-        return PersonalFeedback.builder()
-                .id(this.id)
-                .councilId(this.councilId)
-                .studentId(this.studentId)
-                .createdAt(this.createdAt)
-                .text(this.text)
-                .build();
-    }
 }

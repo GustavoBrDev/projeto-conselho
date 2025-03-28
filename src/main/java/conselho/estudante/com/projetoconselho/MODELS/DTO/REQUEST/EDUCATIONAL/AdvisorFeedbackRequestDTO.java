@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.AdvisorRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.AdvisorFeeback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
@@ -18,9 +19,9 @@ import java.util.Date;
 @Builder
 public record AdvisorFeedbackRequestDTO(
         @NotNull
-        Council council,
+        CouncilRequestDTO council,
         @NotNull
-        Advisor advisor,
+        AdvisorRequestDTO advisor,
         @NotNull
         Date createdAt,
         @NotBlank
@@ -30,10 +31,10 @@ public record AdvisorFeedbackRequestDTO(
         @NotBlank
         String suggestionsText
 ) {
-    public AdvisorFeeback convert(Council council, Advisor advisor) {
+    public AdvisorFeeback convert() {
         return AdvisorFeeback.builder()
-                .council(this.council)//.convert()
-                .advisor(this.advisor)
+                .council(this.council.convert())
+                .advisor(this.advisor.convert())
                 .createdAt(this.createdAt)
                 .strengthsText(this.strengthsText)
                 .weaknessesText(this.weaknessesText)
