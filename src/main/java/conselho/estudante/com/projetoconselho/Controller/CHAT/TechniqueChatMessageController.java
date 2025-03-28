@@ -24,16 +24,20 @@ import org.springframework.web.bind.annotation.*;
  * @author Cauã Dutra
  * @since 24/03/2025
  * @see TechniqueChatMessageService
+ *
+ * Atualizado em 28/03/2025
+ * Adicionado uma tag única e modificado service conforme
+ * @author Gustavo Stinghen
  */
 
 @RestController
 @RequestMapping("/chat/technique/messages")
 @AllArgsConstructor
+@Tag( name = "TechniqueChatMessage", description = "Recurso para gerenciamento de mensagens de chat de um técnico pedagógico" )
 public class TechniqueChatMessageController {
 
     private TechniqueChatMessageService service;
 
-    @Tag( name = "TechniqueChatMessage", description = "Recurso para gerenciamento de mensagens de chat de um técnico pedagógico" )
     @Operation(summary = "Cria uma mensagem de chat de um técnico pedagógico", description = "Cria uma mensagem de chat de um técnico pedagógico e retorna a mensagem criada com o status HTTP 201")
     @ApiResponse (responseCode = "201", description = "Mensagem de chat de um técnico pedagógico criada com sucesso",
             content = @Content(schema = @Schema(implementation = ChatMessageResponseDTO.class),
@@ -55,7 +59,6 @@ public class TechniqueChatMessageController {
         }
     }
 
-    @Tag( name = "TechniqueChatMessage", description = "Recurso para gerenciamento de mensagens de chat de um técnico pedagógico" )
     @Operation(summary = "Busca todas as mensagens de chat de um técnico pedagógico", description = "Busca todas as mensagens de chat de um técnico pedagógico e retorna com o status HTTP 200")
     @ApiResponse (responseCode = "200", description = "Mensagens de chat de um técnico pedagógico encontradas com sucesso",
             content = @Content(schema = @Schema(implementation = ChatMessageResponseDTO.class),
@@ -105,7 +108,7 @@ public class TechniqueChatMessageController {
     @ApiResponse(responseCode = "400", description = "Erro ao buscar mensagem de chat de um técnico pedagógico")
     @ApiResponse (responseCode = "500", description = "Erro interno do servidor")
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ChatMessageResponseDTO> findById(@Parameter(description = "ID da mensagem de chat de um técnico pedagógico", required = true, example = "1")
     @PathVariable Long id) {
         try {
@@ -123,7 +126,7 @@ public class TechniqueChatMessageController {
     @ApiResponse(responseCode = "400", description = "Erro ao deletar mensagem de chat de um técnico pedagógico")
     @ApiResponse (responseCode = "500", description = "Erro interno do servidor")
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ChatMessageResponseDTO> delete(@Parameter(description = "ID da mensagem de chat de um técnico pedagógico", required = true, example = "1")
     @PathVariable Long id) {
         try {

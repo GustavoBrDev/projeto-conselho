@@ -26,16 +26,20 @@ import org.springframework.web.bind.annotation.*;
  @author Cauã Dutra
  @since 24/03/2025
  @see AdvisorChatMessageService
+
+ Atualizado em 28/03/2025
+ Adicionado uma tag única e modificado service conforme
+ @author Gustavo Stinghen
  */
 
 @RestController
 @RequestMapping("/chat/advisor/messages")
 @AllArgsConstructor
+@Tag( name = "AdvisorChatMessage", description = "Recurso para gerenciamento de mensagens de chat de orientadores" )
 public class AdvisorChatMessageController {
 
     private AdvisorChatMessageService service;
 
-    @Tag( name = "AdvisorChatMessage", description = "Recurso para gerenciamento de mensagens de chat de orientadores" )
     @Operation(summary = "Cria uma mensagem de chat de orientadores", description = "Cria uma mensagem de chat de orientadores e retorna a mensagem criada com o status HTTP 201" )
     @ApiResponse (responseCode = "201", description = "Mensagem de chat de orientadores criada com sucesso",
             content = @Content(schema = @Schema(implementation = ChatMessageResponseDTO.class),
@@ -56,7 +60,6 @@ public class AdvisorChatMessageController {
         }
     }
 
-    @Tag( name = "AdvisorChatMessage", description = "Recurso para gerenciamento de mensagens de chat de orientadores" )
     @Operation (summary = "Busca todas as mensagens de chat de orientadores", description = "Busca todas as mensagens de chat de orientadores e retorna com o status HTTP 200" )
     @ApiResponse (responseCode = "200", description = "Mensagens de chat de orientadores encontradas com sucesso",
             content = @Content(schema = @Schema(implementation = ChatMessageResponseDTO.class),
@@ -77,8 +80,6 @@ public class AdvisorChatMessageController {
         }
     }
 
-    //Só tem que arrumar a Service de AdvisorChatMessage para buscar o ID ao inves do student!
-    @Tag( name = "AdvisorChatMessage", description = "Recurso para gerenciamento de mensagens de chat de orientadores" )
     @Operation (summary = "Busca todas as mensagens de chat de um orientador em específico", description = "Busca todas as mensagens de chat de orientadores e retorna com o status HTTP 200" )
     @ApiResponse (responseCode = "200", description = "Mensagens de chat de orientadores encontradas com sucesso",
             content = @Content(schema = @Schema(implementation = ChatMessageResponseDTO.class),
@@ -96,14 +97,13 @@ public class AdvisorChatMessageController {
         }
     }
 
-    @Tag( name = "AdvisorChatMessage", description = "Recurso para gerenciamento de mensagens de chat de orientadores" )
     @Operation (summary = "Busca uma mensagem de chat de orientadores", description = "Busca uma mensagem de chat de orientadores e retorna com o status HTTP 200" )
     @ApiResponse (responseCode = "200", description = "Mensagem de chat de orientadores encontrada com sucesso",
             content = @Content(schema = @Schema(implementation = ChatMessageResponseDTO.class),
             examples = @ExampleObject(value = "{\"id\": 1, \"text\": \"Hello, world!\", \"advisor\": 1, \"timestamp\": \"2025-01-01T00:00:00\", \"isRead\": true, \"isDeleted\": false, \"deletedAt\": null}")))
     @ApiResponse (responseCode = "400", description = "Erro ao buscar mensagem de chat de orientadores")
     @ApiResponse (responseCode = "500", description = "Erro interno do servidor")
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ChatMessageResponseDTO> findById(
             @Parameter(description = "ID da mensagem de chat de orientadores", required = true, example = "1")
             @PathVariable Long id) {
@@ -114,14 +114,13 @@ public class AdvisorChatMessageController {
         }
     }
 
-    @Tag( name = "AdvisorChatMessage", description = "Recurso para gerenciamento de mensagens de chat de orientadores" )
     @Operation (summary = "Deleta uma mensagem de chat de orientadores", description = "Deleta uma mensagem de chat de orientadores e retorna com o status HTTP 200" )
     @ApiResponse (responseCode = "200", description = "Mensagem de chat de orientadores deletada com sucesso",
             content = @Content(schema = @Schema(implementation = ChatMessageResponseDTO.class),
             examples = @ExampleObject(value = "{\"id\": 1, \"text\": \"Hello, world!\", \"advisor\": 1, \"timestamp\": \"2025-01-01T00:00:00\", \"isRead\": true, \"isDeleted\": true, \"deletedAt\": \"2025-01-01T00:00:00\"}")))
     @ApiResponse (responseCode = "400", description = "Erro ao deletar mensagem de chat de orientadores")
     @ApiResponse (responseCode = "500", description = "Erro interno do servidor")
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ChatMessageResponseDTO> delete(
             @Parameter(description = "ID da mensagem de chat de orientadores", required = true, example = "1")
             @PathVariable Long id) {

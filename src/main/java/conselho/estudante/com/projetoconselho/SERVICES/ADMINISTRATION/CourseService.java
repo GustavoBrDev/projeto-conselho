@@ -19,6 +19,8 @@ import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT.Shif
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.CourseLogsService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -44,10 +46,12 @@ import java.util.List;
  * @see CourseLogsService
  */
 @Service
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class CourseService {
 
     private CourseRepository repository;
+    @Lazy
     private SupervisorService supervisorService;
     private CourseLogsService logsService;
     private ShiftService shiftService;

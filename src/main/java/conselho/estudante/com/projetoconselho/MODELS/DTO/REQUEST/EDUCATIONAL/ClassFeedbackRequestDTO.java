@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.ClasseRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ClassFeedback;
@@ -17,15 +18,15 @@ import java.util.Date;
  */
 @Builder
 public record ClassFeedbackRequestDTO(
-        @NotNull Long councilId,
-        @NotNull Long classId,
+        @NotNull CouncilRequestDTO councilRequestDTO,
+        @NotNull ClasseRequestDTO classeRequestDTO,
         @NotNull Date createdAt,
         @NotBlank String text
 ) {
-    public ClassFeedback convert(Council council, Classe classe) {
+    public ClassFeedback convert() {
         return ClassFeedback.builder()
-                .council(this.council)//.convert()
-                .classe(this.classe.convert())//.convert()
+                .council(councilRequestDTO.convert())
+                .classe(classeRequestDTO.convert())
                 .createdAt(this.createdAt)
                 .text(this.text)
                 .build();

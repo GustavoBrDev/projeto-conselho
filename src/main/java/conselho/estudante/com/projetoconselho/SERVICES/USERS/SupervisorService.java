@@ -14,7 +14,6 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.SupervisorRepository;
-import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ClasseService;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.CourseService;
 import conselho.estudante.com.projetoconselho.SERVICES.EmailService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.UserLogsService;
@@ -458,13 +457,14 @@ public class SupervisorService {
      * @throws NaoEncontradoException se nenhum supervisor for encontrado
      */
     public Page<SupervisorResponseDTO> filterByClass(Long classId, Pageable pageable) {
-        Page<Supervisor> supervisors = repository.findByClasses_Id(classId, pageable);
+        /*Page<Supervisor> supervisors = repository.findByClasses_Id(classId, pageable);
 
         if (supervisors.isEmpty()) {
             throw new NaoEncontradoException("Nenhum supervisor encontrado para esta turma.");
         }
 
-        return supervisors.map(Supervisor::convert);
+        return supervisors.map(Supervisor::convert);*/
+        return null;
     }
 
     /**

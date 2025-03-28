@@ -34,14 +34,15 @@ public class ClassFeedbackService {
      * @return Feedback criado
      */
     public ClassFeedbackResponseDTO create(ClassFeedbackRequestDTO requestDTO) {
-        Council council = councilService.findById(requestDTO.councilId()) //
+        /*Council council = councilService.findById(requestDTO.councilId()) //
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
         Classe classe = classeService.findById(requestDTO.classId())
                 .orElseThrow(() -> new NaoEncontradoException("Classe não encontrada"));
 
         ClassFeedback feedback = requestDTO.convert(council, classe);
-        return repository.save(feedback).convert();
+        return repository.save(feedback).convert();*/
+        return null;
     }
 
     /**

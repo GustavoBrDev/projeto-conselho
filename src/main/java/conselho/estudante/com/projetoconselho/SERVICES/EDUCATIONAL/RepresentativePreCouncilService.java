@@ -72,24 +72,13 @@ public class RepresentativePreCouncilService {
                 .orElseThrow(() -> new NaoEncontradoException("Classe não encontrada"));
 
 
-        List<Teacher> teachers = getTeachersByIds(requestDTO.teacherIds());
-        AdvisorFeeback advisorFeedback = getAdvisorFeedbackById(requestDTO.advisorFeedbackId());
-        SupervisorFeedback supervisorFeedback = getSupervisorFeedbackById(requestDTO.supervisorFeedbackId());
-        List<ItemFeedback> itemFeedbacks = getItemFeedbacksByIds(requestDTO.itemFeedbackIds());
-
-
-        RepresentativePreCouncil preCouncil = new RepresentativePreCouncil();
-        preCouncil.setCouncil(council);
-        preCouncil.setCreatedAt(new Date());
-        preCouncil.setStartDate(requestDTO.startDate());
-        preCouncil.setEndDate(requestDTO.endDate());
-        preCouncil.setClasse(classe);
-        preCouncil.setIsFilled(false);
-        preCouncil.setTeachers(teachers);
-        preCouncil.setAdvisorFeeback(advisorFeedback);
-        preCouncil.setSupervisorFeeback(supervisorFeedback);
-        preCouncil.setTeacherFeebacks(new ArrayList<>());
-        preCouncil.setItemFeedbacks(itemFeedbacks);
+        RepresentativePreCouncil preCouncil = RepresentativePreCouncil.builder()
+                .council(council)
+                .classe(classe)
+                .startDate(requestDTO.startDate())
+                .endDate(requestDTO.endDate())
+                .teachers(requestDTO.teachers())
+                .build();
 
 
         return convertToDTO(preCouncilRepository.save(preCouncil));
@@ -123,23 +112,17 @@ public class RepresentativePreCouncilService {
                 .orElseThrow(() -> new NaoEncontradoException("Classe não encontrada"));
 
 
-        List<Teacher> teachers = getTeachersByIds(requestDTO.teacherIds());
-        AdvisorFeeback advisorFeedback = getAdvisorFeedbackById(requestDTO.advisorFeedbackId());
-        SupervisorFeedback supervisorFeedback = getSupervisorFeedbackById(requestDTO.supervisorFeedbackId());
-        List<ItemFeedback> itemFeedbacks = getItemFeedbacksByIds(requestDTO.itemFeedbackIds());
+        RepresentativePreCouncil preCouncilUpdated = RepresentativePreCouncil.builder()
+                .id(preCouncil.getId())
+                .council(council)
+                .classe(classe)
+                .startDate(requestDTO.startDate())
+                .endDate(requestDTO.endDate())
+                .teachers(requestDTO.teachers())
+                .build();
 
 
-        preCouncil.setCouncil(council);
-        preCouncil.setStartDate(requestDTO.startDate());
-        preCouncil.setEndDate(requestDTO.endDate());
-        preCouncil.setClasse(classe);
-        preCouncil.setTeachers(teachers);
-        preCouncil.setAdvisorFeeback(advisorFeedback);
-        preCouncil.setSupervisorFeeback(supervisorFeedback);
-        preCouncil.setItemFeedbacks(itemFeedbacks);
-
-
-        return convertToDTO(preCouncilRepository.save(preCouncil));
+        return convertToDTO(preCouncilRepository.save(preCouncilUpdated));
     }
 
 
@@ -310,7 +293,7 @@ public class RepresentativePreCouncilService {
      * @throws NaoEncontradoException se a classe não existir ou não houver pré-conselhos
      */
     public Page<RepresentativePreCouncilResponseDTO> findByClasse(Long classeId, Pageable pageable) {
-        if (!classeRepository.existsById(classeId)) {
+       /* if (!classeRepository.existsById(classeId)) {
             throw new NaoEncontradoException("Classe não encontrada");
         }
 
@@ -323,7 +306,8 @@ public class RepresentativePreCouncilService {
         }
 
 
-        return preCouncils.map(this::convertToDTO);
+        return preCouncils.map(this::convertToDTO);*/
+        return null;
     }
 
 
@@ -339,7 +323,7 @@ public class RepresentativePreCouncilService {
         String searchTerm = (term == null || term.trim().isEmpty()) ? "" : term.toLowerCase();
 
 
-        Page<RepresentativePreCouncil> preCouncils = preCouncilRepository.search(
+       /* Page<RepresentativePreCouncil> preCouncils = preCouncilRepository.search(
                 searchTerm,
                 pageable
         );
@@ -350,7 +334,8 @@ public class RepresentativePreCouncilService {
         }
 
 
-        return preCouncils.map(this::convertToDTO);
+        return preCouncils.map(this::convertToDTO);*/
+        return null;
     }
 
 
@@ -365,12 +350,13 @@ public class RepresentativePreCouncilService {
      * @throws NaoEncontradoException se nenhum pré-conselho for encontrado no período
      */
     public Page<RepresentativePreCouncilResponseDTO> findByDateRange(Date startDate, Date endDate, Pageable pageable) {
-        validateDates(startDate, endDate);
+        /*validateDates(startDate, endDate);
         Page<RepresentativePreCouncil> preCouncils = preCouncilRepository.findByDateRange(startDate, endDate, pageable);
         if (preCouncils.isEmpty()) {
             throw new NaoEncontradoException("Nenhum pré-conselho encontrado no período especificado");
         }
-        return preCouncils.map(this::convertToDTO);
+        return preCouncils.map(this::convertToDTO);*/
+        return null;
     }
 
 
@@ -632,19 +618,6 @@ public class RepresentativePreCouncilService {
      * @return DTO com os dados da entidade
      */
     private RepresentativePreCouncilResponseDTO convertToDTO(RepresentativePreCouncil preCouncil) {
-        return new RepresentativePreCouncilResponseDTO(
-                preCouncil.getId(),
-                preCouncil.getCouncil(),
-                preCouncil.getCreatedAt(),
-                preCouncil.getStartDate(),
-                preCouncil.getEndDate(),
-                preCouncil.getClasse(),
-                preCouncil.getIsFilled(),
-                preCouncil.getTeachers(),
-                preCouncil.getAdvisorFeeback(),
-                preCouncil.getSupervisorFeeback(),
-                preCouncil.getTeacherFeebacks(),
-                preCouncil.getItemFeedbacks()
-        );
+       return null;
     }
 }

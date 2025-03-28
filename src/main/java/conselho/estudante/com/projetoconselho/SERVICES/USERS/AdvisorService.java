@@ -11,8 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -28,7 +26,6 @@ import java.util.regex.Pattern;
 public class AdvisorService {
 
     private final AdvisorRepository repository;
-    private final PasswordEncoder passwordEncoder;
 
     // Regex para validação de email
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -46,7 +43,7 @@ public class AdvisorService {
             throw new DadosDuplicadosException("Email já cadastrado");
         }
 
-        if (repository.existsByRegistration(advisor.getRegister())) {
+        if (repository.existsByRegister(advisor.getRegister())) {
             throw new DadosDuplicadosException("Matrícula já cadastrada");
         }
 
@@ -56,7 +53,6 @@ public class AdvisorService {
         }
 
         // Criptografa a senha antes de salvar
-        advisor.setPassword(passwordEncoder.encode(advisor.getPassword()));
         advisor.setCreatedAt(new Date());
         // Define o username como email por padrão
         advisor.setUsername(advisor.getEmail());
@@ -85,7 +81,7 @@ public class AdvisorService {
                 });
 
         // Verifica se a matrícula já está em uso por outro orientador
-        repository.findByRegistration(advisor.getRegister())
+        repository.findByRegister(advisor.getRegister())
                 .ifPresent(a -> {
                     if (!a.getId().equals(id)) {
                         throw new DadosDuplicadosException("Matrícula já cadastrada por outro orientador");
@@ -147,7 +143,7 @@ public class AdvisorService {
 
         Advisor advisor = getAdvisorById(id);
 
-        repository.findByRegistration(registration)
+        repository.findByRegister(registration)
                 .ifPresent(a -> {
                     if (!a.getId().equals(id)) {
                         throw new DadosDuplicadosException("Matrícula já cadastrada por outro orientador");
@@ -164,7 +160,6 @@ public class AdvisorService {
         }
 
         Advisor advisor = getAdvisorById(id);
-        advisor.setPassword(passwordEncoder.encode(password));
         return convertToDTO(repository.save(advisor));
     }
 
@@ -230,7 +225,7 @@ public class AdvisorService {
     /**
      * Métodos auxiliares
      */
-    private Advisor getAdvisorById(Long id) {
+    public Advisor getAdvisorById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
     }
@@ -244,7 +239,7 @@ public class AdvisorService {
         Assert.hasText(request.name(), "Nome é obrigatório");
         Assert.hasText(request.email(), "Email é obrigatório");
         Assert.hasText(request.password(), "Senha é obrigatória");
-        Assert.notNull(request.registration(), "Matrícula é obrigatória");
+        Assert.notNull(request.register(), "Matrícula é obrigatória");
 
         if (!isValidEmail(request.email())) {
             throw new IllegalArgumentException("Formato de email inválido");

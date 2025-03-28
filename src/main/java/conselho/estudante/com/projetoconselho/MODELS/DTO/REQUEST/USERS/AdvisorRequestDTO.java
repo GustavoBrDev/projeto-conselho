@@ -12,7 +12,7 @@ public record AdvisorRequestDTO(
         @NotBlank String name,
         String image,  // Imagem não é obrigatória
         @NotBlank String email,
-        @NotNull @Positive Long registration,
+        @NotNull @Positive Long register,
         @NotBlank String password
 ) {
     public Advisor convert() {
@@ -20,7 +20,7 @@ public record AdvisorRequestDTO(
                 .name(this.name)
                 .image(this.image)
                 .email(this.email)
-                .registration(this.registration)
+                .register(this.register)
                 .password(this.password)
                 .build();
     }

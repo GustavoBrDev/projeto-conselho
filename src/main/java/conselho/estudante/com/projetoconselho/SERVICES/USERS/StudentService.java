@@ -322,6 +322,21 @@ public class StudentService {
     }
 
     /**
+     * Busca um {@link Student} pelo ID
+     * @param id o identificador do estudante
+     * @return {@link Student} o estudante encontrado
+     * @author Gustavo Stinghen
+     * @since 28/03/2025
+     */
+    public Student findObjectStudent ( Long id) {
+        try {
+            return repository.findById(id).get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
      * Busca um {@link Student} pelo ID.
      *
      * @param id o identificador do estudante
