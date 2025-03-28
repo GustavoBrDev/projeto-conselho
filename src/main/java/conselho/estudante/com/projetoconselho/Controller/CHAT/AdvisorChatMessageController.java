@@ -68,10 +68,6 @@ public class AdvisorChatMessageController {
     @ApiResponse (responseCode = "500", description = "Erro interno do servidor")
     @GetMapping
     public ResponseEntity<Page<ChatMessageResponseDTO>> findAll(
-            @Parameter(description = "Filtro de mensagens de chat de orientadores", content =
-                    @Content(schema = @Schema(implementation = ChatMessageResponseDTO.class)),
-                    example = "{\"id\": 1, \"text\": \"Hello, world!\", \"advisor\": 1, \"timestamp\": " +
-                            "\"2025-01-01T00:00:00\", \"isRead\": true, \"isDeleted\": false, \"deletedAt\": null}")
             @PageableDefault(size = 20, sort = "timestamp") Pageable pageable) {
         try {
             return new ResponseEntity<>(service.findAll(pageable), HttpStatus.OK);

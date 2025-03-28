@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS;
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,10 +33,13 @@ public class TeacherRequestDTO {
 
     private String image;
 
-    /*
-     * Lista de IDs de cursos, disciplinas e turnos
-     */
-    private List<Long> courses;
-    private List<Long> subjects;
-    private List<Long> shifts;
+    public Teacher convert () {
+        return Teacher.builder()
+                .name(name)
+                .email(email)
+                .password(password)
+                .register(register)
+                .image(image)
+                .build();
+    }
 }
