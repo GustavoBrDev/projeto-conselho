@@ -42,8 +42,8 @@ public class ClassFeedback {
     public ClassFeedbackResponseDTO convert() {
         return ClassFeedbackResponseDTO.builder()
                 .id(id)
-                .councilId(council.getId())
-                .classId(classe.getId())
+                .council(council.toDTO())
+                .classe(classe.toDTO())
                 .createdAt(createdAt)
                 .text(text)
                 .build();

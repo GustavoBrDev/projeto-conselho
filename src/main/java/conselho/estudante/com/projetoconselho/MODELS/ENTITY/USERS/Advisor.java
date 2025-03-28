@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.AdvisorResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,4 +48,14 @@ public class Advisor implements User {
 
     @Column(nullable = false)
     private Long register;
+
+    public AdvisorResponseDTO convert() {
+        return AdvisorResponseDTO.builder()
+                .id(this.id)
+                .image(this.image)
+                .name(this.name)
+                .email(this.email)
+                .register(this.register)
+                .build();
+    }
 }
