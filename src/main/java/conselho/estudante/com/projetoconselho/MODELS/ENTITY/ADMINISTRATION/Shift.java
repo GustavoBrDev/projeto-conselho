@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Date;
 import java.util.List;
@@ -40,7 +41,8 @@ public class Shift {
     private List<Teacher> teachers;
 
     @OneToMany(mappedBy = "shift")
-    private List<Course> course;
+    @Lazy
+    private List<Course> courses;
 
     /**
      * Método para adicionar um professor ao turno
@@ -88,10 +90,10 @@ public class Shift {
      */
     public boolean addCourse(Course course) {
 
-        if (this.course.contains(course)) {
+        if (this.courses.contains(course)) {
             return false;
         } else {
-            this.course.add(course);
+            this.courses.add(course);
             return true;
         }
     }
@@ -106,8 +108,8 @@ public class Shift {
      */
     public boolean removeCourse(Course course) {
 
-        if (this.course.contains(course)) {
-            this.course.remove(course);
+        if (this.courses.contains(course)) {
+            this.courses.remove(course);
             return true;
         } else {
             return false;
@@ -120,7 +122,7 @@ public class Shift {
                 this.name,
                 this.createdAt,
                 this.teachers.stream().map(Teacher::getId).collect(Collectors.toList()),
-                this.course.stream().map(Course::getId).collect(Collectors.toList())
+                this.courses.stream().map(Course::getId).collect(Collectors.toList())
         );
     }
 }

@@ -53,13 +53,13 @@ public class Teacher implements User {
     @Column(nullable = false)
     private Long register;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "teachers")
     private List<Course> courses;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "teachers")
     private List<Subject> subjects;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "teachers")
     private List<Shift> shifts;
 
      /** Metodo para adicionar um curso ao professor

@@ -30,10 +30,12 @@ public class Representative {
 
 
     @OneToMany
+    @JoinColumn
     private List<Student> students;
 
 
-    @OneToOne
+    @OneToOne(mappedBy = "representative")
+    @JoinColumn
     private Classe representativeOf;
 
 

@@ -4,6 +4,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class LoginLogs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
+    @OneToMany
     private User user;
 
     private Instant timestamp;
