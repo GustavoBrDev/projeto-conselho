@@ -19,6 +19,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     boolean existsByEmail(String email);
 
 
+    // Para que isso?
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Teacher t WHERE t.register = :register AND t.id <> :id")
     boolean existsByRegisterAndIdNot(@Param("register") Long register, @Param("id") Long id);
 
@@ -30,6 +31,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     Teacher findByEmail(String email);
 
 
+    // TODO - Alterar isso
     Page<Teacher> findAllByCourses(Course course, Pageable pageable);
     Page<Teacher> findAllBySubjects(Subject subject, Pageable pageable);
     Page<Teacher> findAllByShifts(Shift shift, Pageable pageable);
