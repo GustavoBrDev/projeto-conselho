@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.NotificationResponseDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertFalse;
 import lombok.AllArgsConstructor;
@@ -38,4 +39,13 @@ public class Notification {
     @Column(nullable = false)
     private Date createdAt;
 
+    public NotificationResponseDTO convert() {
+        return NotificationResponseDTO.builder()
+                .id(id)
+                .message(message)
+                .isRead(isRead)
+                .isUrgent(isUrgent)
+                .createdAt(createdAt)
+                .build();
+    }
 }
