@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Date;
 import java.util.List;
@@ -53,13 +54,13 @@ public class Teacher implements User {
     @Column(nullable = false)
     private Long register;
 
-    @ManyToMany(mappedBy = "teachers")
+    @ManyToMany
     private List<Course> courses;
 
     @ManyToMany(mappedBy = "teachers")
     private List<Subject> subjects;
 
-    @ManyToMany(mappedBy = "teachers")
+    @ManyToMany(mappedBy = "teachers", fetch = FetchType.LAZY)
     private List<Shift> shifts;
 
      /** Metodo para adicionar um curso ao professor

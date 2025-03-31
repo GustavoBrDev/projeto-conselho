@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 import java.util.Date;
@@ -37,13 +38,12 @@ import java.util.List;
 public class UserLogs implements Log {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private String id;
 
-    @OneToMany
+    @DBRef
     private User actor;
 
-    @OneToMany
+    @DBRef
     private User target;
 
     private String type;

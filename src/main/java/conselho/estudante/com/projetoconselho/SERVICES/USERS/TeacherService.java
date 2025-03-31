@@ -59,11 +59,10 @@ public class TeacherService {
         teacher.setCreatedAt(new Date());
         System.out.println("Acessou o service");
 
-        if ( logsService.create( teacher, teacher, "create" ) ){
-            System.out.println("Log criado");
-        }
+        Teacher savedTeacher = teacherRepository.save(teacher);
+        logsService.create(savedTeacher, teacher, "create");
 
-        return teacherRepository.save(teacher);
+        return savedTeacher;
     }
 
     /*

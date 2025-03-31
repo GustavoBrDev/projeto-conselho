@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
@@ -40,13 +41,12 @@ import java.util.List;
 public class FeedbackLogs implements Log {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private String id;
 
-    @OneToMany
+    @DBRef
     private Object actor;
 
-    @OneToMany
+    @DBRef
     private Feedback target;
 
     private String type;

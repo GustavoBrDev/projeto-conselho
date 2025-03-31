@@ -37,11 +37,10 @@ public class Shift {
     @Column(nullable = false)
     private Date createdAt;
 
-    @ManyToMany(mappedBy = "shifts")
+    @ManyToMany
     private List<Teacher> teachers;
 
     @OneToMany(mappedBy = "shift")
-    @Lazy
     private List<Course> courses;
 
     /**
