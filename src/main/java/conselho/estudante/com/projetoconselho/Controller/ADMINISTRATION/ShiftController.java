@@ -7,6 +7,7 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherR
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.SHIFT.ShiftService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,7 +47,14 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao criar turno")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PostMapping
-    public ResponseEntity<ShiftResponseDTO> postShift( @RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO, User actor) {
+    public ResponseEntity<ShiftResponseDTO> postShift(
+            @Parameter(description = "Turno a ser criado", content =
+            @Content(schema = @Schema(implementation = ShiftPostRequestDTO.class)),
+            required = true, example = "{" +
+            "\"name\": \"Turno 1\", \"teacher\": 1 \"course\": 1}")
+            @RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO,
+            @RequestParam @Parameter(description = "Usuário que criou o turno", required = true)  User actor) {
+
         try {
             return new ResponseEntity<>(service.create(shiftPostRequestDTO, actor), HttpStatus.OK);
         } catch (Exception e) {
@@ -63,13 +71,11 @@ public class ShiftController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/allShifts")
         public ResponseEntity<Page<ShiftResponseDTO>> getAllShifts(
-            @PageableDefault(
-                        page = 0,
-                        size = 20,
-                        sort = "id",
-                        direction = Sort.Direction.ASC
-                )
-                Pageable pageable) {
+                @Parameter(description = "Busca todos os turnos", content =
+                @Content(schema = @Schema(implementation = ShiftResponseDTO.class)),
+                example = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")
+            @PageableDefault( page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
         try {
             return new ResponseEntity<>(service.getAllShifts(pageable), HttpStatus.OK);
         } catch (Exception e) {
@@ -85,8 +91,16 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao editar turno")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PutMapping("/{id}")
-        public ResponseEntity<ShiftResponseDTO> putShift(@RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO, @PathVariable Long id, User actor) {
-            try {
+        public ResponseEntity<ShiftResponseDTO> putShift(
+                @Parameter(description = "Dados do turno a ser editado", content =
+                @Content(schema = @Schema(implementation = ShiftPostRequestDTO.class)),
+                required = true, example = "{" +
+                "\"name\": \"Turno 1\", \"teacher\": 1 \"course\": 1}")
+                @RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO,
+                @Parameter(description = "ID do turno a ser editado", required = true) @PathVariable Long id,
+                @RequestParam @Parameter(description = "Usuário que editou o turno", required = true) User actor) {
+
+        try {
                 return new ResponseEntity<>(service.update(shiftPostRequestDTO, id, actor), HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -101,7 +115,11 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao editar turno")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PutMapping("/editName/{id}")
-    public ResponseEntity<String> editName(@PathVariable Long id, @RequestParam String name, @RequestParam User actor) {
+    public ResponseEntity<String> editName(
+            @Parameter (description = "ID do turno a ser editado", required = true) @PathVariable Long id,
+            @RequestParam @Parameter(description = "Novo nome do turno", required = true) String name,
+            @RequestParam @Parameter(description = "Usuário que editou o turno", required = true) User actor) {
+
         try {
             service.editName(id, name, actor);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -119,7 +137,10 @@ public class ShiftController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/teachers/{id}")
     public ResponseEntity<Page<TeacherResponseDTO>> listarProfessoresPeloTurno(
-            @PathVariable Long shiftId, Pageable pageable) {
+            @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
+            @Parameter (description = "Pagina para listar professores", required = true)
+            @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
         Page<TeacherResponseDTO> professores = service.listTeachersByShift(shiftId, pageable);
         return ResponseEntity.ok(professores);
     }
@@ -133,7 +154,10 @@ public class ShiftController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/courses/{id}")
     public ResponseEntity<Page<CourseResponseDTO>> listarCursosPeloTurno(
-            @PathVariable Long shiftId, Pageable pageable) {
+            @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
+            @Parameter (description = "Pagina para listar cursos", required = true)
+            @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
         Page<CourseResponseDTO> cursos = service.listCourseByShift(shiftId, pageable);
         return ResponseEntity.ok(cursos);
     }
@@ -146,7 +170,8 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao buscar turno")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/{id}")
-        public ResponseEntity<ShiftResponseDTO> getShiftById(@PathVariable Long id) {
+        public ResponseEntity<ShiftResponseDTO> getShiftById(
+                @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long id) {
             try {
                 return new ResponseEntity<>(service.searchShift(id), HttpStatus.OK);
             } catch (Exception e) {
@@ -162,7 +187,11 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao associar professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PostMapping("/teachers/{shiftId}/{teacherId}")
-    public ResponseEntity<String> addTeacherToShift(@PathVariable Long shiftId, @PathVariable Long teacherId, @RequestParam User actor) {
+    public ResponseEntity<String> addTeacherToShift(
+            @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
+            @Parameter(description = "ID do professor", required = true, example = "2") @PathVariable Long teacherId,
+            @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor) {
+
         try {
             service.addTeacherToShift(shiftId, teacherId, actor);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -179,7 +208,11 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao remover professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @DeleteMapping("/teachers/{shiftId}/{teacherId}")
-    public ResponseEntity<String> removeTeacherOfShift(@PathVariable Long shiftId, @PathVariable Long teacherId, @RequestParam User actor) {
+    public ResponseEntity<String> removeTeacherOfShift(
+            @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
+            @Parameter(description = "ID do professor", required = true, example = "2") @PathVariable Long teacherId,
+            @Parameter(description = "Usuário que removeu o professor", required = true) @RequestParam User actor) {
+
         try {
             service.removeTeacherOfShift(shiftId, teacherId, actor);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -196,7 +229,11 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao associar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PostMapping("/teachers/{shiftId}/{courseId}")
-    public ResponseEntity<String> addCourseToShift(@PathVariable Long shiftId, @PathVariable Long courseId, @RequestParam User actor) {
+    public ResponseEntity<String> addCourseToShift(
+            @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
+            @Parameter(description = "ID do curso", required = true, example = "2") @PathVariable Long courseId,
+            @Parameter(description = "Usuário que adicionou o curso", required = true) @RequestParam User actor) {
+
         try {
             service.addCourseToShift(shiftId, courseId, actor);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -213,7 +250,10 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao remover curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @DeleteMapping("/teachers/{shiftId}/{courseId}")
-    public ResponseEntity<String> removeCourseOfShift(@PathVariable Long shiftId, @PathVariable Long courseId, @RequestParam User actor) {
+    public ResponseEntity<String> removeCourseOfShift(
+            @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
+            @Parameter(description = "ID do curso", required = true, example = "2") @PathVariable Long courseId,
+            @Parameter(description = "Usuário que removeu o curso", required = true) @RequestParam User actor) {
         try {
             service.removeCourseOfShift(shiftId, courseId, actor);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -230,7 +270,9 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao deletar turno")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteShift(@PathVariable Long id, User actor) {
+        public ResponseEntity<Void> deleteShift(
+                @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long id,
+                @Parameter(description = "Usuário que deletou o turno", required = true) @RequestParam User actor) {
             try {
                 service.deleteShift(id, actor);
                 return new ResponseEntity<>(HttpStatus.OK);

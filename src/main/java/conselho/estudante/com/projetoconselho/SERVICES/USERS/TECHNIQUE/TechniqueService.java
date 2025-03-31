@@ -255,6 +255,8 @@ public class TechniqueService {
         }
     }
 
+
+
     /**
      * Busca uma técnica pelo seu ID.
      *
