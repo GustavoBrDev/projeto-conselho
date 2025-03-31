@@ -18,8 +18,6 @@ import java.util.Date;
 public record ItemFeedbackRequestDTO(
         @NotNull
         Council council,
-        @NotNull
-        Date createdAt,
         @NotBlank
         String text,
         @NotBlank
@@ -28,7 +26,6 @@ public record ItemFeedbackRequestDTO(
     public ItemFeedback convert() {
         return ItemFeedback.builder()
                 .council(this.council)//.convert()
-                .createdAt(this.createdAt)
                 .text(this.text)
                 .item(this.item)
                 .build();

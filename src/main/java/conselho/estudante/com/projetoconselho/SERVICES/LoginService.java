@@ -3,14 +3,14 @@ package conselho.estudante.com.projetoconselho.SERVICES;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.LOGIN.FirstLoginResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.LOGIN.LoginResponse;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.LOGIN.LoginResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.*;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ResetSessionService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.LoginLogsService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.AdvisorService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,9 @@ public class LoginService {
     private SupervisorService supervisorService;
     private TechniqueService techniqueService;
     private LoginLogsService loginLogsService;
+    private TeacherService teacherService;
     private ResetSessionService resetSessionService;
+    private AdvisorService advisorService;
     private EmailService emailService;
 
     /**
@@ -130,6 +132,70 @@ public class LoginService {
                 }
 
                 loginLogsService.create( supervisor );
+                return loginResponse;
+
+            } else {
+                return LoginResponseDTO.builder()
+                        .isAuthenticated(false)
+                        .build();
+            }
+        }
+
+        Teacher teacher = teacherService.getObjectTeacher(email);
+
+        // Verifica se o usuario existe como professor
+        if (teacher != null) {
+
+            // Verifica se a senha do professor bate
+            if (teacher.getPassword().equals(password)) {
+
+                // Verifica se o professor tem o primeiro login
+                if ( ! loginLogsService.verifyFirstLogin( teacher ) ) {
+                    loginResponse = FirstLoginResponseDTO.builder()
+                            .user(teacher.toDTO())
+                            .isFirstLogin(true)
+                            .isAuthenticated(true)
+                            .build();
+                } else {
+                    loginResponse = LoginResponseDTO.builder()
+                            .user(teacher.toDTO())
+                            .isAuthenticated(true)
+                            .build();
+                }
+
+                loginLogsService.create( teacher );
+                return loginResponse;
+
+            } else {
+                return LoginResponseDTO.builder()
+                        .isAuthenticated(false)
+                        .build();
+            }
+        }
+
+        Advisor advisor = advisorService.getObjectAdvisor(email);
+
+        // Verifica se o usuario existe como orientador
+        if (advisor != null) {
+
+            // Verifica se a senha do orientador bate
+            if (advisor.getPassword().equals(password)) {
+
+                // Verifica se o orientador tem o primeiro login
+                if ( ! loginLogsService.verifyFirstLogin( advisor ) ) {
+                    loginResponse = FirstLoginResponseDTO.builder()
+                            .user(advisor.convert())
+                            .isFirstLogin(true)
+                            .isAuthenticated(true)
+                            .build();
+                } else {
+                    loginResponse = LoginResponseDTO.builder()
+                            .user(advisor.convert())
+                            .isAuthenticated(true)
+                            .build();
+                }
+
+                loginLogsService.create( advisor );
                 return loginResponse;
 
             } else {

@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.SupervisorRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.SupervisorFeedback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
@@ -17,9 +18,9 @@ import java.util.Date;
 @Builder
 public record SupervisorFeedbackRequestDTO(
         @NotNull
-        Long councilId,
+        CouncilRequestDTO council,
         @NotNull
-        Long supervisorId,
+        SupervisorRequestDTO supervisor,
         @NotNull
         Date createdAt,
         @NotBlank
@@ -29,10 +30,10 @@ public record SupervisorFeedbackRequestDTO(
         @NotBlank
         String suggestionsText
 ) {
-    public SupervisorFeedback convert(Council council, Supervisor supervisor) {
+    public SupervisorFeedback convert() {
         return SupervisorFeedback.builder()
-                /*.council(this.council)//.convert()
-                .supervisor(this.supervisor)//.convert()*/
+                .council(this.council.convert())
+                .supervisor(this.supervisor.convert())
                 .createdAt(this.createdAt)
                 .strengthsText(this.strengthsText)
                 .weaknessesText(this.weaknessesText)
