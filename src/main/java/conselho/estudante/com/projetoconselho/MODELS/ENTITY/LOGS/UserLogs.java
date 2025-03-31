@@ -31,7 +31,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Document
+@Document(collection = "userLogs")
 @Builder
 public class UserLogs implements Log {
 

@@ -4,9 +4,12 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherR
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.TeacherRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.TeacherRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.UserLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 
 /**
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class TeacherService {
 
     private TeacherRepository teacherRepository;
+    private UserLogsService logsService;
 
     /*
      * Metodo para converter um TeacherRequestDTO para um Teacher
@@ -52,6 +56,13 @@ public class TeacherService {
      * Metodo para criar um Teacher
      */
     public Teacher criarTeacher(Teacher teacher) {
+        teacher.setCreatedAt(new Date());
+        System.out.println("Acessou o service");
+
+        if ( logsService.create( teacher, teacher, "create" ) ){
+            System.out.println("Log criado");
+        }
+
         return teacherRepository.save(teacher);
     }
 

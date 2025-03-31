@@ -18,9 +18,6 @@ public class TeacherRequestDTO {
     @NotBlank(message = "O nome é obrigatório.")
     private String name;
 
-    @NotBlank(message = "O username é obrigatório.")
-    private String username;
-
     @Email(message = "O email deve ser válido.")
     @NotBlank(message = "O email é obrigatório.")
     private String email;
