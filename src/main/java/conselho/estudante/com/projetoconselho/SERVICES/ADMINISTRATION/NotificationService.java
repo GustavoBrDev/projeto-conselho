@@ -1,93 +1,135 @@
 package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
 
-import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.ADMINISTRATION.NotificationRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.NotificationResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.NotificationRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE.TechniqueService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-
-/**
- * Classe de serviço para a entidade {@link Notification}
- * @author Camilly Chelest
- * @since 18/03/2025
- * @see Notification
- */
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class NotificationService {
 
-    private final NotificationRepository repository;
+    private final NotificationRepository notificationRepository;
+    private final StudentService studentService;
+    private final TechniqueService techniqueService;
+    private final SupervisorService supervisorService;
 
     /**
-     * Cria uma nova {@link Notification}.
+     * Cria uma nova notificação associada a um usuário.
      *
-     * @param requestDTO os dados da notificação a ser criada
-     * @return {@link NotificationResponseDTO} a notificação criada
+     * @param user     O usuário que receberá a notificação
+     * @param message  A mensagem da notificação
+     * @param isUrgent Se a notificação é urgente
+     * @return {@link NotificationResponseDTO} A notificação criada
      */
-    public NotificationResponseDTO create(NotificationRequestDTO requestDTO) {
-        Notification notification = new Notification();
-        notification.setMessage(requestDTO.message());
-        notification.setIsUrgent(requestDTO.isUrgent());
-        notification.setIsRead(false);
-        notification.setCreatedAt(new Date());
-        return repository.save(notification).convert();
+    @Transactional
+    public NotificationResponseDTO create(User user, String message, Boolean isUrgent) {
+        if (user == null || message == null || message.isEmpty()) {
+            throw new IllegalArgumentException("Usuário e mensagem são obrigatórios");
+        }
+
+        // Criando a notificação
+        Notification notification = Notification.builder()
+                .message(message)
+                .isUrgent(isUrgent)
+                .isRead(false)
+                .createdAt(new Date())
+                .build();
+
+        // Identifica o tipo do usuário e associa a notificação
+        if (user instanceof Student student) {
+            notification.setStudent(studentService.findObjectStudent(user.getEmail()));
+        } else if (user instanceof Technique technique) {
+            notification.setTechnique(techniqueService.findObjectTechnique(user.getEmail()));
+        } else if (user instanceof Supervisor supervisor) {
+            notification.setSupervisor(supervisorService.findObjectSupervisor(user.getEmail()));
+        } else {
+            throw new NaoEncontradoException("Tipo de usuário inválido");
+        }
+
+        // Salva a notificação e retorna a resposta
+        notification = notificationRepository.save(notification);
+        return convertToDTO(notification);
     }
 
     /**
-     * Edita o status de leitura de uma {@link Notification}.
+     * Atualiza uma notificação existente.
      *
-     * @param id o identificador da notificação
-     * @param isRead o novo status de leitura da notificação
-     * @return {@link NotificationResponseDTO} a notificação atualizada
-     * @throws NaoEncontradoException se a notificação não for encontrada
+     * @param notificationId O ID da notificação
+     * @param newMessage     A nova mensagem da notificação
+     * @param isRead         Se a notificação foi lida
+     * @return {@link NotificationResponseDTO} A notificação atualizada
      */
-    public NotificationResponseDTO editRead(Long id, Boolean isRead) {
-        Notification notification = repository.findById(id)
+    @Transactional
+    public NotificationResponseDTO update(Long notificationId, String newMessage, Boolean isRead) {
+        Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new NaoEncontradoException("Notificação não encontrada"));
+
+        notification.setMessage(newMessage);
         notification.setIsRead(isRead);
-        return repository.save(notification).convert();
+
+        return convertToDTO(notificationRepository.save(notification));
     }
 
     /**
-     * Lista todas as {@link Notification} com paginação.
+     * Remove uma notificação pelo ID.
      *
-     * @param pageable as configurações de paginação
-     * @return {@link Page<NotificationResponseDTO>} a página contendo as notificações encontradas
+     * @param notificationId O ID da notificação a ser removida
      */
-    public Page<NotificationResponseDTO> findAll(Pageable pageable) {
-        return repository.findAll(pageable)
-                .map(Notification::convert);
-    }
-
-    /**
-     * Busca uma {@link Notification} pelo seu ID.
-     *
-     * @param id o identificador da notificação
-     * @return {@link NotificationResponseDTO} a notificação encontrada
-     * @throws NaoEncontradoException se a notificação não for encontrada
-     */
-    public NotificationResponseDTO findById(Long id) {
-        return repository.findById(id)
-                .map(Notification::convert)
-                .orElseThrow(() -> new NaoEncontradoException("Notificação não encontrada"));
-    }
-
-    /**
-     * Deleta uma {@link Notification} pelo seu ID.
-     *
-     * @param id o identificador da notificação
-     * @throws NaoEncontradoException se a notificação não for encontrada
-     */
-    public void delete(Long id) {
-        if (!repository.existsById(id)) {
+    @Transactional
+    public void delete(Long notificationId) {
+        if (!notificationRepository.existsById(notificationId)) {
             throw new NaoEncontradoException("Notificação não encontrada");
         }
-        repository.deleteById(id);
+        notificationRepository.deleteById(notificationId);
     }
+
+    /**
+     * Lista todas as notificações de um usuário.
+     *
+     * @param user O usuário
+     * @return Lista de notificações em formato DTO
+     */
+    public List<NotificationResponseDTO> findByUser(User user) {
+        if (user instanceof Student student) {
+            return notificationRepository.findByStudent(student)
+                    .stream().map(this::convertToDTO).collect(Collectors.toList());
+        } else if (user instanceof Technique technique) {
+            return notificationRepository.findByTechnique(technique)
+                    .stream().map(this::convertToDTO).collect(Collectors.toList());
+        } else if (user instanceof Supervisor supervisor) {
+            return notificationRepository.findBySupervisor(supervisor)
+                    .stream().map(this::convertToDTO).collect(Collectors.toList());
+        } else {
+            throw new NaoEncontradoException("Usuário inválido");
+        }
+    }
+
+    /**
+     * Converte uma entidade Notification para NotificationResponseDTO.
+     */
+    private NotificationResponseDTO convertToDTO(Notification notification) {
+        return NotificationResponseDTO.builder()
+                .id(notification.getId())
+                .message(notification.getMessage())
+                .isRead(notification.getIsRead())
+                .isUrgent(notification.getIsUrgent())
+                .createdAt(notification.getCreatedAt())
+                .build();
+    }
+
 }

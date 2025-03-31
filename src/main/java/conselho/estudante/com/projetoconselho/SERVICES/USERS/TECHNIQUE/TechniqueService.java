@@ -304,6 +304,23 @@ public class TechniqueService {
     }
 
     /**
+     * Busca um {@link Technique} pelo email
+     * @param id o id do tecnico
+     * @return {@link Technique} o tecnico encontrado
+     * Utilizado na autenticação
+     * @author Gustavo Stinghen
+     * @since 28/03/2025
+     */
+    public Technique findObjectTechnique ( Long id) {
+        try {
+            return repository.findById(id).get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    /**
      * Adiciona uma {@link Notification} a um {@link Technique}
      * @param id o identificador do tecnico
      * @param notification a notificação a ser adicionada

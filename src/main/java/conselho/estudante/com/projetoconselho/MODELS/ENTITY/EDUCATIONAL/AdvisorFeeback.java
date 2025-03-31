@@ -46,8 +46,8 @@ public class AdvisorFeeback {
     public AdvisorFeedbackResponseDTO convert() {
         return AdvisorFeedbackResponseDTO.builder()
                 .id(this.id)
-                .councilId(this.council.getId())//.convert()
-                .advisorId(this.advisor.getId())//.convert()
+                .council(this.council.toDTO())
+                .advisor(this.advisor.convert())
                 .createdAt(this.createdAt)
                 .strengthsText(this.strengthsText)
                 .weaknessesText(this.weaknessesText)

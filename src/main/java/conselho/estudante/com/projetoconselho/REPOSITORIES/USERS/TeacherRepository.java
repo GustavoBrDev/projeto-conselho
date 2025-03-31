@@ -1,69 +1,36 @@
 package conselho.estudante.com.projetoconselho.REPOSITORIES.USERS;
 
+
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Subject;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 
-/**
- * Classe de repositorio da entidade Teacher
- * @author Alex Zastrow
- */
-
+@Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
-
-    /*
-     * Metodo para encontrar um professor por email
-     * @param email
-     * @return
-     */
-    Optional<Teacher> findByEmail(String email);
-
-    /*
-     * Metodo para encontrar um professor por username
-     * @param username
-     * @return
-     */
-    Optional<Teacher> findByUsername(String username);
-
-    /*
-     * Filtros para listar professores por curso (usando IDs)
-     * @param courseId
-     * @param pageable
-     * @return
-     */
-    Page<Teacher> findByCoursesId(Long courseId, Pageable pageable);
-
-    /*
-     * Filtros para listar professores por disciplina (usando IDs)
-     * @param subjectId
-     * @param pageable
-     * @return
-     */
-    Page<Teacher> findBySubjectsId(Long subjectId, Pageable pageable);
-
-    /*
-     * Filtros para listar professores por turno (usando IDs)
-     * @param shiftId
-     * @param pageable
-     * @return
-     */
-    Page<Teacher> findByShiftsId(Long shiftId, Pageable pageable);
-
-    /*
-     * Verificar se existe um professor com determinado email (para validação)
-     * @param email
-     * @return
-     */
+    boolean existsByRegister(Long register);
     boolean existsByEmail(String email);
 
-    /*
-     * Verificar se existe um professor com determinado username (para validação)
-     * @param username
-     * @return
-     */
-    boolean existsByUsername(String username);
-}
 
+    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Teacher t WHERE t.register = :register AND t.id <> :id")
+    boolean existsByRegisterAndIdNot(@Param("register") Long register, @Param("id") Long id);
+
+
+    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Teacher t WHERE t.email = :email AND t.id <> :id")
+    boolean existsByEmailAndIdNot(@Param("email") String email, @Param("id") Long id);
+
+
+    Teacher findByEmail(String email);
+
+
+    Page<Teacher> findAllByCourses(Course course, Pageable pageable);
+    Page<Teacher> findAllBySubjects(Subject subject, Pageable pageable);
+    Page<Teacher> findAllByShifts(Shift shift, Pageable pageable);
+}

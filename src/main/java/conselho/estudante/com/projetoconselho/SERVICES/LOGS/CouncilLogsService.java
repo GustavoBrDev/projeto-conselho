@@ -65,6 +65,34 @@ public class CouncilLogsService {
 
     /**
      * Cria um log de um {@link Council}
+     * @param target o conselho alvo
+     * @param changes as mudanças efetuadas
+     * @param type o tipo de log
+     * @return {@link Boolean} se o log foi criado ou nao
+     * @author Gustavo Stinghen
+     * @since 27/03/2025
+     */
+    public boolean create(Council target, List<EditableItem> changes, String type) {
+
+        try {
+
+            CouncilLogs log = CouncilLogs.builder().
+                    target(target).
+                    type(type).
+                    timestamp(Instant.now()).
+                    changes(changes).
+                    createdAt( new Date() ).
+                    build();
+
+            repository.save(log);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Cria um log de um {@link Council}
      * @param actor o usuario que criou o log
      * @param target o conselho alvo
      * @param type o tipo de log

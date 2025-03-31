@@ -9,13 +9,12 @@ import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoExc
 
 
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.SupervisorFeedbackRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.COUNCIL.CouncilService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 /**
  * Serviço responsável pela gestão dos feedbacks de supervisores ({@link SupervisorFeedback}).
@@ -37,14 +36,16 @@ public class SupervisorFeedbackService {
      * @return Feedback criado
      */
     public SupervisorFeedbackResponseDTO create(SupervisorFeedbackRequestDTO requestDTO) {
-        Council council = councilService.findById(requestDTO.councilId())
+        /*Council council = councilService.findById(requestDTO.councilId())
                 .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
 
         Supervisor supervisor = supervisorService.findById(requestDTO.supervisorId())
                 .orElseThrow(() -> { throw new NaoEncontradoException("Supervisor não encontrado"); });
 
         SupervisorFeedback feedback = requestDTO.convert(council, supervisor);
-        return repository.save(feedback).convert();
+        return repository.save(feedback).convert();*/
+
+        return null;
     }
 
     /**

@@ -80,7 +80,7 @@
             <groupId>com.postmarkapp</groupId>
             <artifactId>postmark</artifactId>
             <version>1.9.12</version>
-      </dependency>
+        </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

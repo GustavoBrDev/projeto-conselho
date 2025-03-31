@@ -26,6 +26,10 @@ import java.util.List;
  * Atualizado em 19/03/2025
  * Adicionado o metodo de criar um log sem mudanças
  * @author Gustavo Stinghen
+ *
+ * Atualizado em 27/03/2025
+ * Adicionado o metodo de criar um log sem ator
+ * @author Gustavo Stinghen
  */
 
 @AllArgsConstructor
@@ -65,6 +69,33 @@ public class PreCouncilLogsService {
     /**
      * Cria um log de um {@link PreCouncil}
      * @param actor o usuario que criou o log
+     * @param target o pré-conselho alvo
+     * @param changes as mudanças efetuadas
+     * @param type o tipo de log
+     * @return {@link Boolean} se o log foi criado ou nao
+     */
+    public boolean create( PreCouncil target, List<EditableItem> changes, String type) {
+
+        try {
+
+            PreCouncilLogs log = PreCouncilLogs.builder().
+                    target(target).
+                    type(type).
+                    timestamp(Instant.now()).
+                    changes(changes).
+                    createdAt( new Date() ).
+                    build();
+
+            repository.save(log);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Cria um log de um {@link PreCouncil}
+     * @param actor o usuario que criou o log
      * @param target o pre-conselho alvo
      * @param type o tipo de log
      * @return {@link Boolean} se o log foi criado ou nao
@@ -75,6 +106,30 @@ public class PreCouncilLogsService {
 
             PreCouncilLogs log = PreCouncilLogs.builder().
                     actor(actor).
+                    target(target).
+                    type(type).
+                    timestamp(Instant.now()).
+                    createdAt( new Date() ).
+                    build();
+
+            repository.save(log);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Cria um log de um {@link PreCouncil}
+     * @param target o pre-conselho alvo
+     * @param type o tipo de log
+     * @return {@link Boolean} se o log foi criado ou nao
+     */
+    public boolean create( PreCouncil target, String type) {
+
+        try {
+
+            PreCouncilLogs log = PreCouncilLogs.builder().
                     target(target).
                     type(type).
                     timestamp(Instant.now()).

@@ -32,14 +32,18 @@ import java.util.List;
  * @since 24/03/2025
  *
  * @see ShiftService
+ *
+ * Atualizado em 28/03/2025
+ * Utilização de um única tag para o swagger
+ * @author Gustavo Stinghen
  */
 @RestController
 @RequestMapping("/administration/shift")
 @AllArgsConstructor
+@Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
 public class ShiftController {
     private ShiftService service;
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Cria um turno", description = "Cria um turno e retorna o turno criado com o status HTTP 201" )
     @ApiResponse(responseCode = "201", description = "Turno criado com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -62,7 +66,6 @@ public class ShiftController {
         }
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Busca todos os turnos", description = "Busca todos os turnos e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Turnos encontrados com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -83,7 +86,6 @@ public class ShiftController {
         }
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Edita um turno", description = "Edita um turno e retorna o turno editado com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Turno editado com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -107,7 +109,6 @@ public class ShiftController {
             }
         }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Edita o nome de um turno", description = "Edita o nome de um turno e retorna o turno editado com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Turno editado com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -128,7 +129,6 @@ public class ShiftController {
         }
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Busca todos os professores de um turno", description = "Busca todos os professores de um turno e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Professores encontrados com sucesso",
             content = @Content(schema = @Schema(implementation = TeacherResponseDTO.class),
@@ -145,7 +145,6 @@ public class ShiftController {
         return ResponseEntity.ok(professores);
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Busca todos os cursos de um turno", description = "Busca todos os cursos de um turno e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Cursos encontrados com sucesso",
             content = @Content(schema = @Schema(implementation = CourseResponseDTO.class),
@@ -162,7 +161,6 @@ public class ShiftController {
         return ResponseEntity.ok(cursos);
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Busca um turno pelo ID", description = "Busca um turno pelo ID e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Turno encontrado com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -179,7 +177,6 @@ public class ShiftController {
             }
         }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Associa um professor a um turno", description = "Associa um professor a um turno e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Professor associado com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -200,7 +197,6 @@ public class ShiftController {
         }
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Remove um professor de um turno", description = "Remove um professor de um turno e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Professor removido com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -221,7 +217,6 @@ public class ShiftController {
         }
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Associa um curso a um turno", description = "Associa um curso a um turno e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Curso associado com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -242,7 +237,6 @@ public class ShiftController {
         }
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Remove um curso de um turno", description = "Remove um curso de um turno e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Curso removido com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
@@ -262,7 +256,6 @@ public class ShiftController {
         }
     }
 
-    @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
     @Operation(summary = "Deleta um turno", description = "Deleta um turno e retorna com o status HTTP 200" )
     @ApiResponse(responseCode = "200", description = "Turno deletado com sucesso",
             content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),

@@ -22,7 +22,7 @@ public record PersonalFeedbackRequestDTO(
         @NotNull Date createdAt,
         @NotBlank String text
 ) {
-    public PersonalFeedback convert(Council council, Student student) {
+    public PersonalFeedback convert() {
         return PersonalFeedback.builder()
                 .council(this.council)
                 .student(this.student)

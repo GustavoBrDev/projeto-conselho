@@ -25,7 +25,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @Entity
-@Builder
 public class PersonalFeedback implements Feedback {
 
     @Id
@@ -46,8 +45,8 @@ public class PersonalFeedback implements Feedback {
     public PersonalFeedbackResponseDTO convert() {
         return PersonalFeedbackResponseDTO.builder()
                 .id(this.id)
-                .councilId(this.council.getId())//.convert()
-                .studentId(this.student.getId())//.convert()
+                .student(this.student.convert())
+                .council(this.council.toDTO())
                 .createdAt(this.createdAt)
                 .text(this.text)
                 .build();
