@@ -66,7 +66,7 @@ public class NotificationService {
 
         // Salva a notificação e retorna a resposta
         notification = notificationRepository.save(notification);
-        return convertToDTO(notification);
+        return notification.convert();
     }
 
     /**
@@ -85,7 +85,7 @@ public class NotificationService {
         notification.setMessage(newMessage);
         notification.setIsRead(isRead);
 
-        return convertToDTO(notificationRepository.save(notification));
+        return notificationRepository.save(notification).convert();
     }
 
     /**
@@ -101,38 +101,6 @@ public class NotificationService {
         notificationRepository.deleteById(notificationId);
     }
 
-    /**
-     * Lista todas as notificações de um usuário.
-     *
-     * @param user O usuário
-     * @return Lista de notificações em formato DTO
-     */
-    public List<NotificationResponseDTO> findByUser(User user) {
-        if (user instanceof Student student) {
-            return notificationRepository.findByStudent(student)
-                    .stream().map(this::convertToDTO).collect(Collectors.toList());
-        } else if (user instanceof Technique technique) {
-            return notificationRepository.findByTechnique(technique)
-                    .stream().map(this::convertToDTO).collect(Collectors.toList());
-        } else if (user instanceof Supervisor supervisor) {
-            return notificationRepository.findBySupervisor(supervisor)
-                    .stream().map(this::convertToDTO).collect(Collectors.toList());
-        } else {
-            throw new NaoEncontradoException("Usuário inválido");
-        }
-    }
 
-    /**
-     * Converte uma entidade Notification para NotificationResponseDTO.
-     */
-    private NotificationResponseDTO convertToDTO(Notification notification) {
-        return NotificationResponseDTO.builder()
-                .id(notification.getId())
-                .message(notification.getMessage())
-                .isRead(notification.getIsRead())
-                .isUrgent(notification.getIsUrgent())
-                .createdAt(notification.getCreatedAt())
-                .build();
-    }
 
 }
