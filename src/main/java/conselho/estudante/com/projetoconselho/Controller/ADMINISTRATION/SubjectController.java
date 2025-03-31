@@ -151,9 +151,7 @@ public class SubjectController {
 
     @Tag(name = "Subject")
     @Operation(summary = "Find subjects by teacher")
-    @ApiResponse(responseCode = "200", description = "Subjects found successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+    @ApiResponse(responseCode = "200", description = "Subjects found successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
