@@ -30,8 +30,6 @@ import java.util.Date;
 public class ClassFeedbackService {
 
     private final ClassFeedbackRepository repository;
-    private final CouncilService councilService;
-    private final ClasseService classeService;
 
     /**
      * Cria um novo feedback de turma.

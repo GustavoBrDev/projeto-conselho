@@ -1,49 +1,67 @@
 package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.SupervisorFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.SupervisorFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.SupervisorFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.SupervisorFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.SupervisorFeedback;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.SupervisorFeeback;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.ChangeItem;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.EditableItem;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 
 
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.SupervisorFeedbackRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.COUNCIL.CouncilService;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.FeedbackLogsService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Serviço responsável pela gestão dos feedbacks de supervisores ({@link SupervisorFeedback}).
  * Contém operações CRUD e manipulação de feedbacks por conselho e supervisor.
  * @author Camilly Chelest
  * @since 19/03/2025
+ * 
+ * Atualizado em 31/03/2025
+ * Conexão com o FeedbackLogsService para gerar logs
+ * Melhoria no tratamento de erros
+ * @author Gustavo Stinghen
+ * @see FeedbackLogsService
  */
 @Service
 @AllArgsConstructor
 public class SupervisorFeedbackService {
 
-    private final SupervisorFeedbackRepository repository;
-    private final CouncilService councilService;
-    private final SupervisorService supervisorService;
-
+    private SupervisorFeedbackRepository repository;
+    private FeedbackLogsService logsService;
     /**
      * Cria um novo feedback de supervisor.
      * @param requestDTO Dados do feedback
+     * @param actor Usuário que criou o feedback
      * @return Feedback criado
      */
-    public SupervisorFeedbackResponseDTO create(SupervisorFeedbackRequestDTO requestDTO) {
-        Supervisor supervisor = supervisorService.findById(requestDTO.supervisorId())
-                .orElseThrow(() -> new NaoEncontradoException("Supervisor não encontrado"));
-
-        Council council = councilService.findById(requestDTO.councilId())
-                .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
-
-        SupervisorFeedback feedback = requestDTO.convert(council, supervisor);
-        return repository.save(feedback).convert();
+    public SupervisorFeedbackResponseDTO create(SupervisorFeedbackRequestDTO requestDTO, User actor) {
+        
+        try {
+            SupervisorFeedback supervisorFeedback = requestDTO.convert();
+            supervisorFeedback.setCreatedAt(new Date());
+            logsService.create(actor, supervisorFeedback, "create");
+            return repository.save(supervisorFeedback).convert();
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Supervisor nao encontrado");
+        }
     }
 
 
@@ -51,18 +69,48 @@ public class SupervisorFeedbackService {
      * Atualiza um feedback existente.
      * @param id ID do feedback
      * @param requestDTO Dados atualizados
+     * @param actor Usuário que atualizou o feedback
      * @return Feedback atualizado
      */
-    public SupervisorFeedbackResponseDTO update(Long id, SupervisorFeedbackRequestDTO requestDTO) {
-        SupervisorFeedback feedback = repository.findById(id)
-                .orElseThrow(() -> new NaoEncontradoException("Feedback não encontrado"));
+    public SupervisorFeedbackResponseDTO update(Long id, SupervisorFeedbackRequestDTO requestDTO, User actor) {
 
-        feedback.setCreatedAt(requestDTO.createdAt());
-        feedback.setStrengthsText(requestDTO.strengthsText());
-        feedback.setWeaknessesText(requestDTO.weaknessesText());
-        feedback.setSuggestionsText(requestDTO.suggestionsText());
+        try {
+            SupervisorFeedback feedback = repository.findById(id)
+                    .orElseThrow(() -> new NaoEncontradoException("Feedback nao encontrado"));
+            feedback.setStrengthsText(requestDTO.strengthsText());
+            feedback.setWeaknessesText(requestDTO.weaknessesText());
+            feedback.setSuggestionsText(requestDTO.suggestionsText());
+            logsService.create(actor, feedback, getEditableItems(feedback, requestDTO.convert()), "update");
+            return repository.save(feedback).convert();
+        } catch (Exception e) {
+            throw new NaoEncontradoException("Feedback nao encontrado");
+        }
+    }
 
-        return repository.save(feedback).convert();
+    /**
+     * Método auxilair para obter os itens editáveis de um feedback.
+     * @param oldFeedback o feedback antigo
+     * @param newFeedback o feedback novo
+     * @return uma lista de itens editáveis
+     */
+    private List<EditableItem> getEditableItems(SupervisorFeedback oldFeedback, SupervisorFeedback newFeedback) {
+
+        List<EditableItem> changes = new ArrayList<>();
+
+        if (!oldFeedback.getStrengthsText().equals(newFeedback.getStrengthsText())) {
+            changes.add(new ChangeItem("strengthsText", oldFeedback.getStrengthsText(), newFeedback.getStrengthsText()));
+        }
+
+        if (!oldFeedback.getWeaknessesText().equals(newFeedback.getWeaknessesText())) {
+            changes.add(new ChangeItem("weaknessesText", oldFeedback.getWeaknessesText(), newFeedback.getWeaknessesText()));
+        }
+
+        if (!oldFeedback.getSuggestionsText().equals(newFeedback.getSuggestionsText())) {
+            changes.add(new ChangeItem("suggestionsText", oldFeedback.getSuggestionsText(), newFeedback.getSuggestionsText()));
+        }
+
+        return changes;
+
     }
 
     /**
@@ -71,16 +119,77 @@ public class SupervisorFeedbackService {
      * @param strengths Novo texto de pontos fortes
      * @param weaknesses Novo texto de pontos fracos
      * @param suggestions Novas sugestões
+     * @param actor Usuário que editou o feedback
      * @return Feedback atualizado
      */
-    public SupervisorFeedbackResponseDTO editTexts(Long id, String strengths, String weaknesses, String suggestions) {
+    public SupervisorFeedbackResponseDTO editTexts(Long id, String strengths, String weaknesses, String suggestions, User actor) {
         SupervisorFeedback feedback = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Feedback não encontrado"));
 
-        if (strengths != null) feedback.setStrengthsText(strengths);
-        if (weaknesses != null) feedback.setWeaknessesText(weaknesses);
-        if (suggestions != null) feedback.setSuggestionsText(suggestions);
+        if (strengths != null) {
+            logsService.create(actor, feedback, Collections.singletonList(new ChangeItem("strengthsText", (Object) feedback.getStrengthsText(), (Object) strengths)), "update");
+            feedback.setStrengthsText(strengths);
+        }
+        if (weaknesses != null) {
+            logsService.create(actor, feedback, Collections.singletonList(new ChangeItem("weaknessesText", (Object) feedback.getWeaknessesText(), (Object) weaknesses)), "update");
+            feedback.setWeaknessesText(weaknesses);
+        }
+        if (suggestions != null) {
+            logsService.create(actor, feedback, Collections.singletonList(new ChangeItem("suggestionsText", (Object) feedback.getSuggestionsText(), (Object) suggestions)), "update");
+            feedback.setSuggestionsText(suggestions);
+        }
 
+        return repository.save(feedback).convert();
+    }
+
+    /**
+     * Edita o texto de pontos fortes de um feedback específico.
+     * @param id ID do feedback
+     * @param strengths Novo texto de pontos fortes
+     * @param actor Usuário que editou o feedback
+     * @return Feedback atualizado
+     * @author Gustavo Stinghen
+     * @since 31/03/2025
+     */
+    private SupervisorFeedbackResponseDTO editStrenghtsText(Long id, String strengths, User actor) {
+        SupervisorFeedback feedback = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Feedback não encontrado"));
+        logsService.create(actor, feedback, Collections.singletonList(new ChangeItem("strengthsText", (Object) feedback.getStrengthsText(), (Object) strengths)), "update");
+        feedback.setStrengthsText(strengths);
+        return repository.save(feedback).convert();
+    }
+
+    /**
+     * Edita o texto de pontos fracos de um feedback específico.
+     * @param id ID do feedback
+     * @param weaknesses Novo texto de pontos fracos
+     * @param actor Usuário que editou o feedback
+     * @return Feedback atualizado
+     * @author Gustavo Stinghen
+     * @since 31/03/2025
+     */
+    private SupervisorFeedbackResponseDTO editWeaknessesText(Long id, String weaknesses, User actor) {
+        SupervisorFeedback feedback = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Feedback não encontrado"));
+        logsService.create(actor, feedback, Collections.singletonList(new ChangeItem("weaknessesText", (Object) feedback.getWeaknessesText(), (Object) weaknesses)), "update");
+        feedback.setWeaknessesText(weaknesses);
+        return repository.save(feedback).convert();
+    }
+
+    /**
+     * Edita o texto de sugestões de um feedback específico.
+     * @param id ID do feedback
+     * @param suggestions Novas sugestões
+     * @param actor Usuário que editou o feedback
+     * @return Feedback atualizado
+     * @author Gustavo Stinghen
+     * @since 31/03/2025
+     */
+    private SupervisorFeedbackResponseDTO editSuggestionsText(Long id, String suggestions, User actor) {
+        SupervisorFeedback feedback = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Feedback não encontrado"));
+        logsService.create(actor, feedback, Collections.singletonList(new ChangeItem("suggestionsText", (Object) feedback.getSuggestionsText(), (Object) suggestions)), "update");
+        feedback.setSuggestionsText(suggestions);
         return repository.save(feedback).convert();
     }
 

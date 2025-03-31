@@ -5,6 +5,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CallToChatStudentsRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,9 +25,9 @@ import java.util.List;
  * @since 17/03/2025
  */
 @Service
+@AllArgsConstructor
 public class CallToChatStudentService {
 
-    @Autowired
     private CallToChatStudentsRepository repository;
 
     /**
