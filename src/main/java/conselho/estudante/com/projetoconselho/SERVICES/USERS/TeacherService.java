@@ -474,4 +474,21 @@ public class TeacherService {
             return null;
         }
     }
+
+    /**
+     * Método para editar a senha de um professor
+     * @param user o professor a ser editado
+     * @param password a nova senha
+     * @return um booleano indicando se a edição foi bem sucedida
+     */
+    public boolean editPassword(Teacher user, String password) {
+
+        try {
+            user.setPassword(password);
+            repository.save(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

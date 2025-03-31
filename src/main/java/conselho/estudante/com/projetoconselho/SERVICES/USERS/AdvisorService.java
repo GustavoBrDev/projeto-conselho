@@ -18,7 +18,6 @@ import jakarta.persistence.criteria.Predicate;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -170,6 +169,26 @@ public class AdvisorService {
     }
 
     /**
+     * Método de edição de senha (interno)
+     *
+     * @param advisor  orientador
+     * @param password nova senha
+     * @return
+     * @author Gustavo Stinghen
+     * @since 31/03/2025
+     */
+    public boolean editPassword(Advisor advisor, String password) {
+
+        try {
+            advisor.setPassword(password);
+            repository.save(advisor);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * Métodos GET para consultas
      */
     public Page<AdvisorResponseDTO> findAllAdvisors(Pageable pageable) {
@@ -254,5 +273,17 @@ public class AdvisorService {
                 advisor.getEmail(),
                 advisor.getRegister()
         );
+    }
+
+    /**
+     * Método para buscar um orientador pelo email (lógica interna)
+     * @param email email do orientador
+     * @return orientador em forma de {@link Advisor}
+     * @author Gustavo Stinghen
+     * @since 31/03/2025
+     */
+    public Advisor getObjectAdvisor ( String email ) {
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new NaoEncontradoException("Orientador nao encontrado"));
     }
 }
