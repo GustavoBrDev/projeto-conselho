@@ -46,7 +46,7 @@ public class Supervisor implements User {
     @Column(nullable = false)
     private Long register;
 
-    @OneToMany
+    @OneToMany(mappedBy = "supervisor")
     private List<Course> courses;
 
     @OneToMany

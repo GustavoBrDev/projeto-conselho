@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 
 import java.util.Date;
@@ -69,7 +70,7 @@ public class Teacher implements User {
     private List<Course> courses;
 
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "teachers", fetch = FetchType.LAZY)
     private List<Subject> subjects;
 
 

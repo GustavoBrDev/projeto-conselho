@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 
 import java.util.List;
@@ -29,11 +31,11 @@ public class Representative {
     private Long id;
 
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Student> students;
 
 
-    @OneToOne
+    @OneToOne(mappedBy = "representative", fetch = FetchType.LAZY)
     private Classe representativeOf;
 
 

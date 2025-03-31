@@ -4,6 +4,8 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.TeacherRe
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.TeacherService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/teachers")
+@RequestMapping("/users/teachers")
+@Tag(name = "Teacher", description = "Recurso para gerenciamento de professores")
+@AllArgsConstructor
 public class TeacherController {
 
-    @Autowired
+
     private TeacherService teacherService;
 
     /*
@@ -28,6 +32,7 @@ public class TeacherController {
         Teacher teacher = teacherService.toEntity(dto);
         Teacher savedTeacher = teacherService.criarTeacher(teacher);
         TeacherResponseDTO responseDTO = teacherService.toResponseDTO(savedTeacher);
+        System.out.println("Acessou o controller");
         return ResponseEntity.ok(responseDTO);
     }
 

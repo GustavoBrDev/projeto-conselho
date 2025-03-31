@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Subject {
     @Column(nullable = false)
     private Integer workLoad;
 
-    @ManyToMany ( mappedBy = "subjects" )
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Teacher> teachers;
 
     /**

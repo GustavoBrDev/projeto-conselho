@@ -20,6 +20,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -28,7 +30,6 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class TeacherService {
-
 
     private final TeacherRepository repository;
     private final UserLogsService logsService;
@@ -42,14 +43,12 @@ public class TeacherService {
         teacher.setCreatedAt(new Date());
         teacher.setPassword(generateRandomPassword());
 
-
         if (repository.existsByEmail(teacher.getEmail())) {
             throw new DadosDuplicadosException("Email já cadastrado");
         }
         if (repository.existsByRegister(teacher.getRegister())) {
             throw new DadosDuplicadosException("Registro já cadastrado");
         }
-
 
         logsService.create(actor, teacher, "create");
         return repository.save(teacher).toDTO();
@@ -61,7 +60,6 @@ public class TeacherService {
         if (!repository.existsById(id)) {
             throw new NaoEncontradoException("Professor não encontrado");
         }
-
 
         teacher.setId(id);
         if (repository.existsByEmailAndIdNot(teacher.getEmail(), id)) {

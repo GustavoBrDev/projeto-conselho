@@ -5,9 +5,11 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Cours
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ClasseRepository extends JpaRepository<Classe, Long> {
 
     public boolean existsByName(String name);
