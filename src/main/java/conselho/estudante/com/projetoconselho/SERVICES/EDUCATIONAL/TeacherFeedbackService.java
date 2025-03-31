@@ -25,8 +25,6 @@ import org.springframework.stereotype.Service;
 public class TeacherFeedbackService {
 
     private final TeacherFeedbackRepository repository;
-    private final CouncilService councilService;
-    private final TeacherService teacherService;
 
     /**
      * Cria um novo feedback de professor.
@@ -34,16 +32,9 @@ public class TeacherFeedbackService {
      * @return Feedback criado
      */
     public TeacherFeedbackResponseDTO create(TeacherFeedbackRequestDTO requestDTO) {
-       /* Council council = councilService.findById(requestDTO.councilId())
-                .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
-
-        Teacher teacher = teacherService.findById(requestDTO.teacherId())
-                .orElseThrow(() -> new NaoEncontradoException("Professor não encontrado"));
-
-        TeacherFeeback feedback = requestDTO.convert(council, teacher);
-        return repository.save(feedback).convert();*/
-        return null;
+        return repository.save(requestDTO.convert()).convert();
     }
+
 
     /**
      * Atualiza um feedback existente.

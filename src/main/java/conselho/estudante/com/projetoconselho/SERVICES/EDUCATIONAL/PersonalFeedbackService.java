@@ -34,16 +34,9 @@ public class PersonalFeedbackService {
      * @return Feedback criado
      */
     public PersonalFeedbackResponseDTO create(PersonalFeedbackRequestDTO requestDTO) {
-        /*Council council = councilService.findById(requestDTO.councilId())
-                .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
-
-        Student student = studentService.findById(requestDTO.studentId())
-                .orElseThrow(() -> new NaoEncontradoException("Estudante não encontrado"));
-
-        PersonalFeedback feedback = requestDTO.convert(council, student);
-        return repository.save(feedback).convert();*/
-        return null;
+        return repository.save(requestDTO.convert()).convert();
     }
+
 
     /**
      * Atualiza um feedback existente.

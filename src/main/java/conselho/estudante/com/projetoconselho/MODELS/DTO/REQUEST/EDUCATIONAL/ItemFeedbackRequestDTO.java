@@ -25,7 +25,7 @@ public record ItemFeedbackRequestDTO(
         @NotBlank
         String item
 ) {
-    public ItemFeedback convert(Council council) {
+    public ItemFeedback convert() {
         return ItemFeedback.builder()
                 .council(this.council)//.convert()
                 .createdAt(this.createdAt)
