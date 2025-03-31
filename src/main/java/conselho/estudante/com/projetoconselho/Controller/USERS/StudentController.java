@@ -4,169 +4,288 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.StudentRe
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
+import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.DadosDuplicadosException;
+import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+/**
+ * Controller para os métodos relacionados ao gerenciamento de estudantes.
+ * @author Camilly Chelest
+ * @since 26/03/2025
+ */
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 @AllArgsConstructor
 public class StudentController {
 
     private final StudentService studentService;
-    private final AuthService authService;
 
-    private User getAuthenticatedUser(Long actorId) {
-        return authService.findUserById(actorId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário autenticado não encontrado."));
-    }
-
-    @Operation(summary = "Cria um estudante")
-    @ApiResponse(responseCode = "201", description = "Estudante criado com sucesso")
+    // Cria um novo estudante
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Cria um novo estudante")
+    @ApiResponse(responseCode = "201", description = "Estudante criado com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+        examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao criar estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody StudentRequestDTO studentRequestDTO, @RequestParam Long actorId) {
-        try {
-            User actor = getAuthenticatedUser(actorId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(studentService.create(studentRequestDTO, actor));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao criar estudante: " + e.getMessage());
-        }
+    public StudentResponseDTO createStudent(@RequestBody @Valid @Parameter(description = "Dados do estudante a ser criado") StudentRequestDTO studentRequestDTO,
+                                            @RequestParam @Parameter(description = "Usuário que está criando o estudante") User actor) {
+        return studentService.create(studentRequestDTO, actor);
     }
 
-    @Operation(summary = "Atualiza um estudante")
-    @ApiResponse(responseCode = "200", description = "Estudante atualizado com sucesso")
+    // Atualiza um estudante existente
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Atualiza um estudante existente")
+    @ApiResponse(responseCode = "200", description = "Estudante atualizado com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao atualizar estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody StudentRequestDTO studentRequestDTO, @RequestParam Long actorId) {
-        try {
-            User actor = getAuthenticatedUser(actorId);
-            return ResponseEntity.ok(studentService.update(id, studentRequestDTO, actor));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao atualizar estudante: " + e.getMessage());
-        }
+    public StudentResponseDTO updateStudent(@PathVariable @Parameter(description = "ID do estudante a ser atualizado") Long id,
+                                            @RequestBody @Valid @Parameter(description = "Novos dados do estudante") StudentRequestDTO studentRequestDTO,
+                                            @RequestParam @Parameter(description = "Usuário que está atualizando o estudante") User actor) {
+        return studentService.update(id, studentRequestDTO, actor);
     }
 
-    @Operation(summary = "Busca um estudante por ID")
-    @ApiResponse(responseCode = "200", description = "Estudante encontrado")
-    @ApiResponse(responseCode = "404", description = "Estudante não encontrado")
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(studentService.findId(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Estudante não encontrado: " + e.getMessage());
-        }
-    }
-
-    @Operation(summary = "Lista todos os estudantes")
-    @ApiResponse(responseCode = "200", description = "Lista de estudantes retornada com sucesso")
-    @GetMapping
-    public ResponseEntity<Page<StudentResponseDTO>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(studentService.findStudents(pageable));
-    }
-
-    @Operation(summary = "Lista estudantes por classe")
-    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
-    @ApiResponse(responseCode = "404", description = "Classe não encontrada")
-    @GetMapping("/by-class/{classId}")
-    public ResponseEntity<?> findByClass(@PathVariable Long classId, Pageable pageable) {
-        try {
-            Classe classe = new Classe();
-            classe.setId(classId);
-            return ResponseEntity.ok(studentService.findStudentsClass(classe, pageable));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro ao buscar estudantes da classe: " + e.getMessage());
-        }
-    }
-
-    @Operation(summary = "Edita o nome de um estudante")
-    @ApiResponse(responseCode = "200", description = "Nome atualizado com sucesso")
+    // Edita o nome do estudante
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Edita o nome do estudante")
+    @ApiResponse(responseCode = "200", description = "Nome do estudante editado com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao editar nome do estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/name")
-    public ResponseEntity<?> editName(@PathVariable Long id, @RequestParam String name, @RequestParam Long actorId) {
-        try {
-            User actor = getAuthenticatedUser(actorId);
-            return ResponseEntity.ok(studentService.editName(id, name, actor));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao editar nome: " + e.getMessage());
-        }
+    public StudentResponseDTO editName(@PathVariable Long id, @RequestParam String name, @RequestParam User actor) {
+        return studentService.editName(id, name, actor);
     }
 
-    @Operation(summary = "Edita o email de um estudante")
-    @ApiResponse(responseCode = "200", description = "Email atualizado com sucesso")
+    // Edita o email do estudante
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Edita o email do estudante")
+    @ApiResponse(responseCode = "200", description = "Email do estudante editado com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao editar email do estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/email")
-    public ResponseEntity<?> editEmail(@PathVariable Long id, @RequestParam String email, @RequestParam Long actorId) {
-        try {
-            User actor = getAuthenticatedUser(actorId);
-            return ResponseEntity.ok(studentService.editEmail(id, email, actor));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao editar e-mail: " + e.getMessage());
-        }
+    public StudentResponseDTO editEmail(@PathVariable Long id, @RequestParam String email, @RequestParam User actor) {
+        return studentService.editEmail(id, email, actor);
     }
 
-    @Operation(summary = "Edita a senha de um estudante")
-    @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso")
+    // Edita a matrícula do estudante
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Edita a matrícula do estudante")
+    @ApiResponse(responseCode = "200", description = "Matrícula do estudante editada com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao editar matrícula do estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @PatchMapping("/{id}/registration")
+    public StudentResponseDTO editRegistration(@PathVariable Long id, @RequestParam Long registration, @RequestParam User actor) {
+        return studentService.editRegistration(id, registration, actor);
+    }
+
+    // Edita a senha do estudante
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Edita a senha do estudante")
+    @ApiResponse(responseCode = "200", description = "Senha do estudante editada com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao editar senha do estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/password")
-    public ResponseEntity<?> editPassword(@PathVariable Long id, @RequestParam String password, @RequestParam Long actorId) {
-        try {
-            User actor = getAuthenticatedUser(actorId);
-            return ResponseEntity.ok(studentService.editPassword(id, password, actor));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao editar senha: " + e.getMessage());
-        }
+    public StudentResponseDTO editPassword(@PathVariable Long id, @RequestParam String password, @RequestParam User actor) {
+        return studentService.editPassword(id, password, actor);
     }
 
-    @Operation(summary = "Edita a imagem de um estudante")
-    @ApiResponse(responseCode = "200", description = "Imagem atualizada com sucesso")
+    // Edita a imagem do estudante
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Edita a imagem do estudante")
+    @ApiResponse(responseCode = "200", description = "Imagem do estudante editada com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao editar imagem do estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/image")
-    public ResponseEntity<?> editImage(@PathVariable Long id, @RequestParam String image, @RequestParam Long actorId) {
-        try {
-            User actor = getAuthenticatedUser(actorId);
-            return ResponseEntity.ok(studentService.editImage(id, image, actor));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao editar imagem: " + e.getMessage());
-        }
+    public StudentResponseDTO editImage(@PathVariable Long id, @RequestParam String image, @RequestParam User actor) {
+        return studentService.editImage(id, image, actor);
     }
 
-    @Operation(summary = "Adiciona uma notificação para um estudante")
-    @ApiResponse(responseCode = "200", description = "Notificação adicionada com sucesso")
-    @PostMapping("/{id}/notifications")
-    public ResponseEntity<?> addNotification(@PathVariable Long id, @RequestBody Notification notification) {
-        try {
-            return ResponseEntity.ok(studentService.addNotification(id, notification));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao adicionar notificação: " + e.getMessage());
-        }
+    // Busca todos os estudantes com paginação
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Busca todos os estudantes com paginação")
+    @ApiResponse(responseCode = "200", description = "Estudantes encontrados com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao buscar estudantes")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @GetMapping
+    public Page<StudentResponseDTO> findStudents(Pageable pageable) {
+        return studentService.findStudents(pageable);
     }
 
-    @Operation(summary = "Remove uma notificação de um estudante")
-    @ApiResponse(responseCode = "200", description = "Notificação removida com sucesso")
-    @DeleteMapping("/{id}/notifications")
-    public ResponseEntity<?> removeNotification(@PathVariable Long id, @RequestBody Notification notification) {
-        try {
-            return ResponseEntity.ok(studentService.removeNotification(id, notification));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao remover notificação: " + e.getMessage());
-        }
+    // Busca estudantes de uma determinada classe
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Busca estudantes de uma determinada classe")
+    @ApiResponse(responseCode = "200", description = "Estudantes encontrados com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao buscar estudantes")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @GetMapping("/class/{classeId}")
+    public Page<StudentResponseDTO> findStudentsByClass(@PathVariable Long classeId, Pageable pageable) {
+        Classe classe = new Classe();
+        classe.setId(classeId); // Supondo que você tenha uma maneira de pegar a classe por ID
+        return studentService.findStudentsClass(classe, pageable);
     }
 
+    // Busca um estudante pelo ID
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Busca um estudante pelo ID")
+    @ApiResponse(responseCode = "200", description = "Estudante encontrado com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao buscar estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @GetMapping("/{id}")
+    public StudentResponseDTO findStudentById(@PathVariable Long id) {
+        return studentService.findId(id);
+    }
+
+    // Busca um estudante pelo email
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Busca um estudante pelo email")
+    @ApiResponse(responseCode = "200", description = "Estudante encontrado com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao buscar estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @GetMapping("/email/{email}")
+    public StudentResponseDTO findStudentByEmail(@PathVariable String email) {
+        return studentService.findByEmail(email);
+    }
+
+    // Deleta um estudante
+    @Tag(name = "Estudantes")
     @Operation(summary = "Deleta um estudante")
-    @ApiResponse(responseCode = "204", description = "Estudante removido com sucesso")
+    @ApiResponse(responseCode = "204", description = "Estudante deletado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Erro ao deletar estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id, @RequestParam Long actorId) {
-        try {
-            User actor = getAuthenticatedUser(actorId);
-            studentService.delete(id, actor);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao excluir estudante: " + e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteStudent(@PathVariable Long id, @RequestParam User actor) {
+        studentService.delete(id, actor);
+    }
+
+    // Adiciona um estudante a uma classe
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Adiciona um estudante a uma classe")
+    @ApiResponse(responseCode = "200", description = "Estudante adicionado à classe com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao adicionar estudante à classe")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @PostMapping("/{studentId}/class/{classeId}")
+    public StudentResponseDTO addStudentToClass(@PathVariable Long studentId, @PathVariable Long classeId, @RequestParam User actor) {
+        Student student = studentService.findId(studentId).convert();
+        Classe classe = new Classe();
+        classe.setId(classeId);
+        return studentService.addStudentClass(student, classe, actor);
+    }
+
+    // Remove um estudante de uma classe
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Remove um estudante de uma classe")
+    @ApiResponse(responseCode = "200", description = "Estudante removido da classe com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao remover estudante da classe")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @DeleteMapping("/{studentId}/class/{classeId}")
+    public StudentResponseDTO removeStudentFromClass(@PathVariable Long studentId, @PathVariable Long classeId, @RequestParam User actor) {
+        Student student = studentService.findId(studentId).convert();
+        Classe classe = new Classe();
+        classe.setId(classeId);
+        return studentService.removeStudentClass(student, classe, actor);
+    }
+
+    // Adiciona uma notificação a um estudante
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Adiciona uma notificação a um estudante")
+    @ApiResponse(responseCode = "200", description = "Notificação adicionada ao estudante com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao adicionar notificação ao estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @PostMapping("/{id}/notification")
+    public StudentResponseDTO addNotification(@PathVariable Long id, @RequestBody Notification notification) {
+        return studentService.addNotification(id, notification);
+    }
+
+    // Remove uma notificação de um estudante
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Remove uma notificação de um estudante")
+    @ApiResponse(responseCode = "200", description = "Notificação removida do estudante com sucesso"
+            , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
+              examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao remover notificação do estudante")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    @DeleteMapping("/{id}/notification")
+    public StudentResponseDTO removeNotification(@PathVariable Long id, @RequestBody Notification notification) {
+        return studentService.removeNotification(id, notification);
+    }
+
+    // Tratar exceções globalmente
+    @Tag(name = "Estudantes")
+    @Operation(summary = "Tratar exceções globalmente")
+    @ApiResponse(responseCode = "400", description = "Erro ao adicionar estudante à classe")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+
+    @ExceptionHandler(DadosDuplicadosException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleDadosDuplicadosException(DadosDuplicadosException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(NaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNaoEncontradoException(NaoEncontradoException e) {
+        return e.getMessage();
     }
 }
