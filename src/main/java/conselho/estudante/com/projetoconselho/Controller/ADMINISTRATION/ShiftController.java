@@ -141,8 +141,8 @@ public class ShiftController {
             @Parameter (description = "Pagina para listar professores", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
-        Page<TeacherResponseDTO> professores = service.listTeachersByShift(shiftId, pageable);
-        return ResponseEntity.ok(professores);
+        Page<TeacherResponseDTO> teachers = service.listTeachersByShift(shiftId, pageable);
+        return ResponseEntity.ok(teachers);
     }
 
     @Operation(summary = "Busca todos os cursos de um turno", description = "Busca todos os cursos de um turno e retorna com o status HTTP 200" )
