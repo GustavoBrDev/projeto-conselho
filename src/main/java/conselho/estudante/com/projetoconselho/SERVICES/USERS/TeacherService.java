@@ -319,7 +319,7 @@ public class TeacherService {
     }
 
 
-    public Teacher findObjectTeacher(String email) {
+    public Teacher getObjectTeacher(String email) {
         try {
             return repository.findByEmail(email);
         } catch (Exception e) {
@@ -328,7 +328,7 @@ public class TeacherService {
     }
 
 
-    public Teacher findObjectTeacher(Long id) {
+    public Teacher getObjectTeacher(Long id) {
         try {
             return repository.findById(id).orElse(null);
         } catch (Exception e) {
