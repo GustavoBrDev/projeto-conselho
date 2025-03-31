@@ -136,13 +136,13 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao buscar professores")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/teachers/{id}")
-    public ResponseEntity<Page<TeacherResponseDTO>> listarProfessoresPeloTurno(
+    public ResponseEntity<Page<TeacherResponseDTO>> listTeachersByShift(
             @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
             @Parameter (description = "Pagina para listar professores", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
-        Page<TeacherResponseDTO> professores = service.listTeachersByShift(shiftId, pageable);
-        return ResponseEntity.ok(professores);
+        Page<TeacherResponseDTO> teachers = service.listTeachersByShift(shiftId, pageable);
+        return ResponseEntity.ok(teachers);
     }
 
     @Operation(summary = "Busca todos os cursos de um turno", description = "Busca todos os cursos de um turno e retorna com o status HTTP 200" )
@@ -152,7 +152,7 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao buscar cursos")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/courses/{id}")
-    public ResponseEntity<Page<CourseResponseDTO>> listarCursosPeloTurno(
+    public ResponseEntity<Page<CourseResponseDTO>> listCourseByShift(
             @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
             @Parameter (description = "Pagina para listar cursos", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
@@ -257,9 +257,7 @@ public class ShiftController {
     }
 
     @Operation(summary = "Deleta um turno", description = "Deleta um turno e retorna com o status HTTP 200" )
-    @ApiResponse(responseCode = "200", description = "Turno deletado com sucesso",
-            content = @Content(schema = @Schema(implementation = ShiftResponseDTO.class),
-            examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
+    @ApiResponse(responseCode = "200", description = "Turno deletado com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao deletar turno")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @DeleteMapping("/{id}")
