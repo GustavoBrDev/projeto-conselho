@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS;
 
+
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Shift;
@@ -11,8 +12,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 
+
 import java.util.Date;
 import java.util.List;
+
 
 /**
  * Classe model da entidade Professor
@@ -26,6 +29,7 @@ import java.util.List;
  * @author Alex Zastrow
  */
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -33,43 +37,55 @@ import java.util.List;
 @Builder
 public class Teacher implements User {
 
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String image;
+
 
     @Column(nullable = false)
     private String name;
 
+
     @Column(nullable = false)
     private String email;
+
 
     @Column(nullable = false)
     private String password;
 
+
     @Column(nullable = false)
     private Date createdAt;
+
 
     @Column(nullable = false)
     private Long register;
 
+
     @ManyToMany
     private List<Course> courses;
 
-    @ManyToMany(mappedBy = "teachers")
-    private List<Subject> subjects;
 
     @ManyToMany(mappedBy = "teachers", fetch = FetchType.LAZY)
+    private List<Subject> subjects;
+
+
+    @ManyToMany
     private List<Shift> shifts;
 
-     /** Metodo para adicionar um curso ao professor
+
+    /** Metodo para adicionar um curso ao professor
      * @param course o curso a ser adicionado em formato de {@link Course}
      * @return um booleano indicando se o curso foi adicionado. Se verdadeiro, o curso foi adicionado ao professor. Se falso, o curso nao foi adicionado ao professor
      * O curso nao pode ser adicionado se ele ja estiver na lista de cursos
      * @see Course
      */
     public boolean addCourse(Course course) {
+
 
         if (this.courses.contains(course)) {
             return false;
@@ -78,9 +94,11 @@ public class Teacher implements User {
             return true;
         }
 
+
     }
 
-     /**
+
+    /**
      * Metodo para remover um curso ao professor
      * @param course o curso a ser removido em formato de {@link Course}
      * @return um booleano indicando se o curso foi removido. Se verdadeiro, o curso foi removido ao professor. Se falso, o curso nao foi removido ao professor
@@ -89,6 +107,7 @@ public class Teacher implements User {
      */
     public boolean removeCourse(Course course) {
 
+
         if (this.courses.contains(course)) {
             this.courses.remove(course);
             return true;
@@ -96,7 +115,9 @@ public class Teacher implements User {
             return false;
         }
 
+
     }
+
 
     /**
      * Método para adicionar uma materia ao professor
@@ -107,6 +128,7 @@ public class Teacher implements User {
      */
     public boolean addSubject(Subject subject) {
 
+
         if (this.subjects.contains(subject)) {
             return false;
         } else {
@@ -114,6 +136,7 @@ public class Teacher implements User {
             return true;
         }
     }
+
 
     /**
      * Metodo para remover uma materia ao professor
@@ -124,6 +147,7 @@ public class Teacher implements User {
      */
     public boolean removeSubject(Subject subject) {
 
+
         if (this.subjects.contains(subject)) {
             this.subjects.remove(subject);
             return true;
@@ -131,7 +155,9 @@ public class Teacher implements User {
             return false;
         }
 
+
     }
+
 
     /**
      * Método para adicionar um turno ao professor
@@ -142,6 +168,7 @@ public class Teacher implements User {
      */
     public boolean addShift(Shift shift) {
 
+
         if (this.shifts.contains(shift)) {
             return false;
         } else {
@@ -149,7 +176,9 @@ public class Teacher implements User {
             return true;
         }
 
+
     }
+
 
     /**
      * Método para remover um turno ao professor
@@ -160,6 +189,7 @@ public class Teacher implements User {
      */
     public boolean removeShift(Shift shift) {
 
+
         if (this.shifts.contains(shift)) {
             this.shifts.remove(shift);
             return true;
@@ -167,7 +197,9 @@ public class Teacher implements User {
             return false;
         }
 
+
     }
+
 
     public TeacherResponseDTO toDTO() {
         return TeacherResponseDTO.builder()

@@ -1,7 +1,9 @@
 package conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertFalse;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Data
+@Builder
 public class Notification {
 
     @Id
@@ -34,4 +37,5 @@ public class Notification {
 
     @Column(nullable = false)
     private Date createdAt;
+
 }
