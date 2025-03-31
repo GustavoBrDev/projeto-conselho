@@ -136,7 +136,7 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao buscar professores")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/teachers/{id}")
-    public ResponseEntity<Page<TeacherResponseDTO>> listTeachersByShift(
+    public ResponseEntity<Page<TeacherResponseDTO>> getTeachersByShift(
             @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
             @Parameter (description = "Pagina para listar professores", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
@@ -152,7 +152,7 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao buscar cursos")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/courses/{id}")
-    public ResponseEntity<Page<CourseResponseDTO>> listCourseByShift(
+    public ResponseEntity<Page<CourseResponseDTO>> getCoursesByShift(
             @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
             @Parameter (description = "Pagina para listar cursos", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {

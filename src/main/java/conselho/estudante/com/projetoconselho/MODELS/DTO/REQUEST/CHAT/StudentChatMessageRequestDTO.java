@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.CHAT;
 
+import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.StudentRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.ChatMessage;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.CHAT.StudentChatMessage;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
@@ -16,13 +17,13 @@ public class StudentChatMessageRequestDTO implements ChatMessage {
     @NotBlank
     String message;
     @NotNull
-    Student student;
+    StudentRequestDTO student;
 
     public StudentChatMessage convert() {
 
         return StudentChatMessage.builder()
                 .text(message)
-                .student(student)
+                .student(student.convert())
                 .build();
     }
 }

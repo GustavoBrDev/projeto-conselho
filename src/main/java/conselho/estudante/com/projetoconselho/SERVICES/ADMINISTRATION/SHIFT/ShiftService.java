@@ -177,11 +177,11 @@ public class ShiftService {
     public Page<CourseResponseDTO> listCourseByShift(Long shiftId, Pageable pageable) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno nao encontrado"));
         return new PageImpl<>(
-                shift.getCourse().stream() // Fluxo dos cursos
+                shift.getCourses().stream() // Fluxo dos cursos
                         .map(Course::toDTO) // Convertendo cada curso para o DTO
                         .collect(Collectors.toList()), // Coletando como lista
                 pageable, // Paginação
-                shift.getCourse().size()); // Total de cursos
+                shift.getCourses().size()); // Total de cursos
     }
 
 
@@ -209,7 +209,7 @@ public class ShiftService {
     public void addTeacherToShift(Long shiftId, Long teacherId, User actor) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
 
-        Teacher teacher = teacherService.buscarPorId(teacherId);
+        Teacher teacher = teacherService.getObjectTeacher(teacherId);
 
         if ( teacher == null ) {
             throw new NaoEncontradoException("Professor nao encontrado");
@@ -237,7 +237,7 @@ public class ShiftService {
     public void removeTeacherOfShift(Long shiftId, Long teacherId, User actor) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
 
-        Teacher teacher = teacherService.buscarPorId(teacherId);
+        Teacher teacher = teacherService.getObjectTeacher(teacherId);
 
         if ( teacher == null ) {
             throw new NaoEncontradoException("Professor nao encontrado");
@@ -267,12 +267,12 @@ public class ShiftService {
 
         Course course = courseService.getObjectCourse(courseId);
 
-        if (shift.getCourse().contains(course)) {
+        if (shift.getCourses().contains(course)) {
             throw new RuntimeException("Curso já está associado a este turno");
         }
 
         logsService.create( actor, shift, Collections.singletonList( new AddItem("courses", (Object) course ) ), "add" );
-        shift.getCourse().add(course);
+        shift.getCourses().add(course);
         repository.save(shift);
     }
 
@@ -294,13 +294,13 @@ public class ShiftService {
             throw new NaoEncontradoException("Curso nao encontrado");
         }
 
-        if (!shift.getCourse().contains(course)) {
+        if (!shift.getCourses().contains(course)) {
             throw new RuntimeException("Curso não está associado a este turno");
         }
 
         logsService.create( actor, shift, Collections.singletonList( new AddItem("courses", (Object) course ) ), "remove" );
 
-        shift.getCourse().remove(course);
+        shift.getCourses().remove(course);
         repository.save(shift);
     }
 

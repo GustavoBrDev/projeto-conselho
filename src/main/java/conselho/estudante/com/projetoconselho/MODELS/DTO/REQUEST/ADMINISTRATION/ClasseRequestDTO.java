@@ -41,7 +41,6 @@ public record ClasseRequestDTO(
                 .name(this.name)
                 .acronym(this.acronym)
                 .course(this.course)
-                .representative(this.representative)
                 .active(this.active)
                 .build();
     }

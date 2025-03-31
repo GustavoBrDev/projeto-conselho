@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 
@@ -34,19 +35,17 @@ public class Classe {
     @Column(nullable = false)
     private String acronym;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Course course;
 
     @ManyToMany
     private List<Student> students;
 
-    @OneToOne
-    @JoinColumn(nullable = false)
-    private Representative representative;
-
     @Column(nullable = false)
     private boolean active;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Representative representative;
 
     /**
      * Método para adicionar um aluno a classe
@@ -90,7 +89,6 @@ public class Classe {
                 .name(this.name)
                 .acronym(this.acronym)
                 .course(this.course)
-                .representative(this.representative)
                 .active(this.active)
                 .build();
     }

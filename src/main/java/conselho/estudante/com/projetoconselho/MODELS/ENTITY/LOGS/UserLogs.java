@@ -4,12 +4,14 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 import java.util.Date;
@@ -31,16 +33,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Document
+@Document(collection = "userLogs")
 @Builder
 public class UserLogs implements Log {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private String id;
 
+    @DBRef
     private User actor;
 
+    @DBRef
     private User target;
 
     private String type;

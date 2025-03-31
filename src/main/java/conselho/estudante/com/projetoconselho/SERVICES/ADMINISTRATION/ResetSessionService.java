@@ -1,15 +1,14 @@
 package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
 
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.ResetSession;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.*;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.ResetSessionRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.AdvisorService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +30,8 @@ public class ResetSessionService {
     private SupervisorService supervisorService;
     private TechniqueService techniqueService;
     private StudentService studentService;
+    private TeacherService teacherService;
+    private AdvisorService advisorService;
 
     /**
      * Cria um token para resetar a senha do usuário
@@ -83,7 +84,19 @@ public class ResetSessionService {
                    return false;
                }
 
-           } else {
+           } else if ( user instanceof Teacher) {
+
+               if ( !  teacherService.editPassword((Teacher) user, password) ) {
+                   return false;
+               }
+
+           } else if ( user instanceof Advisor) {
+
+               if ( !  advisorService.editPassword((Advisor) user, password) ) {
+                   return false;
+               }
+           }
+           else {
                throw new NaoEncontradoException("User nao encontrado");
            }
 

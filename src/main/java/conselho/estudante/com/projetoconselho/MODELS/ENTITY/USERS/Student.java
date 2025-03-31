@@ -52,7 +52,7 @@ public class Student implements User {
     @Column(nullable = false)
     private Boolean isHidden;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "students")
     private List<Classe> classes;
 
     @OneToMany

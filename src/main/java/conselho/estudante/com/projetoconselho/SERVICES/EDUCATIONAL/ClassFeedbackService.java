@@ -1,7 +1,9 @@
 package conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.EDUCATIONAL.ClassFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.ClasseResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.ClassFeedbackResponseDTO;
+import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.CouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Classe;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.ClassFeedback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
@@ -9,10 +11,13 @@ import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoExc
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.ClassFeedbackRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ClasseService;
 import conselho.estudante.com.projetoconselho.SERVICES.EDUCATIONAL.COUNCIL.CouncilService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * Serviço responsável pela gestão dos feedbacks de turma ({@link ClassFeedback}).
@@ -25,8 +30,6 @@ import org.springframework.stereotype.Service;
 public class ClassFeedbackService {
 
     private final ClassFeedbackRepository repository;
-    private final CouncilService councilService;
-    private final ClasseService classeService;
 
     /**
      * Cria um novo feedback de turma.
@@ -34,16 +37,15 @@ public class ClassFeedbackService {
      * @return Feedback criado
      */
     public ClassFeedbackResponseDTO create(ClassFeedbackRequestDTO requestDTO) {
-        /*Council council = councilService.findById(requestDTO.councilId()) //
-                .orElseThrow(() -> new NaoEncontradoException("Conselho não encontrado"));
+        ClassFeedback classFeedback = requestDTO.convert();
+        classFeedback.setCreatedAt(new Date());
 
-        Classe classe = classeService.findById(requestDTO.classId())
-                .orElseThrow(() -> new NaoEncontradoException("Classe não encontrada"));
+        classFeedback = repository.save(classFeedback);
 
-        ClassFeedback feedback = requestDTO.convert(council, classe);
-        return repository.save(feedback).convert();*/
-        return null;
+        return classFeedback.convert();
     }
+
+
 
     /**
      * Atualiza um feedback existente.

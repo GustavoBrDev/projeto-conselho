@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Date;
 import java.util.List;
@@ -47,20 +48,19 @@ public class Course {
     @Column(nullable = false)
     private String level;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Subject> subjects;
 
     @ManyToMany (mappedBy = "courses")
     private List<Teacher> teachers;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Shift shift;
 
     @OneToMany (mappedBy = "course")
     private List<Classe> classes;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Supervisor supervisor;
 
     /**

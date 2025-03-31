@@ -24,7 +24,6 @@ public record ClasseResponseDTO(
         String name,
         String acronym,
         Course course,
-        Representative representative,
         Boolean active
 ) {
 }

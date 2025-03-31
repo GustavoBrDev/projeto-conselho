@@ -1,5 +1,6 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS;
 
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import lombok.Builder;
 
 /**
@@ -26,4 +27,15 @@ public class StudentResponseDTO implements UserResponseDTO {
     Boolean isRepresentative;
     Boolean isHidden;
 
+    public Student convert() {
+        return Student.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .image(this.image)
+                .isRepresentative(this.isRepresentative)
+                .isHidden(this.isHidden)
+                .build();
+    }
 }

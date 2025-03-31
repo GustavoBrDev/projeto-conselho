@@ -1,13 +1,17 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS;
 
-
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Teacher;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 
 
+/**
+ * Classe DTO para receber dados de criação e atualização de Teacher.
+ * @author Alex Zastrow
+ */
 @Builder
 public record TeacherRequestDTO(
         @NotNull
@@ -16,6 +20,7 @@ public record TeacherRequestDTO(
         @NotBlank
         String name,
         @NotBlank
+        @Email
         String email,
         String password,
         String image
