@@ -26,13 +26,13 @@ public class SubjectController {
 
     private final SubjectService subjectService;
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Create a subject")
-    @ApiResponse(responseCode = "201", description = "Subject created successfully"
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Crie uma disciplina")
+    @ApiResponse(responseCode = "201", description = "Disciplina criado com sucesso"
             , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+             examples = @ExampleObject(value = "{\"nome\": \"Matematica\", \"workLoad\": 80}"))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @PostMapping
     public ResponseEntity<SubjectResponseDTO> create(@RequestBody SubjectRequestDTO subjectRequestDTO, @RequestParam User actor) {
@@ -40,13 +40,13 @@ public class SubjectController {
                 (subjectRequestDTO, actor));
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Update a subject")
-    @ApiResponse(responseCode = "200", description = "Subject updated successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Atualizar uma disciplina")
+    @ApiResponse(responseCode = "200", description = "Disciplina atualizada com sucesso, retorna o objeto ATUALIZADO"
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+            examples = @ExampleObject(value = "{\"nome\": \"Matematica\", \"workLoad\": 80}")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
     public ResponseEntity<SubjectResponseDTO> update(@PathVariable Long id, @RequestBody SubjectRequestDTO subjectRequestDTO, @RequestParam User actor) {
@@ -54,13 +54,13 @@ public class SubjectController {
                 (id, subjectRequestDTO, actor));
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Edit a subject")
-    @ApiResponse(responseCode = "200", description = "Subject edited successfully"
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Disciplina editada")
+    @ApiResponse(responseCode = "200", description = "Disciplina editada com sucesso"
             , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/name")
     public ResponseEntity<SubjectResponseDTO> editName(@PathVariable Long id, @RequestParam String name, @RequestParam User actor) {
@@ -68,13 +68,13 @@ public class SubjectController {
                 (id, name, actor));
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Edit a subject")
-    @ApiResponse(responseCode = "200", description = "Subject edited successfully"
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Editando carga horária")
+    @ApiResponse(responseCode = "200", description = "Disciplina encontrada com sucesso"
             , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/workload")
     public ResponseEntity<SubjectResponseDTO> editWorkLoad(@PathVariable Long id, @RequestParam Integer workLoad, @RequestParam User actor) {
@@ -82,13 +82,13 @@ public class SubjectController {
                 (id, workLoad, actor));
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Find all subjects")
-    @ApiResponse(responseCode = "200", description = "Subjects found successfully"
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Disciplina encontrada ")
+    @ApiResponse(responseCode = "200", description = "Disciplina encontrada com sucesso"
             , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @GetMapping
     public ResponseEntity<Page<SubjectResponseDTO>> findSubjects(Pageable pageable) {
@@ -96,13 +96,13 @@ public class SubjectController {
                 (pageable));
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Find a subject by id")
-    @ApiResponse(responseCode = "200", description = "Subject found successfully"
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Disciplina encontrada por ID")
+    @ApiResponse(responseCode = "200", description = "Disciplina encontrada com sucesso"
             , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @GetMapping("/{id}")
     public ResponseEntity<SubjectResponseDTO> findSubjectById(@PathVariable Long id) {
@@ -110,13 +110,13 @@ public class SubjectController {
                 (subjectService.findSubjectById(id));
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Find a subject by id")
-    @ApiResponse(responseCode = "200", description = "Subject found successfully"
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Disciplina encontrada por ID")
+    @ApiResponse(responseCode = "200", description = "Disciplina encontrada com sucesso"
             , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @GetMapping("/{id}/object")
     public ResponseEntity<Subject> getObjectSubject(@PathVariable Long id) {
@@ -124,24 +124,24 @@ public class SubjectController {
                 (subjectService.getObjectSubject(id));
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Delete a subject")
-    @ApiResponse(responseCode = "204", description = "Subject deleted successfully")
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Delete a disciplina")
+    @ApiResponse(responseCode = "204", description = "Disciplina deletada com sucesso, retorna o objeto DELETADO")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         subjectService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Filter subjects")
-    @ApiResponse(responseCode = "200", description = "Subjects filtered successfully"
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Disciplinas filtradas")
+    @ApiResponse(responseCode = "200", description = "Disciplinas filtradas com sucesso, retorna o objeto FILTRA"
             , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @GetMapping("/filter")
     public ResponseEntity<Page<SubjectResponseDTO>> subjectFilter(@RequestParam String termo, Pageable pageable) {
@@ -149,13 +149,13 @@ public class SubjectController {
                 (termo, pageable));
     }
 
-    @Tag(name = "Subject")
-    @Operation(summary = "Find subjects by teacher")
-    @ApiResponse(responseCode = "200", description = "Subjects found successfully"
+    @Tag(name = "Disciplina")
+    @Operation(summary = "Disciplinas encontradas")
+    @ApiResponse(responseCode = "200", description = "Disciplinas encontradas com sucesso"
             , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
-    @ApiResponse(responseCode = "400", description = "Bad request")
-    @ApiResponse(responseCode = "500", description = "Internal server error")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @GetMapping("/teacher/{teacherId}")
     public ResponseEntity<Page<SubjectResponseDTO>> findSubjectsByTeacher(@PathVariable Long teacherId, Pageable pageable) {
