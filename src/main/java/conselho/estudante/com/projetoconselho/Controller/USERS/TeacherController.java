@@ -29,11 +29,12 @@ public class TeacherController {
      */
     @PostMapping
     public ResponseEntity<TeacherResponseDTO> criarTeacher(@RequestBody TeacherRequestDTO dto) {
-        Teacher teacher = teacherService.toEntity(dto);
+        /*Teacher teacher = teacherService.toEntity(dto);
         Teacher savedTeacher = teacherService.criarTeacher(teacher);
         TeacherResponseDTO responseDTO = teacherService.toResponseDTO(savedTeacher);
         System.out.println("Acessou o controller");
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(responseDTO);*/
+        return null;
     }
 
     /*
@@ -41,10 +42,11 @@ public class TeacherController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<TeacherResponseDTO> atualizarTeacher(@PathVariable Long id, @RequestBody TeacherRequestDTO dto) {
-        Teacher teacher = teacherService.toEntity(dto);
+        /*Teacher teacher = teacherService.toEntity(dto);
         Teacher updatedTeacher = teacherService.atualizarTeacher(id, teacher);
         TeacherResponseDTO responseDTO = teacherService.toResponseDTO(updatedTeacher);
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(responseDTO);*/
+        return null;
     }
 
     /*
@@ -52,8 +54,9 @@ public class TeacherController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<TeacherResponseDTO> buscarPorId(@PathVariable Long id) {
-        Teacher teacher = teacherService.buscarPorId(id);
+        /*Teacher teacher = teacherService.buscarPorId(id);
         TeacherResponseDTO responseDTO = teacherService.toResponseDTO(teacher);
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(responseDTO);*/
+        return null;
     }
 }

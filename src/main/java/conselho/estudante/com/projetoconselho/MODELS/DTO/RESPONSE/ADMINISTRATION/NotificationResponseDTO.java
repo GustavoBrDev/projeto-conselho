@@ -4,7 +4,6 @@ import lombok.Data;
 
 import java.util.Date;
 
-@Data
 @Builder
 public record NotificationResponseDTO(
         Long id,

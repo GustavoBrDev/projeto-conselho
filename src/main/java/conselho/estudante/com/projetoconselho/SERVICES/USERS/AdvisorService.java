@@ -266,13 +266,13 @@ public class AdvisorService {
     }
 
     private AdvisorResponseDTO convertToDTO(Advisor advisor) {
-        return new AdvisorResponseDTO(
-                advisor.getId(),
-                advisor.getName(),
-                advisor.getImage(),
-                advisor.getEmail(),
-                advisor.getRegister()
-        );
+        return AdvisorResponseDTO.builder()
+                .id(advisor.getId())
+                .image(advisor.getImage())
+                .name(advisor.getName())
+                .email(advisor.getEmail())
+                .register(advisor.getRegister())
+                .build();
     }
 
     /**
