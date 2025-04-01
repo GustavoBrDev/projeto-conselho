@@ -95,6 +95,6 @@ public class AvaliableTeacherController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    } 
+    }
 
 }
