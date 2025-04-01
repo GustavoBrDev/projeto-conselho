@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +25,13 @@ import org.springframework.web.bind.annotation.*;
  * Controlador para gerenciar as operações relacionadas a Classe.
  * Realiza a exposição das operações da ClasseService via API REST.
  *
- * @author joana voigt
- * @since 18/03/2025
- * @updated em 25/03/2025
+ * @author Camilly
+ * @since 01/04/2025
  */
 @RestController
 @RequestMapping("/api/classes")
 @Tag(name = "Classe", description = "Controlador para gerenciar as operações relacionadas a Classe")
+@AllArgsConstructor
 public class ClasseController {
 
     private ClasseService classeService;
