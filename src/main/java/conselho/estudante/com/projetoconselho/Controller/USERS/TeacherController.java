@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.Controller;
+package conselho.estudante.com.projetoconselho.Controller.USERS;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.TeacherRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.TeacherResponseDTO;

@@ -22,15 +22,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/subjects")
 @RequiredArgsConstructor
+@Tag(name = "Subject", description = "Recurso para gerenciamento de disciplinas")
 public class SubjectController {
 
     private final SubjectService subjectService;
 
-    @Tag(name = "Subject")
     @Operation(summary = "Create a subject")
     @ApiResponse(responseCode = "201", description = "Subject created successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+             examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}")))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
@@ -40,11 +40,10 @@ public class SubjectController {
                 (subjectRequestDTO, actor));
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Update a subject")
     @ApiResponse(responseCode = "200", description = "Subject updated successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}")))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
@@ -54,11 +53,10 @@ public class SubjectController {
                 (id, subjectRequestDTO, actor));
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Edit a subject")
     @ApiResponse(responseCode = "200", description = "Subject edited successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}")))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
@@ -68,11 +66,10 @@ public class SubjectController {
                 (id, name, actor));
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Edit a subject")
     @ApiResponse(responseCode = "200", description = "Subject edited successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}")))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
@@ -82,11 +79,10 @@ public class SubjectController {
                 (id, workLoad, actor));
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Find all subjects")
     @ApiResponse(responseCode = "200", description = "Subjects found successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}")))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
@@ -96,11 +92,10 @@ public class SubjectController {
                 (pageable));
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Find a subject by id")
     @ApiResponse(responseCode = "200", description = "Subject found successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}")))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
@@ -110,11 +105,10 @@ public class SubjectController {
                 (subjectService.findSubjectById(id));
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Find a subject by id")
     @ApiResponse(responseCode = "200", description = "Subject found successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}")))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
@@ -124,7 +118,6 @@ public class SubjectController {
                 (subjectService.getObjectSubject(id));
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Delete a subject")
     @ApiResponse(responseCode = "204", description = "Subject deleted successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
@@ -135,11 +128,10 @@ public class SubjectController {
         return ResponseEntity.noContent().build();
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Filter subjects")
     @ApiResponse(responseCode = "200", description = "Subjects filtered successfully"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class))
-            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}"))
+            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
+            examples = @ExampleObject(value = "{\"name\": \"Matematica\", \"workLoad\": 80}")))
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "500", description = "Internal server error")
     @SecurityRequirement(name = "Bearer")
@@ -149,7 +141,6 @@ public class SubjectController {
                 (termo, pageable));
     }
 
-    @Tag(name = "Subject")
     @Operation(summary = "Find subjects by teacher")
     @ApiResponse(responseCode = "200", description = "Subjects found successfully")
     @ApiResponse(responseCode = "400", description = "Bad request")
