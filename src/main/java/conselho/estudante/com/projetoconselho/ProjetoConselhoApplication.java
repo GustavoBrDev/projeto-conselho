@@ -23,7 +23,15 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         @Tag( name = "AdvisorChatMessage", description = "Recurso para gerenciamento de mensagens de chat de orientadores" ),
         @Tag( name = "StudentChatMessage", description = "Recurso para gerenciamento de mensagens de chat de estudantes" ),
         @Tag( name = "TeacherChatMessage", description = "Recurso para gerenciamento de mensagens de chat de professores" ),
-        @Tag( name = "TechniqueChatMessage", description = "Recurso para gerenciamento de mensagens de chat de técnicos pedagógicos" )
+        @Tag( name = "TechniqueChatMessage", description = "Recurso para gerenciamento de mensagens de chat de técnicos pedagógicos" ),
+        @Tag(name = "Login", description = "Operações de login de usuarios"),
+        @Tag(name = "Estudantes", description = "Cria um novo estudante"),
+        @Tag(name = "Supervisor", description = "Recurso para gerenciamento de supervisores"),
+        @Tag(name = "Teacher", description = "Recurso para gerenciamento de professores"),
+        @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos"),
+        @Tag(name = "TeacherPreCouncils", description = "Recurso para o gerenciamento de TeacherPreCouncils"),
+        @Tag(name = "Cursos", description = "Recurso para gerenciamento de cursos"),
+        @Tag(name = "Subject", description = "Recurso para gerenciamento de disciplinas")
 }, servers = {
         @Server(
                 url = "http://localhost:9090",

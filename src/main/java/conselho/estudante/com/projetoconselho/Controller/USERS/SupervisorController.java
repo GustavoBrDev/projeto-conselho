@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.CONTROLLERS.USERS;
+package conselho.estudante.com.projetoconselho.Controller.USERS;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.REQUEST.USERS.SupervisorRequestDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS.SupervisorResponseDTO;
@@ -24,16 +24,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/supervisores")
 @AllArgsConstructor
+@Tag(name = "Supervisor", description = "Recurso para gerenciamento de supervisores")
 public class SupervisorController {
 
     private final SupervisorService supervisorService;
 
     // Criar supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Cria um supervisor")
     @ApiResponse(responseCode = "201", description = "Supervisor criado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-                examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao criar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -43,11 +43,10 @@ public class SupervisorController {
     }
 
     // Atualizar supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Atualiza um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor atualizado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -57,11 +56,10 @@ public class SupervisorController {
     }
 
     // Editar nome de supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Edita um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -71,11 +69,10 @@ public class SupervisorController {
     }
 
     // Editar email de supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Edita um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -85,11 +82,10 @@ public class SupervisorController {
     }
 
     // Editar cadastro de supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Edita um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -99,11 +95,10 @@ public class SupervisorController {
     }
 
     // Editar senha de supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Edita um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -113,11 +108,10 @@ public class SupervisorController {
     }
 
     // Editar imagem de perfil de supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Edita um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -127,11 +121,10 @@ public class SupervisorController {
     }
 
     // Buscar todos os supervisores com paginação
-    @Tag(name = "Supervisor")
     @Operation(summary = "Busca todos os supervisores com paginação")
     @ApiResponse(responseCode = "200", description = "Supervisores encontrados com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao buscar supervisores")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -141,11 +134,10 @@ public class SupervisorController {
     }
 
     // Buscar supervisor por ID
-    @Tag(name = "Supervisor")
     @Operation(summary = "Busca um supervisor por ID")
     @ApiResponse(responseCode = "200", description = "Supervisor encontrado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao buscar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -155,11 +147,10 @@ public class SupervisorController {
     }
 
     // Buscar supervisor por email
-    @Tag(name = "Supervisor")
     @Operation(summary = "Busca um supervisor por email")
     @ApiResponse(responseCode = "200", description = "Supervisor encontrado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao buscar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -169,11 +160,10 @@ public class SupervisorController {
     }
 
     // Adicionar notificação a supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Adiciona uma notificação a um supervisor")
     @ApiResponse(responseCode = "200", description = "Notificação adicionada com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar notificação")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -183,11 +173,10 @@ public class SupervisorController {
     }
 
     // Remover notificação de supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Remove uma notificação de um supervisor")
     @ApiResponse(responseCode = "200", description = "Notificação removida com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover notificação")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -197,7 +186,6 @@ public class SupervisorController {
     }
 
     // Deletar supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Deleta um supervisor")
     @ApiResponse(responseCode = "204", description = "Supervisor deletado com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao deletar supervisor")
@@ -209,11 +197,10 @@ public class SupervisorController {
     }
 
     // Adicionar curso a supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Adiciona um curso a um supervisor")
     @ApiResponse(responseCode = "200", description = "Curso adicionado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -223,11 +210,10 @@ public class SupervisorController {
     }
 
     // Remover curso de supervisor
-    @Tag(name = "Supervisor")
     @Operation(summary = "Remove um curso de um supervisor")
     @ApiResponse(responseCode = "200", description = "Curso removido com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -237,11 +223,10 @@ public class SupervisorController {
     }
 
     // Filtrar supervisores por curso
-    @Tag(name = "Supervisor")
     @Operation(summary = "Filtrar supervisores por curso")
     @ApiResponse(responseCode = "200", description = "Supervisores filtrados com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao filtrar supervisores")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -251,11 +236,10 @@ public class SupervisorController {
     }
 
     // Filtrar supervisores por turma
-    @Tag(name = "Supervisor")
     @Operation(summary = "Filtrar supervisores por turma")
     @ApiResponse(responseCode = "200", description = "Supervisores filtrados com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao filtrar supervisores")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
@@ -265,11 +249,10 @@ public class SupervisorController {
     }
 
     // Pesquisa inteligente de supervisores
-    @Tag(name = "Supervisor")
     @Operation(summary = "Pesquisa inteligente de supervisores")
     @ApiResponse(responseCode = "200", description = "Supervisores encontrados com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class))
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}"))
+            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
+            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao pesquisar supervisores")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")

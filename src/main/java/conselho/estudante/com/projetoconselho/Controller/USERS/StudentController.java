@@ -33,12 +33,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/students")
 @AllArgsConstructor
+@Tag(name = "Estudantes", description = "Cria um novo estudante")
 public class StudentController {
 
     private final StudentService studentService;
 
     // Cria um novo estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Cria um novo estudante")
     @ApiResponse(responseCode = "201", description = "Estudante criado com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -53,7 +53,6 @@ public class StudentController {
     }
 
     // Atualiza um estudante existente
-    @Tag(name = "Estudantes")
     @Operation(summary = "Atualiza um estudante existente")
     @ApiResponse(responseCode = "200", description = "Estudante atualizado com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -69,7 +68,6 @@ public class StudentController {
     }
 
     // Edita o nome do estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Edita o nome do estudante")
     @ApiResponse(responseCode = "200", description = "Nome do estudante editado com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -83,7 +81,6 @@ public class StudentController {
     }
 
     // Edita o email do estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Edita o email do estudante")
     @ApiResponse(responseCode = "200", description = "Email do estudante editado com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -97,7 +94,6 @@ public class StudentController {
     }
 
     // Edita a matrícula do estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Edita a matrícula do estudante")
     @ApiResponse(responseCode = "200", description = "Matrícula do estudante editada com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -111,7 +107,6 @@ public class StudentController {
     }
 
     // Edita a senha do estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Edita a senha do estudante")
     @ApiResponse(responseCode = "200", description = "Senha do estudante editada com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -125,7 +120,6 @@ public class StudentController {
     }
 
     // Edita a imagem do estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Edita a imagem do estudante")
     @ApiResponse(responseCode = "200", description = "Imagem do estudante editada com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -139,7 +133,6 @@ public class StudentController {
     }
 
     // Busca todos os estudantes com paginação
-    @Tag(name = "Estudantes")
     @Operation(summary = "Busca todos os estudantes com paginação")
     @ApiResponse(responseCode = "200", description = "Estudantes encontrados com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -153,7 +146,6 @@ public class StudentController {
     }
 
     // Busca estudantes de uma determinada classe
-    @Tag(name = "Estudantes")
     @Operation(summary = "Busca estudantes de uma determinada classe")
     @ApiResponse(responseCode = "200", description = "Estudantes encontrados com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -169,7 +161,6 @@ public class StudentController {
     }
 
     // Busca um estudante pelo ID
-    @Tag(name = "Estudantes")
     @Operation(summary = "Busca um estudante pelo ID")
     @ApiResponse(responseCode = "200", description = "Estudante encontrado com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -183,7 +174,6 @@ public class StudentController {
     }
 
     // Busca um estudante pelo email
-    @Tag(name = "Estudantes")
     @Operation(summary = "Busca um estudante pelo email")
     @ApiResponse(responseCode = "200", description = "Estudante encontrado com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -197,7 +187,6 @@ public class StudentController {
     }
 
     // Deleta um estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Deleta um estudante")
     @ApiResponse(responseCode = "204", description = "Estudante deletado com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao deletar estudante")
@@ -210,7 +199,6 @@ public class StudentController {
     }
 
     // Adiciona um estudante a uma classe
-    @Tag(name = "Estudantes")
     @Operation(summary = "Adiciona um estudante a uma classe")
     @ApiResponse(responseCode = "200", description = "Estudante adicionado à classe com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -227,7 +215,6 @@ public class StudentController {
     }
 
     // Remove um estudante de uma classe
-    @Tag(name = "Estudantes")
     @Operation(summary = "Remove um estudante de uma classe")
     @ApiResponse(responseCode = "200", description = "Estudante removido da classe com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -244,7 +231,6 @@ public class StudentController {
     }
 
     // Adiciona uma notificação a um estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Adiciona uma notificação a um estudante")
     @ApiResponse(responseCode = "200", description = "Notificação adicionada ao estudante com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -258,7 +244,6 @@ public class StudentController {
     }
 
     // Remove uma notificação de um estudante
-    @Tag(name = "Estudantes")
     @Operation(summary = "Remove uma notificação de um estudante")
     @ApiResponse(responseCode = "200", description = "Notificação removida do estudante com sucesso"
             , content = @Content(schema = @Schema(implementation = StudentResponseDTO.class),
@@ -271,21 +256,4 @@ public class StudentController {
         return studentService.removeNotification(id, notification);
     }
 
-    // Tratar exceções globalmente
-    @Tag(name = "Estudantes")
-    @Operation(summary = "Tratar exceções globalmente")
-    @ApiResponse(responseCode = "400", description = "Erro ao adicionar estudante à classe")
-    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-
-    @ExceptionHandler(DadosDuplicadosException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleDadosDuplicadosException(DadosDuplicadosException e) {
-        return e.getMessage();
-    }
-
-    @ExceptionHandler(NaoEncontradoException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNaoEncontradoException(NaoEncontradoException e) {
-        return e.getMessage();
-    }
 }
