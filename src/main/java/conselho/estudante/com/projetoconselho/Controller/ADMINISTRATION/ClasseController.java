@@ -7,6 +7,13 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Cours
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ClasseService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,146 +33,149 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Classe", description = "Controlador para gerenciar as operações relacionadas a Classe")
 public class ClasseController {
 
-    private final ClasseService classeService;
+    private ClasseService classeService;
 
-    @Autowired
-    public ClasseController(ClasseService classeService) {
-        this.classeService = classeService;
-    }
-
-    /**
-     * Endpoint para criar uma nova turma.
-     *
-     * @param classeRequestDTO Dados para criação de uma turma.
-     * @param actor Usuário que está criando a turma.
-     * @return ClasseResponseDTO com as informações da turma criada.
-     */
+    @Operation(summary = "Cria uma nova Classe")
+    @ApiResponse(responseCode = "201", description = "Classe criada com sucesso"
+            , content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClasseResponseDTO.class),
+             examples = @ExampleObject(ref = "classeResponseDTO")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @PostMapping
-    public ClasseResponseDTO create(@RequestBody ClasseRequestDTO classeRequestDTO, @RequestHeader("user") User actor) {
+    public ClasseResponseDTO create(@RequestBody @Parameter(description = "Dados da Classe") ClasseRequestDTO classeRequestDTO,
+                                    @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
         return classeService.create(classeRequestDTO, actor);
     }
 
-    /**
-     * Endpoint para atualizar uma turma existente.
-     *
-     * @param id ID da turma que deve ser atualizada.
-     * @param classeRequestDTO Dados para atualizar a turma.
-     * @param actor Usuário que está atualizando a turma.
-     * @return ClasseResponseDTO com as informações da turma atualizada.
-     */
+    @Operation(summary = "Atualiza uma Classe existente")
+    @ApiResponse(responseCode = "200", description = "Classe atualizada com sucesso"
+            , content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClasseResponseDTO.class),
+             examples = @ExampleObject(ref = "classeResponseDTO")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
-    public ClasseResponseDTO update(@PathVariable Long id, @RequestBody ClasseRequestDTO classeRequestDTO, @RequestHeader("user") User actor) {
+    public ClasseResponseDTO update(@PathVariable @Parameter(description = "ID da Classe") Long id,
+                                    @RequestBody @Parameter(description = "Dados da Classe") ClasseRequestDTO classeRequestDTO,
+                                    @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
         return classeService.update(id, classeRequestDTO, actor);
     }
 
-    /**
-     * Endpoint para editar o nome de uma turma existente.
-     *
-     * @param id ID da turma a ser editada.
-     * @param name Novo nome para a turma.
-     * @param actor Usuário que está editando a turma.
-     * @return ClasseResponseDTO com as informações da turma editada.
-     */
+    @Operation(summary = "Edita uma Classe existente")
+    @ApiResponse(responseCode = "200", description = "Classe editada com sucesso"
+            , content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClasseResponseDTO.class),
+             examples = @ExampleObject(ref = "classeResponseDTO")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/name")
-    public ClasseResponseDTO editName(@PathVariable Long id, @RequestParam String name, @RequestHeader("user") User actor) {
+    public ClasseResponseDTO editName(@PathVariable @Parameter(description = "ID da Classe") Long id,
+                                      @RequestParam @Parameter(description = "Nome da Classe") String name,
+                                      @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
         return classeService.editName(id, name, actor);
     }
 
-    /**
-     * Endpoint para editar a sigla de uma turma existente.
-     *
-     * @param id ID da turma a ser editada.
-     * @param acronym Nova sigla para a turma.
-     * @param actor Usuário que está editando a turma.
-     * @return ClasseResponseDTO com as informações da turma editada.
-     */
+    @Operation(summary = "Edita a sigla de uma Classe existente")
+    @ApiResponse(responseCode = "200", description = "Classe editada com sucesso"
+            , content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClasseResponseDTO.class),
+             examples = @ExampleObject(ref = "classeResponseDTO")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/acronym")
-    public ClasseResponseDTO editAcronym(@PathVariable Long id, @RequestParam String acronym, @RequestHeader("user") User actor) {
+    public ClasseResponseDTO editAcronym(@PathVariable @Parameter(description = "ID da Classe") Long id,
+                                         @RequestParam @Parameter(description = "Sigla da Classe") String acronym,
+                                         @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
         return classeService.editAcronym(id, acronym, actor);
     }
 
-    /**
-     * Endpoint para editar o curso associado a uma turma existente.
-     *
-     * @param id ID da turma a ser editada.
-     * @param course Novo curso a ser associado à turma.
-     * @param actor Usuário que está editando a turma.
-     * @return ClasseResponseDTO com as informações da turma editada.
-     */
+    @Operation(summary = "Edita o curso de uma Classe existente")
+    @ApiResponse(responseCode = "200", description = "Classe editada com sucesso"
+            , content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClasseResponseDTO.class),
+             examples = @ExampleObject(ref = "classeResponseDTO")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/course")
-    public ClasseResponseDTO editCourse(@PathVariable Long id, @RequestBody Course course, @RequestHeader("user") User actor) {
+    public ClasseResponseDTO editCourse(@PathVariable @Parameter(description = "ID da Classe") Long id,
+                                        @RequestBody @Parameter(description = "Curso da Classe") Course course,
+                                        @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
         return classeService.editCourse(id, course, actor);
     }
 
-    /**
-     * Endpoint para editar o status ativo de uma turma.
-     *
-     * @param id ID da turma a ser editada.
-     * @param active Novo status ativo para a turma.
-     * @param actor Usuário que está editando a turma.
-     * @return ClasseResponseDTO com as informações da turma editada.
-     */
+    @Operation(summary = "Edita o estado ativo de uma Classe existente")
+    @ApiResponse(responseCode = "200", description = "Classe editada com sucesso"
+            , content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClasseResponseDTO.class),
+             examples = @ExampleObject(ref = "classeResponseDTO")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/active")
-    public ClasseResponseDTO editActive(@PathVariable Long id, @RequestParam boolean active, @RequestHeader("user") User actor) {
+    public ClasseResponseDTO editActive(@PathVariable @Parameter(description = "ID da Classe") Long id,
+                                        @RequestParam @Parameter(description = "Estado ativo da Classe") boolean active,
+                                        @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
         return classeService.editActive(id, active, actor);
     }
 
-    /**
-     * Endpoint para buscar uma lista paginada de turmas.
-     *
-     * @param pageable Objeto de paginação.
-     * @return Uma página de turmas.
-     */
+    @Operation(summary = "Busca todas as Classes existentes")
+    @ApiResponse(responseCode = "200", description = "Classes encontradas com sucesso"
+            , content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClasseResponseDTO.class),
+             examples = @ExampleObject(ref = "classeResponseDTO")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @GetMapping
     public Page<ClasseResponseDTO> findClasses(Pageable pageable) {
         return classeService.findClasses(pageable);
     }
 
-    /**
-     * Endpoint para buscar uma turma pelo seu ID.
-     *
-     * @param id ID da turma a ser buscada.
-     * @return ClasseResponseDTO com as informações da turma encontrada.
-     */
+    @Operation(summary = "Busca uma Classe existente pelo ID")
+    @ApiResponse(responseCode = "200", description = "Classe encontrada com sucesso"
+            , content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClasseResponseDTO.class),
+             examples = @ExampleObject(ref = "classeResponseDTO")))
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @GetMapping("/{id}")
-    public ClasseResponseDTO findById(@PathVariable Long id) {
+    public ClasseResponseDTO findById(@PathVariable @Parameter(description = "ID da Classe" ) Long id) {
         return classeService.findById(id);
     }
 
-    /**
-     * Endpoint para adicionar um aluno a uma turma.
-     *
-     * @param id ID da turma a ser modificada.
-     * @param student Aluno a ser adicionado.
-     * @param actor Usuário que está adicionando o aluno.
-     */
+    @Operation(summary = "Adiciona um estudante a uma Classe existente")
+    @ApiResponse(responseCode = "200", description = "Estudante adicionado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @PostMapping("/{id}/students")
-    public void addStudentToClasse(@PathVariable Long id, @RequestBody Student student, @RequestHeader("user") User actor) {
-        /*Classe classe = classeService.findById(id);
-        classeService.addStudentToClasse(classe, student, actor);*/
+    public void addStudentToClasse(@PathVariable @Parameter(description = "ID da Classe" ) Long id,
+                                   @RequestBody @Parameter(description = "Estudante a ser adicionado") Student student,
+                                   @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+        Classe classe = classeService.findObjectClasse(id);
+        classeService.addStudentToClasse(classe, student, actor);
     }
 
-    /**
-     * Endpoint para remover um aluno de uma turma.
-     *
-     * @param id ID da turma a ser modificada.
-     * @param student Aluno a ser removido.
-     * @param actor Usuário que está removendo o aluno.
-     */
+    @Operation(summary = "Remove um estudante de uma Classe existente")
+    @ApiResponse(responseCode = "200", description = "Estudante removido com sucesso")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}/students")
-    public void removeStudentFromClasse(@PathVariable Long id, @RequestBody Student student, @RequestHeader("user") User actor) {
-        /*Classe classe = classeService.findById(id);
-        classeService.removeStudentFromClasse(classe, student, actor);*/
+    public void removeStudentFromClasse(@PathVariable @Parameter(description = "ID da Classe" ) Long id,
+                                        @RequestBody @Parameter(description = "Estudante a ser removido") Student student,
+                                        @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+        Classe classe = classeService.findObjectClasse(id);
+        classeService.removeStudentFromClasse(classe, student, actor);
     }
 
-    /**
-     * Endpoint para deletar uma turma.
-     *
-     * @param id ID da turma a ser deletada.
-     * @param actor Usuário que está deletando a turma.
-     */
+    @Operation(summary = "Remove uma Classe existente")
+    @ApiResponse(responseCode = "200", description = "Classe removida com sucesso")
+    @ApiResponse(responseCode = "400", description = "Pedido ruim")
+    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
+    @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id, @RequestHeader("user") User actor) {
+    public void delete(@PathVariable @Parameter(description = "ID da Classe" ) Long id,
+                       @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
         classeService.delete(id, actor);
     }
 }

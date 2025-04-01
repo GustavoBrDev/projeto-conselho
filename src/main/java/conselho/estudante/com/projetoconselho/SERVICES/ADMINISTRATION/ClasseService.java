@@ -295,5 +295,13 @@ public class ClasseService {
             throw new NaoEncontradoException("Turma nao deletada");
         }
     }
+
+    public Classe findObjectClasse(Long id) {
+        try {
+            return repository.findById(id).get();
+        } catch (Exception e) {
+            throw null;
+        }
+    }
 }
 
