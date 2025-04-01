@@ -29,10 +29,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/USERS/Technique")
 @AllArgsConstructor
+@Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
 public class TechniqueController {
     private TechniqueService service;
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Cria um tecnico", description = "Cria um tecnico e retorna o tecnico criado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico criado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -55,7 +55,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Edita um tecnico", description = "Edita um tecnico e retorna o tecnico editado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico editado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -79,37 +78,13 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
-    @Operation(summary = "Mostra os itens editaveis", description = "Mostra os itens editaveis e retorna com um status HTTP 200")
-    @ApiResponse(responseCode = "200", description = "Editaveis encontrados com sucesso",
-            content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
-                    examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
-    @ApiResponse(responseCode = "400", description = "Erro ao buscar editaveis")
-    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/editableItems")
-    public ResponseEntity<List<EditableItem>> editableItems(
-            @Parameter(description = "Técnica original", required = true) @RequestBody TechniqueRequestDTO oldTechniqueRequestDTO,
-            @Parameter(description = "Técnica nova", required = true) @RequestBody TechniqueRequestDTO newTechniqueRequestDTO,
-            @RequestParam @Parameter(description = "Usuário que fez a comparação", required = true) User actor) {
-
-        try {
-            Technique oldTechnique = oldTechniqueRequestDTO.convert();
-            Technique newTechnique = newTechniqueRequestDTO.convert();
-            List<EditableItem> changes = service.getEditableItems(oldTechnique, newTechnique);
-            return new ResponseEntity<>(changes, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Edita o nome de um tecnico", description = "Edita o nome de um tecnico e retorna o tecnico editado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico editado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Robson\", \"email\": \"roberto123@gmail\",  \"createdAt\": \"2023-01-01\", \"register\": \"12345\", \"notifications\": []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editImage/{id}")
+    @PutMapping("/editName/{id}")
     public ResponseEntity<String> editName(
         @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
         @RequestParam @Parameter(description = "Novo nome do tecnico", required = true) String name,
@@ -123,7 +98,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Edita o email de um tecnico", description = "Edita o email de um tecnico e retorna o tecnico editado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico editado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -144,7 +118,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Edita o registro de um tecnico", description = "Edita o registro de um tecnico e retorna o tecnico editado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico editado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -165,7 +138,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Edita a senha de um tecnico", description = "Edita a senha de um tecnico e retorna o tecnico editado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico editado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -186,7 +158,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Edita a imagem de um tecnico", description = "Edita a imagem de um tecnico e retorna o tecnico editado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico editado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -207,7 +178,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Busca uma lista paginada de todas as tecnicas", description = "Busca uma lista paginada de todas as tecnicas e retorna com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico encontrado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -228,7 +198,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Busca um tecnico pelo ID", description = "Busca um tecnico pelo ID e retorna com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico encontrado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -246,7 +215,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Busca um tecnico pelo email", description = "Busca um tecnico pelo email e retorna com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Tecnico encontrado com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -264,7 +232,6 @@ public class TechniqueController {
         }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Adiciona uma notificação a um tecnico", description = "Adiciona uma notificação a um tecnico e retorna com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Notificação adicionada com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -284,7 +251,6 @@ public class TechniqueController {
        }
     }
 
-    @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
     @Operation(summary = "Remove uma notificação de um técnico", description = "Remove uma notificação de um técnico e retorna com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Notificação removida com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
@@ -298,6 +264,11 @@ public class TechniqueController {
         TechniqueResponseDTO response = service.removeNotification(id, notification);
         return ResponseEntity.ok(response);
     }
+
+    @Operation(summary = "Remove um técnico", description = "Remove um técnico e retorna com o status HTTP 200")
+    @ApiResponse(responseCode = "200", description = "Técnico removida com sucesso")
+    @ApiResponse(responseCode = "400", description = "Erro ao remover técnico")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTechnique(

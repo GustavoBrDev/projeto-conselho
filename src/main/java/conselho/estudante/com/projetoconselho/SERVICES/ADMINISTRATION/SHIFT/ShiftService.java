@@ -209,7 +209,7 @@ public class ShiftService {
     public void addTeacherToShift(Long shiftId, Long teacherId, User actor) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
 
-        Teacher teacher = teacherService.buscarPorId(teacherId);
+        Teacher teacher = teacherService.getObjectTeacher(teacherId);
 
         if ( teacher == null ) {
             throw new NaoEncontradoException("Professor nao encontrado");
@@ -237,7 +237,7 @@ public class ShiftService {
     public void removeTeacherOfShift(Long shiftId, Long teacherId, User actor) {
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
 
-        Teacher teacher = teacherService.buscarPorId(teacherId);
+        Teacher teacher = teacherService.getObjectTeacher(teacherId);
 
         if ( teacher == null ) {
             throw new NaoEncontradoException("Professor nao encontrado");

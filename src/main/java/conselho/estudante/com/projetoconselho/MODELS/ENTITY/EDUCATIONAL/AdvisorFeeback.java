@@ -22,7 +22,7 @@ import java.util.Date;
 @Data
 @Entity
 @Builder
-public class AdvisorFeeback {
+public class AdvisorFeeback implements Feedback{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

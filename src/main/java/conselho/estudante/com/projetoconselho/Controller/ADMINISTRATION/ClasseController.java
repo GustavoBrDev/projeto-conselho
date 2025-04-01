@@ -7,6 +7,7 @@ import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Cours
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ClasseService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/classes")
+@Tag(name = "Classe", description = "Controlador para gerenciar as operações relacionadas a Classe")
 public class ClasseController {
 
     private final ClasseService classeService;
@@ -139,8 +141,8 @@ public class ClasseController {
      */
     @PostMapping("/{id}/students")
     public void addStudentToClasse(@PathVariable Long id, @RequestBody Student student, @RequestHeader("user") User actor) {
-        Classe classe = classeService.findById(id);
-        classeService.addStudentToClasse(classe, student, actor);
+        /*Classe classe = classeService.findById(id);
+        classeService.addStudentToClasse(classe, student, actor);*/
     }
 
     /**
@@ -152,8 +154,8 @@ public class ClasseController {
      */
     @DeleteMapping("/{id}/students")
     public void removeStudentFromClasse(@PathVariable Long id, @RequestBody Student student, @RequestHeader("user") User actor) {
-        Classe classe = classeService.findById(id);
-        classeService.removeStudentFromClasse(classe, student, actor);
+        /*Classe classe = classeService.findById(id);
+        classeService.removeStudentFromClasse(classe, student, actor);*/
     }
 
     /**

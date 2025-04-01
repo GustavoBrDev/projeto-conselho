@@ -3,14 +3,15 @@ package conselho.estudante.com.projetoconselho.SERVICES;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.LOGIN.FirstLoginResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.LOGIN.LoginResponse;
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.LOGIN.LoginResponseDTO;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.*;
+import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION.ResetSessionService;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.LoginLogsService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.AdvisorService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,9 @@ public class LoginService {
     private SupervisorService supervisorService;
     private TechniqueService techniqueService;
     private LoginLogsService loginLogsService;
+    private TeacherService teacherService;
     private ResetSessionService resetSessionService;
+    private AdvisorService advisorService;
     private EmailService emailService;
 
     /**
@@ -139,6 +142,70 @@ public class LoginService {
             }
         }
 
+        Teacher teacher = teacherService.getObjectTeacher(email);
+
+        // Verifica se o usuario existe como professor
+        if (teacher != null) {
+
+            // Verifica se a senha do professor bate
+            if (teacher.getPassword().equals(password)) {
+
+                // Verifica se o professor tem o primeiro login
+                if ( ! loginLogsService.verifyFirstLogin( teacher ) ) {
+                    loginResponse = FirstLoginResponseDTO.builder()
+                            .user(teacher.toDTO())
+                            .isFirstLogin(true)
+                            .isAuthenticated(true)
+                            .build();
+                } else {
+                    loginResponse = LoginResponseDTO.builder()
+                            .user(teacher.toDTO())
+                            .isAuthenticated(true)
+                            .build();
+                }
+
+                loginLogsService.create( teacher );
+                return loginResponse;
+
+            } else {
+                return LoginResponseDTO.builder()
+                        .isAuthenticated(false)
+                        .build();
+            }
+        }
+
+        Advisor advisor = advisorService.getObjectAdvisor(email);
+
+        // Verifica se o usuario existe como orientador
+        if (advisor != null) {
+
+            // Verifica se a senha do orientador bate
+            if (advisor.getPassword().equals(password)) {
+
+                // Verifica se o orientador tem o primeiro login
+                if ( ! loginLogsService.verifyFirstLogin( advisor ) ) {
+                    loginResponse = FirstLoginResponseDTO.builder()
+                            .user(advisor.convert())
+                            .isFirstLogin(true)
+                            .isAuthenticated(true)
+                            .build();
+                } else {
+                    loginResponse = LoginResponseDTO.builder()
+                            .user(advisor.convert())
+                            .isAuthenticated(true)
+                            .build();
+                }
+
+                loginLogsService.create( advisor );
+                return loginResponse;
+
+            } else {
+                return LoginResponseDTO.builder()
+                        .isAuthenticated(false)
+                        .build();
+            }
+        }
+
         // Se o usuario nao foi encontrado
         return LoginResponseDTO.builder()
                 .isAuthenticated(false)
@@ -204,6 +271,40 @@ public class LoginService {
 
         }
 
+        Teacher teacher = teacherService.getObjectTeacher(email);
+        if ( teacher != null ) {
+
+            String token = UUID.randomUUID().toString();
+
+            if ( ! resetSessionService.create( teacher, token ) ) {
+                throw new RuntimeException("Erro ao criar token" );
+            }
+
+            if (emailService.sendResetPasswordEmail(teacher.getEmail(), token)) {
+                throw new RuntimeException("Erro ao enviar email" );
+            }
+
+            return true;
+
+        }
+
+        Advisor advisor = advisorService.getObjectAdvisor(email);
+        if ( advisor != null ) {
+
+            String token = UUID.randomUUID().toString();
+
+            if ( ! resetSessionService.create( advisor, token ) ) {
+                throw new RuntimeException("Erro ao criar token" );
+            }
+
+            if (emailService.sendResetPasswordEmail(advisor.getEmail(), token)) {
+                throw new RuntimeException("Erro ao enviar email" );
+            }
+
+            return true;
+
+        }
+
         return false;
 
     }
@@ -221,6 +322,87 @@ public class LoginService {
         }
 
         return resetSessionService.resetPasswordByToken(token, password);
+    }
+
+    public boolean verifyToken(String token) {
+
+        return resetSessionService.existsByToken(token);
+    }
+
+    /**
+     * Método para a realizar o primeiro login
+     * @param email o email
+     * @return retorna o token
+     */
+    public String firstLogin ( String email ) {
+
+        Student student = studentService.findObjectStudent(email);
+        if ( student != null ) {
+
+            String token = UUID.randomUUID().toString();
+
+            if ( ! resetSessionService.create( student, token ) ) {
+                throw new RuntimeException("Erro ao criar token" );
+            }
+
+            return token;
+
+        }
+
+        Technique technique = techniqueService.findObjectTechnique(email);
+        if ( technique != null ) {
+
+            String token = UUID.randomUUID().toString();
+
+            if ( ! resetSessionService.create( technique, token ) ) {
+                throw new RuntimeException("Erro ao criar token" );
+            }
+
+            return token;
+
+        }
+
+        Supervisor supervisor = supervisorService.findObjectSupervisor(email);
+        if ( supervisor != null ) {
+
+            String token = UUID.randomUUID().toString();
+
+            if ( ! resetSessionService.create( supervisor, token ) ) {
+                throw new RuntimeException("Erro ao criar token" );
+            }
+
+            return token;
+
+        }
+
+        Teacher teacher = teacherService.getObjectTeacher(email);
+        if ( teacher != null ) {
+
+            String token = UUID.randomUUID().toString();
+
+            if ( ! resetSessionService.create( teacher, token ) ) {
+                throw new RuntimeException("Erro ao criar token" );
+            }
+
+            return token;
+
+        }
+
+        Advisor advisor = advisorService.getObjectAdvisor(email);
+        if ( advisor != null ) {
+
+            String token = UUID.randomUUID().toString();
+
+            if ( ! resetSessionService.create( advisor, token ) ) {
+                throw new RuntimeException("Erro ao criar token" );
+            }
+
+            return token;
+
+        }
+
+        throw new NaoEncontradoException("Usuario nao encontrado");
+
     }
 
 

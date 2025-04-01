@@ -25,8 +25,6 @@ import org.springframework.stereotype.Service;
 public class PersonalFeedbackService {
 
     private final PersonalFeedbackRepository repository;
-    private final CouncilService councilService;
-    private final StudentService studentService;
 
     /**
      * Cria um novo feedback pessoal.

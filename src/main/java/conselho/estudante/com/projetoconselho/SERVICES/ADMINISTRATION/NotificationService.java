@@ -36,7 +36,7 @@ public class NotificationService {
      * @param isUrgent Se a notificação é urgente
      * @return {@link NotificationResponseDTO} A notificação criada
      */
-    @Transactional
+
     public NotificationResponseDTO create(User user, String message, Boolean isUrgent) {
         if (user == null || message == null || message.isEmpty()) {
             throw new IllegalArgumentException("Usuário e mensagem são obrigatórios");
@@ -50,16 +50,19 @@ public class NotificationService {
                 .createdAt(new Date())
                 .build();
 
-        // Identifica o tipo do usuário e associa a notificação
         if (user instanceof Student student) {
-            notification.setStudent(studentService.findObjectStudent(user.getEmail()));
+
+           studentService.addNotification(student.getId(), notification);
+
         } else if (user instanceof Technique technique) {
-            notification.setTechnique(techniqueService.findObjectTechnique(user.getEmail()));
+
+            techniqueService.addNotification(technique.getId(), notification);
+
         } else if (user instanceof Supervisor supervisor) {
-            notification.setSupervisor(supervisorService.findObjectSupervisor(user.getEmail()));
-        } else {
-            throw new NaoEncontradoException("Tipo de usuário inválido");
+
+            supervisorService.addNotification(supervisor.getId(), notification);
         }
+
 
         // Salva a notificação e retorna a resposta
         notification = notificationRepository.save(notification);
@@ -74,7 +77,7 @@ public class NotificationService {
      * @param isRead         Se a notificação foi lida
      * @return {@link NotificationResponseDTO} A notificação atualizada
      */
-    @Transactional
+
     public NotificationResponseDTO update(Long notificationId, String newMessage, Boolean isRead) {
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new NaoEncontradoException("Notificação não encontrada"));
@@ -90,7 +93,7 @@ public class NotificationService {
      *
      * @param notificationId O ID da notificação a ser removida
      */
-    @Transactional
+    
     public void delete(Long notificationId) {
         if (!notificationRepository.existsById(notificationId)) {
             throw new NaoEncontradoException("Notificação não encontrada");
