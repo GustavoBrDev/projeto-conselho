@@ -48,6 +48,11 @@ import java.util.List;
  * Falta conectar RepresentativePreCouncilService e NotificationService
  * @author Gustavo Stinghen
  * @see CouncilLogsService
+ *
+ * Atualizado em 01/04/2025
+ * Conexão com o NotificationService para envio de notificação
+ * @author Gustavo Stinghen
+ * @see NotificationService
  */
 @Service
 @AllArgsConstructor
@@ -132,7 +137,8 @@ public class CouncilService {
 
             if ( newCouncil.getFeedbackDelivered() ) {
                 newCouncil.setCouncilFinished(true);
-                // TODO: chamar a service de notificação
+                generateStudentNotification( newCouncil );
+                generateTeacherNotification( newCouncil, "Você recebeu um novo feedback da turma " + newCouncil.getClasse().getAcronym() );
             }
         }
 
@@ -151,13 +157,17 @@ public class CouncilService {
         if ( ! oldCouncil.getRepresentativePreCouncilStarted().equals( newCouncil.getRepresentativePreCouncilStarted() ) ) {
             changes.add(new ChangeItem("representativePreCouncilStarted", (Object) oldCouncil.getRepresentativePreCouncilStarted(), (Object) newCouncil.getRepresentativePreCouncilStarted()));
 
-            // TODO: chamar a service de notificação
+            if ( newCouncil.getRepresentativePreCouncilStarted() ) {
+                generateRepresentativeNotification( newCouncil );
+            }
         }
 
         if ( ! oldCouncil.getTeacherPreCouncilStarted().equals( newCouncil.getTeacherPreCouncilStarted() ) ) {
             changes.add(new ChangeItem("teacherPreCouncilStarted", (Object) oldCouncil.getTeacherPreCouncilStarted(), (Object) newCouncil.getTeacherPreCouncilStarted()));
 
-            // TODO: chamar a service de notificação
+            if ( newCouncil.getTeacherPreCouncilStarted() ) {
+                generateTeacherNotification( newCouncil, "Você tem um pré conselho para ser escrito da turma " + newCouncil.getClasse().getAcronym() );
+            }
         }
 
         if ( ! oldCouncil.getRepresentativePreCouncilFinished().equals( newCouncil.getRepresentativePreCouncilFinished() ) ) {
@@ -194,6 +204,43 @@ public class CouncilService {
         }
 
         return changes;
+    }
+
+    public void generateRepresentativeNotification( Council council ) {
+
+        List<Student> students = council.getClasse().getRepresentative().getStudents();
+
+        for ( Student student : students ) {
+            notificationService.create(
+                    student,
+                    "Você tem um pré conselho para ser escrito da turma " + council.getClasse().getAcronym()
+                    , true);
+        }
+
+    }
+
+    public void generateTeacherNotification( Council council, String message ) {
+
+        List<AvaliableTeacher> teachers = council.getTeachers();
+
+        for ( AvaliableTeacher teacher : teachers ) {
+            notificationService.create(
+                    teacher.getTeacher(),
+                    message
+                    , false);
+        }
+    }
+
+    public void generateStudentNotification( Council council) {
+
+        List<Student> students = council.getClasse().getStudents();
+
+        for ( Student student : students ) {
+            notificationService.create(
+                    student,
+                    "Você recebeu um novo feedback na turma " + council.getClasse().getAcronym()
+                    , false);
+        }
     }
 
     /**
@@ -293,9 +340,13 @@ public class CouncilService {
 
         List<AvaliableTeacher> avaliableTeachers = council.getTeachers();
 
-        for (AvaliableTeacher availableTeacher : avaliableTeachers) {
+        if ( avaliableTeachers.isEmpty() ) {
+            return;
+        }
 
-            // TODO: chamar a service de notificação
+        generateTeacherNotification(council, "Você tem um pré conselho para ser escrito da turma " + council.getClasse().getAcronym() );
+
+        for (AvaliableTeacher availableTeacher : avaliableTeachers) {
 
             for ( Subject subject : availableTeacher.getSubjects() ) {
 
@@ -354,6 +405,7 @@ public class CouncilService {
         if(repository.existsById(id)) {
             Council council = repository.findById(id).get();
             council.setRepresentativePreCouncilStarted(true);
+            generateRepresentativeNotification(council);
             return repository.save(council).toDTO();
         }
         throw new NaoEncontradoException("Conselho nao encontrado");
@@ -404,6 +456,8 @@ public class CouncilService {
             council.setFeedbackDelivered(true);
             council.setFeedbackDeliveredDate(new Date());
             generateFeedbackGroups(council);
+            generateStudentNotification(council);
+            generateTeacherNotification(council,"Você recebeu um novo feedback na turma " + council.getClasse().getAcronym());
             return repository.save(council).toDTO();
         }
         throw new NaoEncontradoException("Conselho nao encontrado");
