@@ -2,22 +2,33 @@ package conselho.estudante.com.projetoconselho.SERVICES.ADMINISTRATION;
 
 import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.ADMINISTRATION.NotificationResponseDTO;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Notification;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Student;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Supervisor;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Technique;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.*;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.ADMINISTRATION.NotificationRepository;
+import conselho.estudante.com.projetoconselho.SERVICES.EmailService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.AdvisorService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.StudentService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.SupervisorService;
 import conselho.estudante.com.projetoconselho.SERVICES.USERS.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.SERVICES.USERS.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+
+/**
+ * Serviço para gerenciar operações relacionadas à entidade {@link Notification}.
+ *
+ * @author Camilly Chelest
+ * @since 31/03/2025
+ *
+ * @see Notification
+ *
+ * Atualizado em 01/04/2025
+ * Conexão com o EmailService para envio de emails
+ * Atualização de lógica interna
+ * @author Gustavo Stinghen
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +37,10 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final StudentService studentService;
     private final TechniqueService techniqueService;
+    private final AdvisorService advisorService;
+    private final EmailService emailService;
     private final SupervisorService supervisorService;
+    private final TeacherService teacherService;
 
     /**
      * Cria uma nova notificação associada a um usuário.
@@ -54,13 +68,41 @@ public class NotificationService {
 
            studentService.addNotification(student.getId(), notification);
 
+           if ( isUrgent ) {
+               emailService.sendAlertEmail( student.getEmail(), notification );
+           }
+
         } else if (user instanceof Technique technique) {
 
             techniqueService.addNotification(technique.getId(), notification);
 
+            if ( isUrgent ) {
+                emailService.sendAlertEmail( technique.getEmail(), notification );
+            }
+
         } else if (user instanceof Supervisor supervisor) {
 
             supervisorService.addNotification(supervisor.getId(), notification);
+
+            if ( isUrgent ) {
+                emailService.sendAlertEmail( supervisor.getEmail(), notification );
+            }
+
+        } else if ( user instanceof Advisor advisor) {
+
+            // advisorService.addNotification(advisor.getId(), notification);
+
+            if ( isUrgent ) {
+                emailService.sendAlertEmail( advisor.getEmail(), notification );
+            }
+
+        } else if ( user instanceof Teacher teacher) {
+
+            // teacherService.addNotification(teacher.getId(), notification);
+
+            if ( isUrgent ) {
+                emailService.sendAlertEmail( teacher.getEmail(), notification );
+            }
         }
 
 
