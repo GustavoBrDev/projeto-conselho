@@ -5,12 +5,9 @@ import conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.EDUCATIONAL.Ad
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.AdvisorFeeback;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Feedback;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.FeedbackLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.Advisor;
 import conselho.estudante.com.projetoconselho.MODELS.EXCEPTIONS.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.AdvisorFeedbackRepository;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.EDUCATIONAL.CouncilRepository;
-import conselho.estudante.com.projetoconselho.REPOSITORIES.USERS.AdvisorRepository;
 import conselho.estudante.com.projetoconselho.SERVICES.LOGS.FeedbackLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,14 +1,18 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/**
- * DTO para representar a resposta após operações de criação, leitura ou atualização de uma entidade Advisor.
- */
-public record AdvisorResponseDTO(
-        Long id,          // Identificador único do orientador
-        String name,     // Nome do orientador
-        String image,    // Imagem associada ao orientador
-        String email,     // Endereço de email do orientador
-        Long registration // Número de matrícula do orientador
-) {
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class AdvisorResponseDTO {
+    private Long id;
+    private String image;
+    private String name;
+    private String email;
+    private Long register;
 }
