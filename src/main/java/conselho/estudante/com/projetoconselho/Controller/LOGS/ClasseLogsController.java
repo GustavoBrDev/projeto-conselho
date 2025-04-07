@@ -35,19 +35,29 @@ public class ClasseLogsController {
     @Operation(summary = "Busca todos os logs")
     @ApiResponse(responseCode = "200", description = "Logs encontrados com sucesso",
             content = @Content(schema = @Schema(implementation = ClasseLogs.class),
-            examples = @ExampleObject(value = "{\n" +
-                    "    \"id\": 1,\n" +
-                    "    \"Class\": {\n" +
-                    "        \"id\": 1,\n" +
-                    "        \"name\": \"Gustavo\",\n" +
-                    "        \"registration\": 123456,\n" +
-                    "        \"email\": \"7G9Gt@example.com\",\n" +
-                    "        \"password\": \"123456\",\n" +
-                    "        \"image\": \"https://example.com/image.jpg\"\n" +
-                    "    },\n" +
-                    "    \"action\": \"CREATE\",\n" +
-                    "    \"date\": \"2022-01-01T00:00:00\"\n" +
-                    "}")))
+                    examples = @ExampleObject(value = "{\n" +
+                            "    \"id\": \"AYGUEDU\",\n" +
+                            "    \"actor\": {\n" +
+                            "        \"id\": 1,\n" +
+                            "        \"name\": \"Gustavo Stinghen\",\n" +
+                            "        \"registration\": 123456,\n" +
+                            "        \"email\": \"7G9Gt@example.com\",\n" +
+                            "        \"password\": \"123456\",\n" +
+                            "        \"image\": \"https://example.com/image.jpg\"\n" +
+                            "    },\n" +
+                            "    \"target\": {\n" +
+                            "        \"id\": 1,\n" +
+                            "        \"name\": \"Gustavo\",\n" +
+                            "        \"registration\": 123456,\n" +
+                            "        \"email\": \"7G9Gt@example.com\",\n" +
+                            "        \"password\": \"123456\",\n" +
+                            "        \"image\": \"https://example.com/image.jpg\"\n" +
+                            "    },\n" +
+                            "    \"type\": \"CREATE\",\n" +
+                            "    \"timestamp\": \"2022-01-01T00:00:00Z\",\n" +
+                            "    \"createdAt\": \"2022-01-01T00:00:00Z\",\n" +
+                            "    \"changes\": []\n" +
+                            "}")))
     @ApiResponse(responseCode = "400", description = "Erro ao buscar logs")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping()
@@ -58,58 +68,102 @@ public class ClasseLogsController {
     @Operation(summary = "Busca todos os logs realizados por um usuário")
     @ApiResponse(responseCode = "200", description = "Logs encontrados com sucesso",
             content = @Content(schema = @Schema(implementation = ClasseLogs.class),
-            examples = @ExampleObject(value = "{\n" +
-                    "    \"id\": 1,\n" +
-                    "    \"Class\": {\n" +
-                    "        \"id\": 1,\n" +
-                    "        \"name\": \"Gustavo\",\n" +
-                    "        \"registration\": 123456,\n" +
-                    "        \"email\": \"7G9Gt@example.com\",\n" +
-                    "        \"password\": \"123456\",\n" +
-                    "        \"image\": \"https://example.com/image.jpg\"\n" +
-                    "    },\n" +
-                    "    \"action\": \"CREATE\",\n" +
-                    "    \"date\": \"2022-01-01T00:00:00\"\n" +
-                    "}")))
+                    examples = @ExampleObject(value = "{\n" +
+                            "    \"id\": \"AYGUEDU\",\n" +
+                            "    \"actor\": {\n" +
+                            "        \"id\": 1,\n" +
+                            "        \"name\": \"Gustavo Stinghen\",\n" +
+                            "        \"registration\": 123456,\n" +
+                            "        \"email\": \"7G9Gt@example.com\",\n" +
+                            "        \"password\": \"123456\",\n" +
+                            "        \"image\": \"https://example.com/image.jpg\"\n" +
+                            "    },\n" +
+                            "    \"target\": {\n" +
+                            "        \"id\": 1,\n" +
+                            "        \"name\": \"Gustavo\",\n" +
+                            "        \"registration\": 123456,\n" +
+                            "        \"email\": \"7G9Gt@example.com\",\n" +
+                            "        \"password\": \"123456\",\n" +
+                            "        \"image\": \"https://example.com/image.jpg\"\n" +
+                            "    },\n" +
+                            "    \"type\": \"CREATE\",\n" +
+                            "    \"timestamp\": \"2022-01-01T00:00:00Z\",\n" +
+                            "    \"createdAt\": \"2022-01-01T00:00:00Z\",\n" +
+                            "    \"changes\": []\n" +
+                            "}")))
     @ApiResponse(responseCode = "400", description = "Erro ao buscar logs")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @SecurityRequirement(name = "Bearer")
     @GetMapping("/actor/")
     public ResponseEntity<Page<ClasseLogs>> findByActor(
-            @RequestBody @Parameter( description = "Usuário que realizou a ação", required = true, content = @Content(schema = @Schema(implementation = Class.class)), example = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}") User actor,
+            @RequestBody @Parameter(description = "Usuário que realizou a ação", required = true, content = @Content(schema = @Schema(implementation = User.class)), example = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}") User actor,
             Pageable pageable) {
         return ResponseEntity.ok(service.findByActor(actor, pageable));
     }
 
+    @Operation(summary = "Busca todos os logs de um usuário")
+    @ApiResponse(responseCode = "200", description = "Logs encontrados com sucesso",
+            content = @Content(schema = @Schema(implementation = ClasseLogs.class),
+                    examples = @ExampleObject(value = "{\n" +
+                            "    \"id\": 1,\n" +
+                            "    \"actor\": {\n" +
+                            "        \"id\": 1,\n" +
+                            "        \"nome\": \"Gustavo Stinghen\",\n" +
+                            "        \"matricula\": \"123456\",\n" +
+                            "        \"email\": \"gustavo@example.com\",\n" +
+                            "        \"senha\": \"123456\",\n" +
+                            "        \"imagem\": \"https://example.com/image.jpg\"\n" +
+                            "    },\n" +
+                            "    \"target\": {\n" +
+                            "        \"id\": 1,\n" +
+                            "        \"nome\": \"Gustavo\",\n" +
+                            "        \"matricula\": \"123456\",\n" +
+                            "        \"email\": \"gustavo@example.com\",\n" +
+                            "        \"senha\": \"123456\",\n" +
+                            "        \"imagem\": \"https://example.com/image.jpg\"\n" +
+                            "    },\n" +
+                            "    \"tipo\": \"CREATE\",\n" +
+                            "    \"dataCriacao\": \"2022-01-01T00:00:00Z\",\n" +
+                            "    \"alteracoes\": []\n" +
+                            "}")))
+    @ApiResponse(responseCode = "400", description = "Erro ao buscar logs")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/target/")
     public ResponseEntity<Page<ClasseLogs>> findByTarget(
-            @RequestBody @Parameter( description = "Usuário alvo do log", required = true, content = @Content ( schema = @Schema ( implementation = Class.class )), example = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}" ) Classe target,
+            @RequestBody @Parameter(description = "Usuário alvo do log", required = true, content = @Content(schema = @Schema(implementation = Classe.class)), example = "{\"id\": 1, \"nome\": \"Gustavo\", \"matricula\": \"123456\", \"email\": \"gustavo@example.com\", \"senha\": \"123456\", \"imagem\": \"https://example.com/image.jpg\"}") Classe target,
             Pageable pageable) {
         return ResponseEntity.ok(service.findByTarget(target, pageable));
     }
 
-    @Operation(summary = "Busca todos os logs de uma ação")
+    @Operation(summary = "Busca todos os logs por tipo")
     @ApiResponse(responseCode = "200", description = "Logs encontrados com sucesso",
             content = @Content(schema = @Schema(implementation = ClasseLogs.class),
-            examples = @ExampleObject(value = "{\n" +
-                    "    \"id\": 1,\n" +
-                    "    \"Class\": {\n" +
-                    "        \"id\": 1,\n" +
-                    "        \"name\": \"Gustavo\",\n" +
-                    "        \"registration\": 123456,\n" +
-                    "        \"email\": \"7G9Gt@example.com\",\n" +
-                    "        \"password\": \"123456\",\n" +
-                    "        \"image\": \"https://example.com/image.jpg\"\n" +
-                    "    },\n" +
-                    "    \"action\": \"CREATE\",\n" +
-                    "    \"date\": \"2022-01-01T00:00:00\"\n" +
-                    "}")))
+                    examples = @ExampleObject(value = "{\n" +
+                            "    \"id\": 1,\n" +
+                            "    \"actor\": {\n" +
+                            "        \"id\": 1,\n" +
+                            "        \"nome\": \"Gustavo Stinghen\",\n" +
+                            "        \"matricula\": \"123456\",\n" +
+                            "        \"email\": \"gustavo@example.com\",\n" +
+                            "        \"senha\": \"123456\",\n" +
+                            "        \"imagem\": \"https://example.com/image.jpg\"\n" +
+                            "    },\n" +
+                            "    \"target\": {\n" +
+                            "        \"id\": 1,\n" +
+                            "        \"nome\": \"Gustavo\",\n" +
+                            "        \"matricula\": \"123456\",\n" +
+                            "        \"email\": \"gustavo@example.com\",\n" +
+                            "        \"senha\": \"123456\",\n" +
+                            "        \"imagem\": \"https://example.com/image.jpg\"\n" +
+                            "    },\n" +
+                            "    \"tipo\": \"CREATE\",\n" +
+                            "    \"dataCriacao\": \"2022-01-01T00:00:00Z\",\n" +
+                            "    \"alteracoes\": []\n" +
+                            "}")))
     @ApiResponse(responseCode = "400", description = "Erro ao buscar logs")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @SecurityRequirement(name = "Bearer")
-    @GetMapping("/action/{type}")
+    @GetMapping("/type/")
     public ResponseEntity<Page<ClasseLogs>> findByType(
-            @PathVariable @Parameter( description = "Tipo de ação", required = true, example = "CREATE" ) String type,
+            @RequestParam @Parameter(description = "Tipo do log", required = true, example = "CREATE") String type,
             Pageable pageable) {
         return ResponseEntity.ok(service.findByType(type, pageable));
     }
