@@ -130,7 +130,7 @@ public class CourseLogsService {
      * @throws NaoEncontradoException se o log nao foi encontrado
      * @see User, CourseLogs
      */
-    public Page<CourseLogs> findByTarget(Classe target, Pageable pageable) {
+    public Page<CourseLogs> findByTarget(Course target, Pageable pageable) {
 
         try {
             return repository.findByTarget(target, pageable);

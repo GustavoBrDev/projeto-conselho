@@ -1,9 +1,9 @@
 package conselho.estudante.com.projetoconselho.Controller.LOGS;
 
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.EDUCATIONAL.Council;
-import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.CouncilLogs;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.ADMINISTRATION.Course;
+import conselho.estudante.com.projetoconselho.MODELS.ENTITY.LOGS.CourseLogs;
 import conselho.estudante.com.projetoconselho.MODELS.ENTITY.USERS.User;
-import conselho.estudante.com.projetoconselho.SERVICES.LOGS.CouncilLogsService;
+import conselho.estudante.com.projetoconselho.SERVICES.LOGS.CourseLogsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,59 +19,63 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controller para gerenciamento de logs de Councils
+ * Controller para gerenciamento de logs de Courses
  * @author Gustavo Stinghen
  * @since 07/04/2025
- * @see CouncilLogsService
+ * @see CourseLogsService
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("/logs/Councils")
-@Tag(name = "Logs de Conselhos", description = "Recurso de gerenciamento de logs de Conselhos")
-public class CouncilLogsController {
+@RequestMapping("/logs/Courses")
+@Tag(name = "Logs de Cursos", description = "Recurso de gerenciamento de logs de cursos")
+public class CourseLogsController {
 
-    private CouncilLogsService service;
+    private CourseLogsService service;
 
     @Operation(summary = "Busca todos os logs")
     @ApiResponse(responseCode = "200", description = "Logs encontrados com sucesso",
-            content = @Content(schema = @Schema(implementation = CouncilLogs.class),
+            content = @Content(schema = @Schema(implementation = CourseLogs.class),
                     examples = @ExampleObject(value = "{\"id\": \"string\", \"actor\": {\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}, \"target\": {\"id\": 1, \"name\": \"Conselho de Classe\"}, \"type\": \"CREATE\", \"timestamp\": \"2023-03-17T14:30:00.000Z\", \"createdAt\": \"2023-03-17T14:30:00.000Z\", \"changes\": [{\"field\": \"nome\", \"oldValue\": \"Conselho de Classe\", \"newValue\": \"Conselho de Classe Atualizado\"}]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao buscar logs")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping()
-    public ResponseEntity<Page<CouncilLogs>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<CourseLogs>> findAll(Pageable pageable) {
         return ResponseEntity.ok(service.findAll(pageable));
     }
 
     @Operation(summary = "Busca todos os logs realizados por um usuário")
     @ApiResponse(responseCode = "200", description = "Logs encontrados com sucesso",
-            content = @Content(schema = @Schema(implementation = CouncilLogs.class),
+            content = @Content(schema = @Schema(implementation = CourseLogs.class),
                     examples = @ExampleObject(value = "{\"id\": \"string\", \"actor\": {\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}, \"target\": {\"id\": 1, \"name\": \"Conselho de Classe\"}, \"type\": \"CREATE\", \"timestamp\": \"2023-03-17T14:30:00.000Z\", \"createdAt\": \"2023-03-17T14:30:00.000Z\", \"changes\": [{\"field\": \"nome\", \"oldValue\": \"Conselho de Classe\", \"newValue\": \"Conselho de Classe Atualizado\"}]}")))
-    @GetMapping("/actor/")
-    public ResponseEntity<Page<CouncilLogs>> findByActor(
-            @RequestBody @Parameter( description = "Usuário que realizou a ação", required = true, content = @Content(schema = @Schema(implementation = User.class)), example = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}") User actor,
+    @ApiResponse(responseCode = "400", description = "Erro ao buscar logs")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @GetMapping("/actor")
+    public ResponseEntity<Page<CourseLogs>> findByActor(
+            @RequestBody @Parameter(description = "Usuário que realizou a ação", required = true, content = @Content(schema = @Schema(implementation = User.class)), example = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}") User actor,
             Pageable pageable) {
         return ResponseEntity.ok(service.findByActor(actor, pageable));
     }
 
-    @Operation(summary = "Busca todos os logs de uma ação")
+    @Operation(summary = "Busca todos os logs de um tipo")
     @ApiResponse(responseCode = "200", description = "Logs encontrados com sucesso",
-            content = @Content(schema = @Schema(implementation = CouncilLogs.class),
+            content = @Content(schema = @Schema(implementation = CourseLogs.class),
                     examples = @ExampleObject(value = "{\"id\": \"string\", \"actor\": {\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}, \"target\": {\"id\": 1, \"name\": \"Conselho de Classe\"}, \"type\": \"CREATE\", \"timestamp\": \"2023-03-17T14:30:00.000Z\", \"createdAt\": \"2023-03-17T14:30:00.000Z\", \"changes\": [{\"field\": \"nome\", \"oldValue\": \"Conselho de Classe\", \"newValue\": \"Conselho de Classe Atualizado\"}]}")))
-    @GetMapping("/action/{type}")
-    public ResponseEntity<Page<CouncilLogs>> findByType(
-            @PathVariable @Parameter( description = "Tipo de ação", required = true, example = "CREATE" ) String type,
+    @ApiResponse(responseCode = "400", description = "Erro ao buscar logs")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @GetMapping("/type/{type}")
+    public ResponseEntity<Page<CourseLogs>> findByType(
+            @PathVariable @Parameter(description = "Tipo de ação", required = true, example = "CREATE") String type,
             Pageable pageable) {
         return ResponseEntity.ok(service.findByType(type, pageable));
     }
 
     @Operation(summary = "Busca todos os logs de um alvo")
     @ApiResponse(responseCode = "200", description = "Logs encontrados com sucesso",
-            content = @Content(schema = @Schema(implementation = CouncilLogs.class),
+            content = @Content(schema = @Schema(implementation = CourseLogs.class),
                     examples = @ExampleObject(value = "{\"id\": \"string\", \"actor\": {\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}, \"target\": {\"id\": 1, \"name\": \"Conselho de Classe\"}, \"type\": \"CREATE\", \"timestamp\": \"2023-03-17T14:30:00.000Z\", \"createdAt\": \"2023-03-17T14:30:00.000Z\", \"changes\": [{\"field\": \"nome\", \"oldValue\": \"Conselho de Classe\", \"newValue\": \"Conselho de Classe Atualizado\"}]}")))
     @GetMapping("/target")
-    public ResponseEntity<Page<CouncilLogs>> findByTarget(
-            @RequestBody @Parameter( description = "Alvo do log", required = true, content = @Content(schema = @Schema(implementation = Council.class)), example = "{\"id\": 1, \"name\": \"Conselho de Classe\"}") Council target,
+    public ResponseEntity<Page<CourseLogs>> findByTarget(
+            @RequestBody @Parameter(description = "Alvo do log", required = true, content = @Content(schema = @Schema(implementation = Course.class)), example = "{\"id\": 1, \"name\": \"Conselho de Classe\"}") Course target,
             Pageable pageable) {
         return ResponseEntity.ok(service.findByTarget(target, pageable));
     }
