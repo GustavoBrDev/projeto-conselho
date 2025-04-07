@@ -167,7 +167,7 @@ public class SupervisorController {
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar notificação")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/notifications")
+    @PatchMapping("/addNotification/{id}")
     public SupervisorResponseDTO addNotification(@PathVariable Long id, @RequestBody Notification notification) {
         return supervisorService.addNotification(id, notification);
     }
@@ -180,7 +180,7 @@ public class SupervisorController {
     @ApiResponse(responseCode = "400", description = "Erro ao remover notificação")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/notifications")
+    @PatchMapping("/removeNotification/{id}")
     public SupervisorResponseDTO removeNotification(@PathVariable Long id, @RequestBody Notification notification) {
         return supervisorService.removeNotification(id, notification);
     }
@@ -204,7 +204,7 @@ public class SupervisorController {
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/courses")
+    @PatchMapping("/addCourse/{id}")
     public SupervisorResponseDTO addCourse(@PathVariable Long id, @RequestBody Course course, @RequestParam User actor) {
         return supervisorService.addCourse(id, course, actor);
     }
@@ -217,7 +217,7 @@ public class SupervisorController {
     @ApiResponse(responseCode = "400", description = "Erro ao remover curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/courses")
+    @PatchMapping("/removeCourse/{id}")
     public SupervisorResponseDTO removeCourse(@PathVariable Long id, @RequestBody Course course, @RequestParam User actor) {
         return supervisorService.removeCourse(id, course, actor);
     }

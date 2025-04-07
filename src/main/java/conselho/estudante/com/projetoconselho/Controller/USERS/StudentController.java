@@ -205,7 +205,7 @@ public class StudentController {
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar estudante à classe")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{studentId}/class/{classeId}")
+    @PatchMapping("/addStudent/{studentId}/{classeId}")
     public StudentResponseDTO addStudentToClass(@PathVariable Long studentId, @PathVariable Long classeId, @RequestParam User actor) {
         Student student = studentService.findId(studentId).convert();
         Classe classe = new Classe();
@@ -221,7 +221,7 @@ public class StudentController {
     @ApiResponse(responseCode = "400", description = "Erro ao remover estudante da classe")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{studentId}/class/{classeId}")
+    @PatchMapping("/removeStudent/{studentId}/{classeId}")
     public StudentResponseDTO removeStudentFromClass(@PathVariable Long studentId, @PathVariable Long classeId, @RequestParam User actor) {
         Student student = studentService.findId(studentId).convert();
         Classe classe = new Classe();
@@ -237,7 +237,7 @@ public class StudentController {
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar notificação ao estudante")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/notification")
+    @PatchMapping("/addNotification/{id}")
     public StudentResponseDTO addNotification(@PathVariable Long id, @RequestBody Notification notification) {
         return studentService.addNotification(id, notification);
     }
@@ -250,7 +250,7 @@ public class StudentController {
     @ApiResponse(responseCode = "400", description = "Erro ao remover notificação do estudante")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/notification")
+    @PatchMapping("/removeNotification/{id}")
     public StudentResponseDTO removeNotification(@PathVariable Long id, @RequestBody Notification notification) {
         return studentService.removeNotification(id, notification);
     }

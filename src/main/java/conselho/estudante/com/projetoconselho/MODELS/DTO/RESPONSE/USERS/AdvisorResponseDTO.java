@@ -12,7 +12,7 @@ import lombok.Builder;
  * @author Alex Zastrow
  */
 @Builder
-public class AdvisorResponseDTO {
+public class AdvisorResponseDTO implements UserResponseDTO {
 
         /**
          * Identificador único do orientador.
