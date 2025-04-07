@@ -113,4 +113,15 @@ public class UserLogsController {
             Pageable pageable) {
         return ResponseEntity.ok(service.findByType(type, pageable));
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Deleta um log")
+    @ApiResponse(responseCode = "204", description = "Log deletado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Erro ao deletar log")
+    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    @SecurityRequirement(name = "Bearer")
+    public ResponseEntity<Void> delete(@PathVariable @Parameter( description = "Id do log", required = true, example = "AYGUEDU" ) String id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

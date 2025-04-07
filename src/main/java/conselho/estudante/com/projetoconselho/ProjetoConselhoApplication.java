@@ -33,7 +33,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         @Tag(name = "Cursos", description = "Recurso para gerenciamento de cursos"),
         @Tag(name = "Subject", description = "Recurso para gerenciamento de disciplinas"),
         @Tag(name = "Classe", description = "Controlador para gerenciar as operações relacionadas a Classe"),
-        @Tag(name = "Logs de Usuários", description = "Recurso de gerenciamento de logs de usuários")
+        @Tag(name = "Logs de Usuários", description = "Recurso de gerenciamento de logs de usuários"),
+        @Tag(name = "ChatMessageLogs", description = "Gerenciamento de logs de mensagens de chat")
 }, servers = {
         @Server(
                 url = "http://localhost:9090",
