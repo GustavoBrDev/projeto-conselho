@@ -116,6 +116,7 @@ public class CouncilService {
             if(repository.existsByClasse(council.getClasse())) {
                 throw new DadosDuplicadosException("Conselho já cadastrado");
             } else {
+                logsService.create(actor, council, getEditableItems(repository.findById(id).get(), council), "update");
                 return repository.save(council).toDTO();
             }
         }
@@ -398,13 +399,15 @@ public class CouncilService {
      * Inicia o pré-conselho com os representantes para o conselho identificado pelo ID.
      *
      * @param id Identificador do conselho.
+     * @param endDate Data de fim do pré-conselho.
      * @return DTO de resposta contendo o conselho atualizado.
      * @throws NaoEncontradoException se o conselho não for encontrado.
      */
-    public CouncilResponseDTO startRepresentativePreCouncil(Long id) {
+    public CouncilResponseDTO startRepresentativePreCouncil(Long id, Date endDate) {
         if(repository.existsById(id)) {
             Council council = repository.findById(id).get();
             council.setRepresentativePreCouncilStarted(true);
+            council.setRepresentativePreCouncilEndDate(endDate);
             generateRepresentativeNotification(council);
             return repository.save(council).toDTO();
         }
@@ -633,6 +636,18 @@ public class CouncilService {
         } catch (Exception e) {
             throw new NaoEncontradoException("Conselho nao encontrado");
         }
+    }
+
+    /**
+     * Encontra todos os conselhos.
+     *
+     * @param pageable Informações de paginação.
+     * @return Página contendo todos os conselhos.
+     * @author Gustavo Stinghen
+     * @since 07/04/2025
+     */
+    public Page<CouncilResponseDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(Council::toDTO);
     }
 }
 
