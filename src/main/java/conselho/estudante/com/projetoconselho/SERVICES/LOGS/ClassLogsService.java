@@ -113,7 +113,7 @@ public class ClassLogsService {
      * @throws NaoEncontradoException se o log nao foi encontrado
      * @see User, ClasseLogs
      */
-    public Page<UserLogs> findByActor(User actor, Pageable pageable) {
+    public Page<ClasseLogs> findByActor(User actor, Pageable pageable) {
 
         try {
             return repository.findByActor(actor, pageable);
@@ -130,7 +130,7 @@ public class ClassLogsService {
      * @throws NaoEncontradoException se o log nao foi encontrado
      * @see User, ClasseLogs
      */
-    public Page<UserLogs> findByTarget(Classe target, Pageable pageable) {
+    public Page<ClasseLogs> findByTarget(Classe target, Pageable pageable) {
 
         try {
             return repository.findByTarget(target, pageable);
@@ -147,7 +147,7 @@ public class ClassLogsService {
      * @throws NaoEncontradoException se o log nao foi encontrado
      * @see User, ClasseLogs
      */
-    public Page<UserLogs> findByType(String type, Pageable pageable) {
+    public Page<ClasseLogs> findByType(String type, Pageable pageable) {
 
         try {
             return repository.findByType(type, pageable);
