@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("/logs/Classs")
+@RequestMapping("/logs/subjects")
 @Tag(name = "Logs de Subjects", description = "Recurso de gerenciamento de logs de Subjects")
 public class SubjectLogsController {
 
