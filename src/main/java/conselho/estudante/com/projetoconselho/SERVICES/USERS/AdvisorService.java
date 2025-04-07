@@ -13,12 +13,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
 import jakarta.persistence.criteria.Predicate;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
+
+/**
+ * Serviço responsável por gerenciar as operações relacionadas aos orientadores.
+ * Inclui funcionalidades de criação, atualização, exclusão, busca e edição de atributos específicos.
+ *
+ * @author Alex Zastrow
+ */
 
 @Service
 @AllArgsConstructor
@@ -26,16 +31,14 @@ public class AdvisorService {
 
     private final AdvisorRepository repository;
 
-    // Regex para validação de email
-    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
-
     /**
-     * Cria um novo orientador com validações
+     * Cria um novo orientador após validação dos dados e verificação de duplicidade.
+     *
+     * @param advisorRequestDTO dados do novo orientador
+     * @return objeto {@link AdvisorResponseDTO} representando o orientador criado
      */
     public AdvisorResponseDTO create(AdvisorRequestDTO advisorRequestDTO) {
         validateAdvisorRequest(advisorRequestDTO);
-
         Advisor advisor = advisorRequestDTO.convert();
 
         if (repository.existsByEmail(advisor.getEmail())) {
@@ -46,21 +49,15 @@ public class AdvisorService {
             throw new DadosDuplicadosException("Matrícula já cadastrada");
         }
 
-        // Valida formato do email
-        if (!isValidEmail(advisor.getEmail())) {
-            throw new IllegalArgumentException("Formato de email inválido");
-        }
-
-        // Criptografa a senha antes de salvar
-        advisor.setCreatedAt(new Date());
-        // Define o username como email por padrão
-        advisor.setUsername(advisor.getEmail());
-
         return convertToDTO(repository.save(advisor));
     }
 
     /**
-     * Atualiza um orientador existente
+     * Atualiza os dados de um orientador existente.
+     *
+     * @param id identificador do orientador
+     * @param advisorRequestDTO novos dados a serem atualizados
+     * @return {@link AdvisorResponseDTO} com dados atualizados
      */
     public AdvisorResponseDTO update(Long id, AdvisorRequestDTO advisorRequestDTO) {
         validateAdvisorRequest(advisorRequestDTO);
@@ -71,7 +68,6 @@ public class AdvisorService {
         Advisor advisor = advisorRequestDTO.convert();
         advisor.setId(id);
 
-        // Verifica se o email já está em uso por outro orientador
         repository.findByEmail(advisor.getEmail())
                 .ifPresent(a -> {
                     if (!a.getId().equals(id)) {
@@ -79,7 +75,6 @@ public class AdvisorService {
                     }
                 });
 
-        // Verifica se a matrícula já está em uso por outro orientador
         repository.findByRegister(advisor.getRegister())
                 .ifPresent(a -> {
                     if (!a.getId().equals(id)) {
@@ -87,12 +82,6 @@ public class AdvisorService {
                     }
                 });
 
-        // Valida formato do email
-        if (!isValidEmail(advisor.getEmail())) {
-            throw new IllegalArgumentException("Formato de email inválido");
-        }
-
-        // Mantém dados que não devem ser alterados no update
         advisor.setPassword(existingAdvisor.getPassword());
         advisor.setCreatedAt(existingAdvisor.getCreatedAt());
         advisor.setUsername(existingAdvisor.getUsername());
@@ -101,7 +90,11 @@ public class AdvisorService {
     }
 
     /**
-     * Métodos PATCH para edições específicas
+     * Edita o nome de um orientador.
+     *
+     * @param id identificador do orientador
+     * @param name novo nome
+     * @return {@link AdvisorResponseDTO} com nome atualizado
      */
     public AdvisorResponseDTO editName(Long id, String name) {
         if (StringUtils.isBlank(name)) {
@@ -113,8 +106,15 @@ public class AdvisorService {
         return convertToDTO(repository.save(advisor));
     }
 
+    /**
+     * Edita o email de um orientador.
+     *
+     * @param id identificador do orientador
+     * @param email novo email
+     * @return {@link AdvisorResponseDTO} com email atualizado
+     */
     public AdvisorResponseDTO editEmail(Long id, String email) {
-        if (StringUtils.isBlank(email) || !isValidEmail(email)) {
+        if (StringUtils.isBlank(email)) {
             throw new IllegalArgumentException("Email inválido");
         }
 
@@ -128,13 +128,19 @@ public class AdvisorService {
                 });
 
         advisor.setEmail(email);
-        // Atualiza também o username se for o mesmo que o email antigo
         if (advisor.getUsername().equals(advisor.getEmail())) {
             advisor.setUsername(email);
         }
         return convertToDTO(repository.save(advisor));
     }
 
+    /**
+     * Edita a matrícula de um orientador.
+     *
+     * @param id identificador do orientador
+     * @param registration nova matrícula
+     * @return {@link AdvisorResponseDTO} com matrícula atualizada
+     */
     public AdvisorResponseDTO editRegistration(Long id, Long registration) {
         if (registration == null) {
             throw new IllegalArgumentException("Matrícula não pode ser nula");
@@ -153,6 +159,13 @@ public class AdvisorService {
         return convertToDTO(repository.save(advisor));
     }
 
+    /**
+     * Edita a senha de um orientador.
+     *
+     * @param id identificador do orientador
+     * @param password nova senha
+     * @return {@link AdvisorResponseDTO} com senha atualizada
+     */
     public AdvisorResponseDTO editPassword(Long id, String password) {
         if (StringUtils.isBlank(password)) {
             throw new IllegalArgumentException("Senha não pode ser vazia");
@@ -162,6 +175,13 @@ public class AdvisorService {
         return convertToDTO(repository.save(advisor));
     }
 
+    /**
+     * Edita a imagem de perfil do orientador.
+     *
+     * @param id identificador do orientador
+     * @param image nova imagem
+     * @return {@link AdvisorResponseDTO} com imagem atualizada
+     */
     public AdvisorResponseDTO editImage(Long id, String image) {
         Advisor advisor = getAdvisorById(id);
         advisor.setImage(image);
@@ -169,16 +189,13 @@ public class AdvisorService {
     }
 
     /**
-     * Método de edição de senha (interno)
+     * Método interno para alterar a senha do orientador.
      *
-     * @param advisor  orientador
+     * @param advisor objeto {@link Advisor}
      * @param password nova senha
-     * @return
-     * @author Gustavo Stinghen
-     * @since 31/03/2025
+     * @return true se atualizado com sucesso, false caso contrário
      */
     public boolean editPassword(Advisor advisor, String password) {
-
         try {
             advisor.setPassword(password);
             repository.save(advisor);
@@ -189,7 +206,10 @@ public class AdvisorService {
     }
 
     /**
-     * Métodos GET para consultas
+     * Busca todos os orientadores paginados.
+     *
+     * @param pageable objeto de paginação
+     * @return página com orientadores encontrados
      */
     public Page<AdvisorResponseDTO> findAllAdvisors(Pageable pageable) {
         Page<Advisor> advisors = repository.findAll(pageable);
@@ -199,10 +219,22 @@ public class AdvisorService {
         return advisors.map(this::convertToDTO);
     }
 
+    /**
+     * Busca um orientador pelo ID.
+     *
+     * @param id identificador
+     * @return {@link AdvisorResponseDTO} correspondente
+     */
     public AdvisorResponseDTO findAdvisorById(Long id) {
         return convertToDTO(getAdvisorById(id));
     }
 
+    /**
+     * Busca um orientador pelo email.
+     *
+     * @param email email do orientador
+     * @return {@link AdvisorResponseDTO} correspondente
+     */
     public AdvisorResponseDTO findAdvisorByEmail(String email) {
         return repository.findByEmail(email)
                 .map(this::convertToDTO)
@@ -210,7 +242,11 @@ public class AdvisorService {
     }
 
     /**
-     * Métodos de busca com filtros
+     * Realiza uma busca dinâmica com termo livre e paginação.
+     *
+     * @param term termo de busca (nome, email ou matrícula)
+     * @param pageable configuração de paginação
+     * @return página com orientadores correspondentes ao filtro
      */
     public Page<AdvisorResponseDTO> searchAdvisors(String term, Pageable pageable) {
         Specification<Advisor> spec = (root, query, cb) -> {
@@ -232,7 +268,9 @@ public class AdvisorService {
     }
 
     /**
-     * Método DELETE
+     * Remove um orientador pelo ID.
+     *
+     * @param id identificador do orientador
      */
     public void delete(Long id) {
         if (!repository.existsById(id)) {
@@ -242,29 +280,35 @@ public class AdvisorService {
     }
 
     /**
-     * Métodos auxiliares
+     * Busca um orientador e retorna o objeto completo (uso interno).
+     *
+     * @param id identificador do orientador
+     * @return {@link Advisor}
      */
     public Advisor getAdvisorById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Orientador não encontrado"));
     }
 
-    private boolean isValidEmail(String email) {
-        return email != null && EMAIL_PATTERN.matcher(email).matches();
-    }
-
+    /**
+     * Valida os dados obrigatórios para criação ou atualização de um orientador.
+     *
+     * @param request DTO com os dados
+     */
     private void validateAdvisorRequest(AdvisorRequestDTO request) {
         Assert.notNull(request, "Dados do orientador não podem ser nulos");
         Assert.hasText(request.name(), "Nome é obrigatório");
         Assert.hasText(request.email(), "Email é obrigatório");
         Assert.hasText(request.password(), "Senha é obrigatória");
         Assert.notNull(request.register(), "Matrícula é obrigatória");
-
-        if (!isValidEmail(request.email())) {
-            throw new IllegalArgumentException("Formato de email inválido");
-        }
     }
 
+    /**
+     * Converte um objeto {@link Advisor} para {@link AdvisorResponseDTO}
+     *
+     * @param advisor entidade Advisor
+     * @return DTO representando o orientador
+     */
     private AdvisorResponseDTO convertToDTO(Advisor advisor) {
         return AdvisorResponseDTO.builder()
                 .id(advisor.getId())

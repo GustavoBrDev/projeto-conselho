@@ -1,16 +1,41 @@
 package conselho.estudante.com.projetoconselho.MODELS.DTO.RESPONSE.USERS;
 
-
 import lombok.Builder;
 
 /**
- * DTO para representar a resposta após operações de criação, leitura ou atualização de uma entidade Advisor.
+ * DTO de resposta utilizado para retornar os dados de um orientador.
+ * Essa classe é usada principalmente nas respostas das APIs relacionadas ao cadastro,
+ * atualização e consulta de orientadores no sistema.
+ *
+ * Utiliza o padrão Builder (via Lombok) para facilitar a criação de instâncias.
+ *
+ * @author Alex Zastrow
  */
 @Builder
-public class AdvisorResponseDTO implements UserResponseDTO {
-        Long id;         // Identificador único do orientador
-        String name;    // Nome do orientador
-        String image;   // Imagem associada ao orientador
-        String email;     // Endereço de email do orientador
-        Long register;   // Matrícula do orientador,
+public class AdvisorResponseDTO {
+
+        /**
+         * Identificador único do orientador.
+         */
+        private Long id;
+
+        /**
+         * URL ou caminho da imagem de perfil do orientador.
+         */
+        private String image;
+
+        /**
+         * Nome completo do orientador.
+         */
+        private String name;
+
+        /**
+         * Endereço de email do orientador.
+         */
+        private String email;
+
+        /**
+         * Número de matrícula (registro funcional) do orientador.
+         */
+        private Long register;
 }
