@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ClasseLogsRepository extends MongoRepository<ClasseLogs, String> {
-    Page<UserLogs> findByActor(User actor, Pageable pageable);
+    Page<ClasseLogs> findByActor(User actor, Pageable pageable);
 
-    Page<UserLogs> findByTarget(Classe target, Pageable pageable);
+    Page<ClasseLogs> findByTarget(Classe target, Pageable pageable);
 
-    Page<UserLogs> findByType(String type, Pageable pageable);
+    Page<ClasseLogs> findByType(String type, Pageable pageable);
 }

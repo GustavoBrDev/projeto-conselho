@@ -17,6 +17,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller para gerenciamento de logs de mensagens de chat
+ * @author Gustavo Stinghen
+ * @since 07/04/2025
+ * @see ChatMessageLogsService
+ */
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/logs/chat-message-logs")
@@ -49,7 +56,7 @@ public class ChatMessageLogsController {
 
     @GetMapping("/target/")
     public ResponseEntity<Page<ChatMessageLogs>> findByTarget(
-            @RequestBody @Parameter( description = "Usuário alvo do log", required = true, content = @Content ( schema = @Schema ( implementation = ChatMessage.class )), example = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}" ) ChatMessage target,
+            @RequestBody @Parameter( description = "Mensagem alvo do log", required = true, content = @Content ( schema = @Schema ( implementation = ChatMessage.class )), example = "{\"id\": 1, \"name\": \"Gustavo Stinghen\", \"registration\": 123456, \"email\": \"7G9Gt@example.com\", \"password\": \"123456\", \"image\": \"https://example.com/image.jpg\"}" ) ChatMessage target,
             Pageable pageable) {
         return ResponseEntity.ok(service.findByTarget(target, pageable));
     }
