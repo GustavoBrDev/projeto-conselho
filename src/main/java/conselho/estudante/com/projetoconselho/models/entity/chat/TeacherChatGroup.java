@@ -1,0 +1,54 @@
+package conselho.estudante.com.projetoconselho.models.entity.chat;
+
+import conselho.estudante.com.projetoconselho.models.dto.response.ChatGroupResponseDTO;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Classe model da entidade TeacherChatGroup
+ * @author Gustavo Stinghen
+ * @since 24/03/2025
+ * @see ChatGroup
+ */
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Data
+@Builder
+public class TeacherChatGroup implements ChatGroup{
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private Long id;
+    private String name;
+    @OneToMany
+    private List<TeacherChatMessage> messages;
+    @OneToMany
+    private List<TechniqueChatMessage> responses;
+    @OneToMany
+    private List<AdvisorChatMessage> advisorResponses;
+
+    /**
+     * Metodo para converter um StudentChatGroup para um ChatGroupResponseDTO
+     * @return ChatGroupResponseDTO
+     */
+    public ChatGroupResponseDTO convert() {
+
+        List<ChatMessage> messages = new ArrayList<>();
+        messages.addAll(this.messages);
+        messages.addAll(this.responses);
+        messages.addAll(this.advisorResponses);
+
+        return ChatGroupResponseDTO.builder()
+                .name(name)
+                .messages(messages)
+                .build();
+    }
+}
