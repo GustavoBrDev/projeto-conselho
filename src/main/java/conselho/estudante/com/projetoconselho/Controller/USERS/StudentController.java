@@ -193,7 +193,6 @@ public class StudentController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStudent(@PathVariable Long id, @RequestParam User actor) {
         studentService.delete(id, actor);
     }
@@ -206,7 +205,7 @@ public class StudentController {
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar estudante à classe")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PostMapping("/{studentId}/class/{classeId}")
+    @PatchMapping("/{studentId}/class/{classeId}")
     public StudentResponseDTO addStudentToClass(@PathVariable Long studentId, @PathVariable Long classeId, @RequestParam User actor) {
         Student student = studentService.findId(studentId).convert();
         Classe classe = new Classe();
@@ -222,7 +221,7 @@ public class StudentController {
     @ApiResponse(responseCode = "400", description = "Erro ao remover estudante da classe")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @DeleteMapping("/{studentId}/class/{classeId}")
+    @PatchMapping("/{studentId}/class/{classeId}")
     public StudentResponseDTO removeStudentFromClass(@PathVariable Long studentId, @PathVariable Long classeId, @RequestParam User actor) {
         Student student = studentService.findId(studentId).convert();
         Classe classe = new Classe();
@@ -238,7 +237,7 @@ public class StudentController {
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar notificação ao estudante")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PostMapping("/{id}/notification")
+    @PatchMapping("/{id}/notification")
     public StudentResponseDTO addNotification(@PathVariable Long id, @RequestBody Notification notification) {
         return studentService.addNotification(id, notification);
     }
@@ -251,7 +250,7 @@ public class StudentController {
     @ApiResponse(responseCode = "400", description = "Erro ao remover notificação do estudante")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @DeleteMapping("/{id}/notification")
+    @PatchMapping("/{id}/notification")
     public StudentResponseDTO removeNotification(@PathVariable Long id, @RequestBody Notification notification) {
         return studentService.removeNotification(id, notification);
     }

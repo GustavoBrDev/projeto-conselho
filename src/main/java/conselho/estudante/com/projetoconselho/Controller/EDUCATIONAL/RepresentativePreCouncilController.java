@@ -95,7 +95,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar pré conselho")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editStartDate/{id}")
+    @PatchMapping("/editStartDate/{id}")
     public ResponseEntity<String> editStartDate(
             @Parameter(description = "ID do pré conselho a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova data de inicio do pré conselho", required = true) Date startDate) {
@@ -114,7 +114,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar pré conselho")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editEndDate/{id}")
+    @PatchMapping("/editEndDate/{id}")
     public ResponseEntity<String> editEndDate(
             @Parameter(description = "ID do pré conselho a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova data de término do pré conselho", required = true) Date endDate) {
@@ -133,7 +133,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar pré conselho")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editIsFilled/{id}")
+    @PatchMapping("/editIsFilled/{id}")
     public ResponseEntity<String> editIsFilled(
             @Parameter(description = "ID do pré conselho a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo estado de preenchimento do pré conselho", required = true) Boolean isFilled) {
@@ -152,7 +152,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar feedback")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editSupervisorFeedback/{id}")
+    @PatchMapping("/editSupervisorFeedback/{id}")
     public ResponseEntity<String> editSupervisorFeedback(
             @Parameter(description = "ID do pré conselho a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo feedback do supervisor", required = true) Long supervisorFeedbackId) {
@@ -171,7 +171,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar feedback")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editAdvisorFeedback/{id}")
+    @PatchMapping("/editAdvisorFeedback/{id}")
     public ResponseEntity<String> editAdvisorFeedback(
             @Parameter(description = "ID do pré conselho a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo feedback do conselheiro", required = true) Long advisorFeedbackId) {
@@ -190,7 +190,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro encontrar pré conselhos")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @GetMapping("/allPreCouncils")
+    @GetMapping()
     public ResponseEntity<Page<RepresentativePreCouncilResponseDTO>> getAllPreCouncils(
             @Parameter(description = "Busca todos os pré conselhos", content =
             @Content(schema = @Schema(implementation = RepresentativePreCouncilResponseDTO.class)),
@@ -249,11 +249,11 @@ public class RepresentativePreCouncilController {
     @GetMapping("/FindByClasse/{idClasse}")
     public ResponseEntity<Page<RepresentativePreCouncilResponseDTO>> findByClasse(
             @Parameter(description = "ID da classe", required = true, example = "1")
-            @PathVariable Long classeId,
+            @PathVariable Long idClasse,
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
         try {
-            return new ResponseEntity<>(service.findByClasse(classeId, pageable), HttpStatus.OK);
+            return new ResponseEntity<>(service.findByClasse(idClasse, pageable), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -265,7 +265,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao encontrar pré conselho")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @GetMapping("/FindByTerm/{term}")
+    @GetMapping("/findByTerm/{term}")
     public ResponseEntity<Page<RepresentativePreCouncilResponseDTO>> FindByTerm(
             @Parameter(description = "Termo de pesquisa", required = true) @PathVariable String term,
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
@@ -320,7 +320,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar feedback")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/addTeacherFeedback/{id}/{teacherFeedbackId}")
+    @PatchMapping("/addTeacherFeedback/{id}/{teacherFeedbackId}")
     public ResponseEntity<String> addTeacherFeedback(
             @Parameter(description = "ID do pré conselho", required = true) @PathVariable Long id,
             @Parameter(description = "ID do feedback de professor", required = true) @PathVariable Long teacherFeedbackId) {
@@ -339,7 +339,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar feedback")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/addAdvisorFeedback/{id}/{advisorFeedbackId}")
+    @PatchMapping("/addAdvisorFeedback/{id}/{advisorFeedbackId}")
     public ResponseEntity<String> addAdvisorFeedback(
             @Parameter(description = "ID do pré conselho", required = true) @PathVariable Long id,
             @Parameter(description = "ID do feedback de conselheiro", required = true) @PathVariable Long advisorFeedbackId) {
@@ -358,7 +358,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar feedback")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/addSupervisorFeedback/{id}/{supervisorFeedbackId}")
+    @PatchMapping("/addSupervisorFeedback/{id}/{supervisorFeedbackId}")
     public ResponseEntity<String> addSupervisorFeedback(
             @Parameter(description = "ID do pré conselho", required = true) @PathVariable Long id,
             @Parameter(description = "ID do feedback de supervisor", required = true) @PathVariable Long supervisorFeedbackId) {
@@ -377,7 +377,7 @@ public class RepresentativePreCouncilController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"Council\": {Objeto de council}, \"createdAt\": \"2023-01-01\", \"startDate\": \"2023-02-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"isFilled\": true, \"teachers\": [Lista de teachers], \"AdvisorFeedback\": {Objeto de AdvisorFeedback}, \"SupervisorFeedback\": {Objeto de SupervisorFeedback}, \"teacherFeebacks\": [Lista de teacherFeebacks], \"itemFeedbacks\": [Lista de itemFeedbacks]}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar feedback")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/addItemFeedback/{id}/{itemFeedbackId}")
+    @PatchMapping("/addItemFeedback/{id}/{itemFeedbackId}")
     public ResponseEntity<String> addItemFeedback(
             @Parameter(description = "ID do pré conselho", required = true) @PathVariable Long id,
             @Parameter(description = "ID do feedback de item", required = true) @PathVariable Long itemFeedbackId) {

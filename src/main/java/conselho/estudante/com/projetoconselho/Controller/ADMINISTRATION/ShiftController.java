@@ -115,7 +115,7 @@ public class ShiftController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar turno")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editName/{id}")
+    @PatchMapping("/editName/{id}")
     public ResponseEntity<String> editName(
             @Parameter (description = "ID do turno a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo nome do turno", required = true) String name,
@@ -183,7 +183,7 @@ public class ShiftController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
     @ApiResponse(responseCode = "400", description = "Erro ao associar professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/teachers/{shiftId}/{teacherId}")
+    @PatchMapping("/teachers/{shiftId}/{teacherId}")
     public ResponseEntity<String> addTeacherToShift(
             @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
             @Parameter(description = "ID do professor", required = true, example = "2") @PathVariable Long teacherId,
@@ -203,7 +203,7 @@ public class ShiftController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @DeleteMapping("/teachers/{shiftId}/{teacherId}")
+    @PatchMapping("/teachers/{shiftId}/{teacherId}")
     public ResponseEntity<String> removeTeacherOfShift(
             @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
             @Parameter(description = "ID do professor", required = true, example = "2") @PathVariable Long teacherId,
@@ -223,7 +223,7 @@ public class ShiftController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
     @ApiResponse(responseCode = "400", description = "Erro ao associar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/teachers/{shiftId}/{courseId}")
+    @PatchMapping("/teachers/{shiftId}/{courseId}")
     public ResponseEntity<String> addCourseToShift(
             @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
             @Parameter(description = "ID do curso", required = true, example = "2") @PathVariable Long courseId,
@@ -243,7 +243,7 @@ public class ShiftController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @DeleteMapping("/teachers/{shiftId}/{courseId}")
+    @PatchMapping("/teachers/{shiftId}/{courseId}")
     public ResponseEntity<String> removeCourseOfShift(
             @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
             @Parameter(description = "ID do curso", required = true, example = "2") @PathVariable Long courseId,

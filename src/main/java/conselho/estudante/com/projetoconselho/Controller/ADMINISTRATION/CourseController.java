@@ -95,7 +95,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editName/{id}")
+    @PatchMapping("/editName/{id}")
     public ResponseEntity<String> editName(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo nome do curso", required = true) String name,
@@ -115,7 +115,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editVisualIdentity/{id}")
+    @PatchMapping("/editVisualIdentity/{id}")
     public ResponseEntity<String> editVisualIdentity(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova identidade visual do curso", required = true) String visualIdentity,
@@ -135,7 +135,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editWorkLoad/{id}")
+    @PatchMapping("/editWorkLoad/{id}")
     public ResponseEntity<String> editWorkLoad(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova carga horaria do curso", required = true) Integer workLoad,
@@ -155,7 +155,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editLevel/{id}")
+    @PatchMapping("/editLevel/{id}")
     public ResponseEntity<String> editLevel(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova nivel do curso", required = true) String level,
@@ -175,7 +175,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editSupervisor/{id}")
+    @PatchMapping("/editSupervisor/{id}")
     public ResponseEntity<String> editSupervisor(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo supervisor do curso", required = true) Long supervisorId,
@@ -195,7 +195,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editShift/{id}")
+    @PatchMapping("/editShift/{id}")
     public ResponseEntity<String> editShift(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo turno do curso", required = true) Shift shift,
@@ -269,7 +269,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/addTeacher/{course}/{teacher}")
+    @PatchMapping("/addTeacher/{course}/{teacher}")
     public ResponseEntity<String> addTeacherToCourse(
             @Parameter(description = "Curso", required = true) @PathVariable Course course,
             @Parameter(description = "Professor", required = true) @PathVariable Teacher teacher,
@@ -289,7 +289,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar materia")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/addSubject/{course}/{subject}")
+    @PatchMapping("/addSubject/{course}/{subject}")
     public ResponseEntity<String> addSubjectToCourse(
             @Parameter(description = "Curso", required = true) @PathVariable Course course,
             @Parameter(description = "Materia", required = true) @PathVariable Subject subject,
@@ -309,7 +309,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar classe")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/addClass/{course}/{classe}")
+    @PatchMapping("/addClass/{course}/{classe}")
     public ResponseEntity<String> addClassToCourse(
             @Parameter(description = "Curso", required = true) @PathVariable Course course,
             @Parameter(description = "Classe", required = true) @PathVariable Classe classe,
@@ -329,7 +329,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @DeleteMapping("/removeTeacher/{course}/{teacher}")
+    @PatchMapping("/removeTeacher/{course}/{teacher}")
     public ResponseEntity<String> removeTeacherFromCourse(
             @Parameter(description = "Curso", required = true) @PathVariable Course course,
             @Parameter(description = "Professor", required = true) @PathVariable Teacher teacher,
@@ -349,7 +349,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover materia")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @DeleteMapping("/removeSubject/{course}/{subject}")
+    @PatchMapping("/removeSubject/{course}/{subject}")
     public ResponseEntity<String> removeSubjectFromCourse(
             @Parameter(description = "Curso", required = true) @PathVariable Course course,
             @Parameter(description = "Materia", required = true) @PathVariable Subject subject,
@@ -369,7 +369,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover classe")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @DeleteMapping("/removeClass/{course}/{subject}")
+    @PatchMapping("/removeClass/{course}/{classe}")
     public ResponseEntity<String> removeClassFromCourse(
             @Parameter(description = "Curso", required = true) @PathVariable Course course,
             @Parameter(description = "Classe", required = true) @PathVariable Classe classe,

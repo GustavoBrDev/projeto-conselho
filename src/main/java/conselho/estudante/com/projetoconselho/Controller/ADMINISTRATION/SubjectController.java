@@ -117,19 +117,6 @@ public class SubjectController {
     }
 
 
-    @Operation(summary = "Disciplina encontrada por ID")
-    @ApiResponse(responseCode = "200", description = "Disciplina encontrada com sucesso"
-            , content = @Content(schema = @Schema(implementation = SubjectResponseDTO.class),
-            examples = @ExampleObject(value = "{\"nome\": \"Matematica\", \"workLoad\": 80}")))
-    @ApiResponse(responseCode = "400", description = "Pedido ruim")
-    @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
-    @SecurityRequirement(name = "Bearer")
-    @GetMapping("/{id}/object")
-    public ResponseEntity<Subject> getObjectSubject(@PathVariable @Parameter(description = "ID da disciplina" ) Long id) {
-        return ResponseEntity.ok
-                (subjectService.getObjectSubject(id));
-    }
-
 
     @Operation(summary = "Delete a disciplina")
     @ApiResponse(responseCode = "204", description = "Disciplina deletada com sucesso")

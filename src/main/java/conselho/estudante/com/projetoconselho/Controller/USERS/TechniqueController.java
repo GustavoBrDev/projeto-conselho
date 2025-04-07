@@ -84,7 +84,7 @@ public class TechniqueController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Robson\", \"email\": \"roberto123@gmail\",  \"createdAt\": \"2023-01-01\", \"register\": \"12345\", \"notifications\": []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editName/{id}")
+    @PatchMapping("/editName/{id}")
     public ResponseEntity<String> editName(
         @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
         @RequestParam @Parameter(description = "Novo nome do tecnico", required = true) String name,
@@ -104,7 +104,7 @@ public class TechniqueController {
             examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editEmail/{id}")
+    @PatchMapping("/editEmail/{id}")
     public ResponseEntity<String> editEmail(
         @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
         @RequestParam @Parameter(description = "Novo email do tecnico", required = true) String email,
@@ -124,7 +124,7 @@ public class TechniqueController {
             examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editRegister/{id}")
+    @PatchMapping("/editRegister/{id}")
     public ResponseEntity<String> editRegister(
             @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo registro do tecnico", required = true) Long register,
@@ -144,7 +144,7 @@ public class TechniqueController {
                     examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editPassword/{id}")
+    @PatchMapping("/editPassword/{id}")
     public ResponseEntity<String> editPassword(
             @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova senha do tecnico", required = true) String password,
@@ -164,7 +164,7 @@ public class TechniqueController {
                     examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PutMapping("/editImage/{id}")
+    @PatchMapping("/editImage/{id}")
     public ResponseEntity<String> editImage(
             @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova imagem do tecnico", required = true) String image,
@@ -238,7 +238,7 @@ public class TechniqueController {
                     examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar notificação")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PostMapping("/notifications/{id}")
+    @PatchMapping("/notifications/{id}")
     public ResponseEntity<TechniqueResponseDTO> addNotification(
             @Parameter (description = "ID do tecnico", required = true) @PathVariable Long id,
             @Parameter (description = "Notificação a ser adicionada", required = true) @RequestBody Notification notification) {
@@ -257,7 +257,7 @@ public class TechniqueController {
                     examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover notificação")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @DeleteMapping("/{id}/notifications/{notification}")
+    @PatchMapping("/{id}/notifications/{notification}")
     public ResponseEntity<TechniqueResponseDTO> removeNotification(
             @Parameter(description = "ID do técnico", required = true, example = "1") @PathVariable Long id,
             @Parameter(description = "Notificação a ser removida", required = true) @PathVariable Notification notification) {
@@ -269,7 +269,6 @@ public class TechniqueController {
     @ApiResponse(responseCode = "200", description = "Técnico removida com sucesso")
     @ApiResponse(responseCode = "400", description = "Erro ao remover técnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTechnique(
             @Parameter(description = "ID do tecnico a ser deletado", required = true) @PathVariable Long id,
