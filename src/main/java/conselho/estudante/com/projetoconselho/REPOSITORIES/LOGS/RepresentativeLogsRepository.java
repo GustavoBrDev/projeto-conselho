@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface RepresentativeLogsRepository extends MongoRepository<RepresentativeLogs, String> {
     Page<RepresentativeLogs> findByActor(User actor, Pageable pageable);
 
-    Page<UserLogs> findByTarget(Representative target, Pageable pageable);
+    Page<RepresentativeLogs> findByTarget(Representative target, Pageable pageable);
 
     Page<RepresentativeLogs> findByType(String type, Pageable pageable);
 }

@@ -131,7 +131,7 @@ public class RepresentativeLogsService {
      * @throws NaoEncontradoException se o log nao foi encontrado
      * @see User, RepresentativeLogs
      */
-    public Page<UserLogs> findByTarget(Representative target, Pageable pageable) {
+    public Page<RepresentativeLogs> findByTarget(Representative target, Pageable pageable) {
 
         try {
             return repository.findByTarget(target, pageable);
