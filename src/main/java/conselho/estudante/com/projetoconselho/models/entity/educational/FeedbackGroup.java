@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.models.entity.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.FeedbackGroupResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.FeedbackGroupResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

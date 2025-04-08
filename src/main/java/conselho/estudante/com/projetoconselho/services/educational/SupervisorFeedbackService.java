@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.services.educational;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.SupervisorFeedbackRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.SupervisorFeedbackResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.SupervisorFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.educational.SupervisorFeedback;
 import conselho.estudante.com.projetoconselho.models.entity.logs.ChangeItem;
 import conselho.estudante.com.projetoconselho.models.entity.logs.EditableItem;

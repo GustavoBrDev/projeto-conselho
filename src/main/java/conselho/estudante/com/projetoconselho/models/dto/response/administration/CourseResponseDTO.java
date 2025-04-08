@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.models.dto.response.ADMINISTRATION;
+package conselho.estudante.com.projetoconselho.models.dto.response.administration;
 
 /**
  * Classe de transferencia de dados da entidade Course

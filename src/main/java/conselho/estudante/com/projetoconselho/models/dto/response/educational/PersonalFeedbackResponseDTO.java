@@ -1,6 +1,6 @@
-package conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.models.dto.response.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.StudentResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.educational.PersonalFeedback;
 import lombok.Builder;
 

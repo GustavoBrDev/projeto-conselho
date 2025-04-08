@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.models.entity.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.CouncilResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.CouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.users.Advisor;
 import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;

@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.controller.educational;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.AdvisorFeedbackRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.AdvisorFeedbackResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.AdvisorFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.educational.AdvisorFeedbackService;
 import io.swagger.v3.oas.annotations.Operation;

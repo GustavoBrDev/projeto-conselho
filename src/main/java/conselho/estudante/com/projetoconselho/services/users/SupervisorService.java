@@ -2,7 +2,7 @@ package conselho.estudante.com.projetoconselho.services.users;
 
 
 import conselho.estudante.com.projetoconselho.models.dto.request.USERS.SupervisorRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.SupervisorResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.SupervisorResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
 import conselho.estudante.com.projetoconselho.models.entity.logs.AddItem;

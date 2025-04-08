@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.models.dto.response.educational;
 
 import conselho.estudante.com.projetoconselho.models.entity.educational.ItemFeedback;
 import lombok.Builder;

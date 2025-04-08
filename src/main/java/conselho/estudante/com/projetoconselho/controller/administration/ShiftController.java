@@ -1,9 +1,9 @@
 package conselho.estudante.com.projetoconselho.controller.administration;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION.ShiftPostRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.ADMINISTRATION.CourseResponseDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.ADMINISTRATION.ShiftResponseDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.administration.CourseResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.administration.ShiftResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.administration.shift.ShiftService;
 import io.swagger.v3.oas.annotations.Operation;

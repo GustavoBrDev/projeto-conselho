@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.services.educational;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.ClassFeedbackRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.ClassFeedbackResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.ClassFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.educational.ClassFeedback;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.educational.ClassFeedbackRepository;

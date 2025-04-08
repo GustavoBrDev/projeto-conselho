@@ -1,8 +1,8 @@
 package conselho.estudante.com.projetoconselho.controller.educational;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.RepresentativePreCouncilRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.RepresentativePreCouncilResponseDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.RepresentativePreCouncilResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;
 import conselho.estudante.com.projetoconselho.services.educational.RepresentativePreCouncilService;
 import io.swagger.v3.oas.annotations.Operation;

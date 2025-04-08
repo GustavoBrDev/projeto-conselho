@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.services.administration;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.ADMINISTRATION.NotificationResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.administration.NotificationResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
 import conselho.estudante.com.projetoconselho.models.entity.users.*;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;

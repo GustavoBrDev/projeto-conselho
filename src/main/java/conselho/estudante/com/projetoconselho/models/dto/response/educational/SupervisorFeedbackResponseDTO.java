@@ -1,6 +1,6 @@
-package conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.models.dto.response.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.SupervisorResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.SupervisorResponseDTO;
 import lombok.Builder;
 
 import java.util.Date;

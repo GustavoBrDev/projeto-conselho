@@ -2,7 +2,7 @@ package conselho.estudante.com.projetoconselho.services.users;
 
 
 import conselho.estudante.com.projetoconselho.models.dto.request.USERS.RepresentativeRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.RepresentativeResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.RepresentativeResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.users.Representative;
 import conselho.estudante.com.projetoconselho.models.entity.users.Student;

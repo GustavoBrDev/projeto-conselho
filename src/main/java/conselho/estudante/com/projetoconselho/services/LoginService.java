@@ -1,8 +1,8 @@
 package conselho.estudante.com.projetoconselho.services;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.LOGIN.FirstLoginResponseDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.LOGIN.LoginResponse;
-import conselho.estudante.com.projetoconselho.models.dto.response.LOGIN.LoginResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.login.FirstLoginResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.login.LoginResponse;
+import conselho.estudante.com.projetoconselho.models.dto.response.login.LoginResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.users.*;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.services.administration.ResetSessionService;

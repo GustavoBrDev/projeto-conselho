@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.controller.users;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.USERS.TeacherRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.services.users.TeacherService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;

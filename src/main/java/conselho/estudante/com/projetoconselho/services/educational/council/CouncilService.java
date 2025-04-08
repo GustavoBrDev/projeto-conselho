@@ -2,7 +2,7 @@ package conselho.estudante.com.projetoconselho.services.educational.council;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.CouncilRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.TeacherPreCouncilRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.CouncilResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.CouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Subject;
 import conselho.estudante.com.projetoconselho.models.entity.educational.*;
 import conselho.estudante.com.projetoconselho.models.entity.logs.AddItem;

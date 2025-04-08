@@ -1,6 +1,6 @@
-package conselho.estudante.com.projetoconselho.models.dto.response.LOGIN;
+package conselho.estudante.com.projetoconselho.models.dto.response.login;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.UserResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.UserResponseDTO;
 import lombok.Builder;
 
 /**
@@ -10,8 +10,9 @@ import lombok.Builder;
  * @see LoginResponse, UserResponseDTO
  */
 @Builder
-public class LoginResponseDTO implements LoginResponse {
+public class FirstLoginResponseDTO implements LoginResponse {
     UserResponseDTO user;
     Boolean isFirstLogin;
     Boolean isAuthenticated;
+
 }

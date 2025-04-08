@@ -1,8 +1,8 @@
 package conselho.estudante.com.projetoconselho.controller;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.LOGIN.FirstLoginResponseDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.LOGIN.LoginResponse;
-import conselho.estudante.com.projetoconselho.models.dto.response.LOGIN.LoginResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.login.FirstLoginResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.login.LoginResponse;
+import conselho.estudante.com.projetoconselho.models.dto.response.login.LoginResponseDTO;
 import conselho.estudante.com.projetoconselho.services.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.services.users;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.USERS.AdvisorRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.AdvisorResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.AdvisorResponseDTO;
 import conselho.estudante.com.projetoconselho.models.exceptions.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.models.entity.users.Advisor;

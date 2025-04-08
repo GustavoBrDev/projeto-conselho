@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.models.dto.response.ADMINISTRATION;
+package conselho.estudante.com.projetoconselho.models.dto.response.administration;
 
 
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;

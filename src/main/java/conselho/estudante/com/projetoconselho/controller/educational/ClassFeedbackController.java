@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.controller.educational;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.ClassFeedbackRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.ClassFeedbackResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.ClassFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.services.educational.ClassFeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

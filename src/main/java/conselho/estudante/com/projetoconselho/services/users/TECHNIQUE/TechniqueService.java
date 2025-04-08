@@ -1,8 +1,8 @@
 package conselho.estudante.com.projetoconselho.services.users.TECHNIQUE;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.USERS.TechniqueRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.StudentResponseDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.TechniqueResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.StudentResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.TechniqueResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
 import conselho.estudante.com.projetoconselho.models.entity.logs.AddItem;
 import conselho.estudante.com.projetoconselho.models.entity.logs.ChangeItem;

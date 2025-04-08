@@ -1,8 +1,8 @@
 package conselho.estudante.com.projetoconselho.models.entity.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.response.ADMINISTRATION.SubjectResponseDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.EDUCATIONAL.TeacherPreCouncilResponseDTO;
-import conselho.estudante.com.projetoconselho.models.dto.response.USERS.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.administration.SubjectResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.educational.TeacherPreCouncilResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Subject;
 import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;

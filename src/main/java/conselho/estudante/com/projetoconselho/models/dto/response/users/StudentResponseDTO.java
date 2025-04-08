@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.models.dto.response.USERS;
+package conselho.estudante.com.projetoconselho.models.dto.response.users;
 
 import conselho.estudante.com.projetoconselho.models.entity.users.Student;
 import lombok.Builder;
