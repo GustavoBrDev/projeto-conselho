@@ -1,0 +1,15 @@
+package conselho.estudante.com.projetoconselho.models.dto.response.administration;
+
+/**
+ * Classe de transferencia de dados da entidade Course
+ * @author Camilly Chelest
+ * @since 12/03/2025
+ */
+
+public record CourseResponseDTO(
+        Long id,
+        String name,
+        String visualIdentity,
+        Integer workload,
+        String level ) {
+}
