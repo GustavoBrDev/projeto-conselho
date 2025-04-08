@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.services.chat;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.CHAT.TeacherChatMessageRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.chat.TeacherChatMessageRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.ChatMessageResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.chat.TeacherChatMessage;
 import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;

@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.models.dto.request.USERS;
+package conselho.estudante.com.projetoconselho.models.dto.request.users;
 
 import conselho.estudante.com.projetoconselho.models.entity.users.Advisor;
 import java.util.Date;

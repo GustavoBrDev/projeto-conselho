@@ -1,6 +1,6 @@
-package conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.models.dto.request.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION.SubjectRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.SubjectRequestDTO;
 import conselho.estudante.com.projetoconselho.models.entity.educational.TeacherFeeback;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

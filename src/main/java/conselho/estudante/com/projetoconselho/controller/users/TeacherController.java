@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.controller.users;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.TeacherRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.TeacherRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.services.users.TeacherService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,13 +26,9 @@ public class TeacherController {
      * Criar Teacher
      */
     @PostMapping
-    public ResponseEntity<TeacherResponseDTO> criarTeacher(@RequestBody TeacherRequestDTO dto) {
-        /*Teacher teacher = teacherService.toEntity(dto);
-        Teacher savedTeacher = teacherService.criarTeacher(teacher);
-        TeacherResponseDTO responseDTO = teacherService.toResponseDTO(savedTeacher);
-        System.out.println("Acessou o controller");
-        return ResponseEntity.ok(responseDTO);*/
-        return null;
+    public ResponseEntity<Void> criarTeacher(@RequestBody TeacherRequestDTO dto) {
+        teacherService.create(dto);
+        return ResponseEntity.ok().build();
     }
 
     /*

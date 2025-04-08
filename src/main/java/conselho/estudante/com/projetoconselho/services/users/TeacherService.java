@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.services.users;
 
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.TeacherRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.TeacherRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Shift;
@@ -50,13 +50,13 @@ public class TeacherService {
     /**
      * Cria um professor
      * @param teacherRequestDTO DTO contendo os dados do professor
-     * @param actor Usuário que adicionou o professor
+     //* @param actor Usuário que adicionou o professor
      * @return DTO do professor criado
      *
      * Atualizado em 31/03/2025
      * Adicionado envio de email
      */
-    public TeacherResponseDTO create(TeacherRequestDTO teacherRequestDTO, User actor) {
+    public TeacherResponseDTO create(TeacherRequestDTO teacherRequestDTO/*, User actor*/) {
         Teacher teacher = teacherRequestDTO.convert();
         teacher.setCreatedAt(new Date());
         teacher.setPassword(generateRandomPassword());
@@ -68,7 +68,7 @@ public class TeacherService {
             throw new DadosDuplicadosException("Registro já cadastrado");
         }
 
-        logsService.create(actor, teacher, "create");
+        //logsService.create(actor, teacher, "create");
         emailService.sendWelcomeEmail(teacher.getEmail(), teacher.getPassword());
         return repository.save(teacher).toDTO();
     }

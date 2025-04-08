@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.services.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.TeacherFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.TeacherFeedbackRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.TeacherFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.educational.TeacherFeeback;
 import conselho.estudante.com.projetoconselho.models.entity.logs.ChangeItem;

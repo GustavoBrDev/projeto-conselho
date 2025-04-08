@@ -1,6 +1,6 @@
-package conselho.estudante.com.projetoconselho.models.dto.request.CHAT;
+package conselho.estudante.com.projetoconselho.models.dto.request.chat;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.TechniqueRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.TechniqueRequestDTO;
 import conselho.estudante.com.projetoconselho.models.entity.chat.TechniqueChatMessage;
 import conselho.estudante.com.projetoconselho.models.entity.chat.ChatMessage;
 import jakarta.validation.constraints.NotBlank;

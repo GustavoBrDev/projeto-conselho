@@ -1,9 +1,10 @@
 package conselho.estudante.com.projetoconselho.controller.users;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.SupervisorRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.SupervisorRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.SupervisorResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
+import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.users.SupervisorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/supervisores")
+@RequestMapping("/users/supervisors")
 @AllArgsConstructor
 @Tag(name = "Supervisor", description = "Recurso para gerenciamento de supervisores")
 public class SupervisorController {
@@ -35,7 +36,12 @@ public class SupervisorController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @PostMapping
-    public SupervisorResponseDTO create(@RequestBody SupervisorRequestDTO supervisorRequestDTO, @RequestParam User actor) {
+    public SupervisorResponseDTO create(@RequestBody SupervisorRequestDTO supervisorRequestDTO/*,@RequestParam User actor*/) {
+
+        User actor = Teacher.builder()
+                .id(1L)
+                .build();
+
         return supervisorService.create(supervisorRequestDTO, actor);
     }
 

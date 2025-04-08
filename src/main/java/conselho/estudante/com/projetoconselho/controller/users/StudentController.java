@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.controller.users;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.StudentRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.StudentRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 26/03/2025
  */
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/users/students")
 @AllArgsConstructor
 @Tag(name = "Estudantes", description = "Cria um novo estudante")
 public class StudentController {

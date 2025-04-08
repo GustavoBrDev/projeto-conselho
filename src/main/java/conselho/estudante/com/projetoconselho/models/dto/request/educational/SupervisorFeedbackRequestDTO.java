@@ -1,7 +1,7 @@
-package conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.models.dto.request.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.AdvisorRequestDTO;
-import conselho.estudante.com.projetoconselho.models.entity.educational.AdvisorFeeback;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.SupervisorRequestDTO;
+import conselho.estudante.com.projetoconselho.models.entity.educational.SupervisorFeedback;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -9,17 +9,16 @@ import lombok.Builder;
 import java.util.Date;
 
 /**
- * Classe de requisição para criação e atualização de {@link AdvisorFeeback}.
- * Contém os dados necessários para manipular feedbacks de orientadores.
+ * Classe de requisição para criação e atualização de {@link SupervisorFeedback}.
  * @author Camilly Chelest
  * @since 19/03/2025
  */
 @Builder
-public record AdvisorFeedbackRequestDTO(
+public record SupervisorFeedbackRequestDTO(
         @NotNull
         CouncilRequestDTO council,
         @NotNull
-        AdvisorRequestDTO advisor,
+        SupervisorRequestDTO supervisor,
         @NotNull
         Date createdAt,
         @NotBlank
@@ -29,10 +28,10 @@ public record AdvisorFeedbackRequestDTO(
         @NotBlank
         String suggestionsText
 ) {
-    public AdvisorFeeback convert() {
-        return AdvisorFeeback.builder()
+    public SupervisorFeedback convert() {
+        return SupervisorFeedback.builder()
                 .council(this.council.convert())
-                .advisor(this.advisor.convert())
+                .supervisor(this.supervisor.convert())
                 .createdAt(this.createdAt)
                 .strengthsText(this.strengthsText)
                 .weaknessesText(this.weaknessesText)

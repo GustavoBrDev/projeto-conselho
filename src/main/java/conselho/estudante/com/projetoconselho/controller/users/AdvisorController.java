@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.controller.users;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.AdvisorRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.AdvisorRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.AdvisorResponseDTO;
 import conselho.estudante.com.projetoconselho.services.users.AdvisorService;
 import io.swagger.v3.oas.annotations.tags.Tag;

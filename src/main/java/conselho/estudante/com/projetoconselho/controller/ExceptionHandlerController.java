@@ -1,10 +1,7 @@
 package conselho.estudante.com.projetoconselho.controller;
 
 import conselho.estudante.com.projetoconselho.models.dto.response.ErrorResponse;
-import conselho.estudante.com.projetoconselho.models.exceptions.CamposObrigatoriosException;
-import conselho.estudante.com.projetoconselho.models.exceptions.DadosDuplicadosException;
-import conselho.estudante.com.projetoconselho.models.exceptions.DataInvalidaException;
-import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
+import conselho.estudante.com.projetoconselho.models.exceptions.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -68,6 +65,18 @@ public class ExceptionHandlerController {
                 .build();
 
         return ResponseEntity.status( 400 ).body( errorResponse );
+    }
+
+    @ExceptionHandler( EmailException.class )
+    public ResponseEntity<ErrorResponse> handleEmailException( EmailException e ) {
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message( e.getMessage() )
+                .timestamp( Instant.now() )
+                .type( "EmailException" )
+                .build();
+
+        return ResponseEntity.status( 409 ).body( errorResponse );
     }
 
     @ExceptionHandler( RuntimeException.class )

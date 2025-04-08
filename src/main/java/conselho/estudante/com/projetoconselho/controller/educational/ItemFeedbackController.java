@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.CONTROLLERS.EDUCATIONAL;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.ItemFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.ItemFeedbackRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.ItemFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.services.educational.ItemFeedbackService;
 import lombok.RequiredArgsConstructor;

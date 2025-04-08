@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.controller.administration;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION.SubjectRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.SubjectRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.SubjectResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.administration.subject.SubjectService;

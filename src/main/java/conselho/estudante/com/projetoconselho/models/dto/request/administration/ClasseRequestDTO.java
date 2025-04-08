@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION;
+package conselho.estudante.com.projetoconselho.models.dto.request.administration;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
 import conselho.estudante.com.projetoconselho.models.entity.users.Representative;

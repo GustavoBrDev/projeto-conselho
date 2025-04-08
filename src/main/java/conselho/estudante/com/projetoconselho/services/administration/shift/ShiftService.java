@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.services.administration.shift;
 
 
-import conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION.ShiftPostRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.ShiftPostRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.CourseResponseDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.ShiftResponseDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;

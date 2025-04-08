@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.controller.users;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.TechniqueRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.TechniqueRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.TechniqueResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/USERS/Technique")
+@RequestMapping("/users/technique")
 @AllArgsConstructor
 @Tag(name = "Technique", description = "Recurso para gerenciamento de tecnicos")
 public class TechniqueController {

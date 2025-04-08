@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.services.educational.teacher_pre_council;
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.PersonalFeedbackRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.TeacherPreCouncilRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.PersonalFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.TeacherPreCouncilRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.TeacherPreCouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Subject;

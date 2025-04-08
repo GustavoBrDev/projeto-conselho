@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION;
+package conselho.estudante.com.projetoconselho.models.dto.request.administration;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

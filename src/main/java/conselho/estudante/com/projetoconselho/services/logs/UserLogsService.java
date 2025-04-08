@@ -81,7 +81,6 @@ public class UserLogsService {
                     createdAt( new Date() ).
                     build();
 
-            System.out.println("log: " + log);
             repository.save(log);
             return true;
         } catch (Exception e) {

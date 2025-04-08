@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL;
+package conselho.estudante.com.projetoconselho.models.dto.request.educational;
 
 import conselho.estudante.com.projetoconselho.models.entity.educational.Council;
 import conselho.estudante.com.projetoconselho.models.entity.educational.ItemFeedback;
