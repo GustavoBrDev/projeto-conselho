@@ -72,6 +72,7 @@ public class StudentService {
         Student student = studentRequestDTO.convert();
         Date data = new Date();
         student.setCreatedAt(data);
+        student.setIsHidden(false);
         student.setPassword(generateRandomPassword());
         if (repository.existsByEmail(student.getEmail())) {
             throw new DadosDuplicadosException("Email ja cadastrado");
@@ -122,6 +123,8 @@ public class StudentService {
             }
 
             Student oldStudent = repository.findById(id).get();
+            student.setCreatedAt(oldStudent.getCreatedAt());
+            student.setIsHidden(oldStudent.getIsHidden());
             List<EditableItem> changes = getEditableItems(oldStudent, student);
             logsService.create( actor, student, changes, "update" );
 
@@ -361,8 +364,8 @@ public class StudentService {
     public void delete(Long id, User actor) {
         try {
             Student student = repository.findById(id).get();
-            repository.deleteById(id);
             logsService.create( actor, student, "delete" );
+            repository.deleteById(id);
         } catch (Exception e) {
             throw new NaoEncontradoException("Aluno nao deletado");
         }

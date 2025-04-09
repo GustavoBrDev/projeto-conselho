@@ -19,13 +19,13 @@ import lombok.Builder;
 
 @Builder
 public class StudentResponseDTO implements UserResponseDTO {
-    Long id;
-    String name;
-    String email;
-    String password;
-    String image;
-    Boolean isRepresentative;
-    Boolean isHidden;
+    public Long id;
+    public String name;
+    public String email;
+    public String password;
+    public String image;
+    public Boolean isRepresentative;
+    public Boolean isHidden;
 
     public Student convert() {
         return Student.builder()
