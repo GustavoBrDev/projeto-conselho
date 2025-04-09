@@ -23,7 +23,7 @@ import java.util.List;
  *
  */
 @RestController
-@RequestMapping("/administration/AvaliableTeacher")
+@RequestMapping("/administration/AvaliableTeachers")
 @AllArgsConstructor
 @Tag( name = "Shift", description = "Recurso para gerenciamento de avaliação de professores" )
 public class AvaliableTeacherController {

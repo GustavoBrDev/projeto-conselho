@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
  * @author Cauã Justimiano Dutra
  * @since 17/03/2025
  */
-public record ShiftPostRequestDTO(
+public record ShiftRequestDTO(
 
         /**
          * Nome do turno.

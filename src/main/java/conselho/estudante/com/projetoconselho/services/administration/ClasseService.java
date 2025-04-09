@@ -13,6 +13,7 @@ import conselho.estudante.com.projetoconselho.models.exceptions.DadosDuplicadosE
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.administration.ClasseRepository;
 import conselho.estudante.com.projetoconselho.services.logs.ClassLogsService;
+import conselho.estudante.com.projetoconselho.services.users.RepresentativeService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,9 +62,11 @@ public class ClasseService {
         } else if (repository.existsByAcronym(classe.getAcronym())) {
             throw new DadosDuplicadosException("Sigla ja cadastrada");
         } else {
+            classe.setCreatedAt(new Date());
+            classe = repository.save(classe);
             courseService.addClassToCourse(classe.getCourse(), classe, actor);
             logsService.create(actor, classe, "create");
-            return repository.save(classe).toDTO();
+            return classe.toDTO();
         }
     }
 
@@ -85,6 +89,7 @@ public class ClasseService {
             } else if (repository.existsByAcronym(classe.getAcronym())) {
                 throw new DadosDuplicadosException("Sigla ja cadastrada");
             }
+            classe.setCreatedAt( repository.findById(id).get().getCreatedAt());
             logsService.create(actor, classe, getEditableItems(repository.findById(id).get(), classe, actor), "update");
             return repository.save(classe).toDTO();
         }

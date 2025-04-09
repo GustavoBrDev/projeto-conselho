@@ -62,6 +62,7 @@ public class Course {
     @ManyToOne(fetch = FetchType.LAZY)
     private Supervisor supervisor;
 
+
     /**
      * Metodo para adicionar um professor ao curso
      * @param teacher o professor a ser adicionado em formato de {@link Teacher}

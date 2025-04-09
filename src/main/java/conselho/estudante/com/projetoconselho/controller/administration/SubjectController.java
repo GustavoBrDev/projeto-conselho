@@ -123,8 +123,8 @@ public class SubjectController {
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable @Parameter(description = "ID da disciplina" ) Long id) {
-        subjectService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable @Parameter(description = "ID da disciplina" ) Long id, @RequestParam @Parameter(description = "Usuário que está deletando a disciplina" ) User actor) {
+        subjectService.delete(id, actor);
         return ResponseEntity.noContent().build();
     }
 

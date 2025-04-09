@@ -1,6 +1,9 @@
 package conselho.estudante.com.projetoconselho.controller.administration;
 
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.ClasseRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.request.administration.CourseRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.SubjectRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.TeacherRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.CourseResponseDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.SubjectResponseDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
@@ -96,14 +99,13 @@ public class CourseController {
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editName/{id}")
-    public ResponseEntity<String> editName(
+    public ResponseEntity<CourseResponseDTO> editName(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo nome do curso", required = true) String name,
             @RequestParam @Parameter(description = "Usuário que editou o curso", required = true) User actor) {
 
         try {
-            service.editName(id, name, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(service.editName(id, name, actor), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -116,14 +118,13 @@ public class CourseController {
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editVisualIdentity/{id}")
-    public ResponseEntity<String> editVisualIdentity(
+    public ResponseEntity<CourseResponseDTO> editVisualIdentity(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova identidade visual do curso", required = true) String visualIdentity,
             @RequestParam @Parameter(description = "Usuário que editou o curso", required = true) User actor) {
 
         try {
-            service.editVisualIdentity(id, visualIdentity, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(service.editVisualIdentity(id, visualIdentity, actor), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -136,14 +137,13 @@ public class CourseController {
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editWorkLoad/{id}")
-    public ResponseEntity<String> editWorkLoad(
+    public ResponseEntity<CourseResponseDTO> editWorkLoad(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova carga horaria do curso", required = true) Integer workLoad,
             @RequestParam @Parameter(description = "Usuário que editou o curso", required = true) User actor) {
 
         try {
-            service.editWorkLoad(id, workLoad, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(service.editWorkLoad(id, workLoad, actor), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -156,14 +156,13 @@ public class CourseController {
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editLevel/{id}")
-    public ResponseEntity<String> editLevel(
+    public ResponseEntity<CourseResponseDTO> editLevel(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Nova nivel do curso", required = true) String level,
             @RequestParam @Parameter(description = "Usuário que editou o curso", required = true) User actor) {
 
         try {
-            service.editLevel(id, level, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(service.editLevel(id, level, actor), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -176,14 +175,13 @@ public class CourseController {
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editSupervisor/{id}")
-    public ResponseEntity<String> editSupervisor(
+    public ResponseEntity<CourseResponseDTO> editSupervisor(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo supervisor do curso", required = true) Long supervisorId,
             @RequestParam @Parameter(description = "Usuário que editou o curso", required = true) User actor) {
 
         try {
-            service.editSupervisor(id, supervisorId, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(service.editSupervisor(id, supervisorId, actor), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -196,14 +194,13 @@ public class CourseController {
     @ApiResponse(responseCode = "400", description = "Erro ao atualizar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editShift/{id}")
-    public ResponseEntity<String> editShift(
+    public ResponseEntity<CourseResponseDTO> editShift(
             @Parameter (description = "ID do curso a ser editado", required = true) @PathVariable Long id,
             @RequestParam @Parameter(description = "Novo turno do curso", required = true) Shift shift,
             @RequestParam @Parameter(description = "Usuário que editou o curso", required = true) User actor) {
 
         try {
-            service.editShift(id, shift, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>( service.editShift(id, shift, actor), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -215,7 +212,7 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao encontrar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @GetMapping("/allCourses")
+    @GetMapping
     public ResponseEntity<Page<CourseResponseDTO>> getAllCourses(
             @Parameter (description = "Busca todos os cursos", content =
         @Content(schema = @Schema(implementation = CourseResponseDTO.class)),
@@ -237,11 +234,11 @@ public class CourseController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/teachers/{id}")
     public ResponseEntity<Page<TeacherResponseDTO>> listTeacherByCourse(
-            @Parameter (description = "ID do curso", required = true, example = "1") @PathVariable Long courseId,
+            @Parameter (description = "ID do curso", required = true, example = "1") @PathVariable Long id,
             @Parameter (description = "Pagina para listar professores", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
 
-        Page<Teacher> teachers = service.findTeacherByCourse(courseId, pageable);
+        Page<Teacher> teachers = service.findTeacherByCourse(id, pageable);
         Page<TeacherResponseDTO> teacherResponseDTOs = teachers.map(Teacher::toDTO);
         return ResponseEntity.ok(teacherResponseDTOs);
     }
@@ -254,70 +251,70 @@ public class CourseController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/subjects/{id}")
     public ResponseEntity<Page<SubjectResponseDTO>> listSubjectByCourse(
-            @Parameter (description = "ID do curso", required = true, example = "1") @PathVariable Long courseId,
+            @Parameter (description = "ID do curso", required = true, example = "1") @PathVariable Long id,
             @Parameter (description = "Pagina para listar máterias", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
 
-        Page<Subject> subjects = service.findSubjectByCourse(courseId, pageable);
+        Page<Subject> subjects = service.findSubjectByCourse(id, pageable);
         Page<SubjectResponseDTO> subjectResponseDTOS = subjects.map(Subject::toDTO);
         return ResponseEntity.ok(subjectResponseDTOS);
     }
 
-    @Operation(summary = "Adiciona um professor a um curso", description = "Adiciona um professor a um curso e retorna o curso atualizado com o status HTTP 200" )
+    @Operation(summary = "Adiciona um professor a um curso", description = "Adiciona um professor a um curso e retorna o curso atualizado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Professor adicionado com sucesso",
             content = @Content(schema = @Schema(implementation = CourseResponseDTO.class),
-                    examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
+                    examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/addTeacher/{course}/{teacher}")
+    @PatchMapping("/addTeacher/{id}")
     public ResponseEntity<String> addTeacherToCourse(
-            @Parameter(description = "Curso", required = true) @PathVariable Course course,
-            @Parameter(description = "Professor", required = true) @PathVariable Teacher teacher,
+            @Parameter(description = "Curso", required = true) @PathVariable Long id,
+            @Parameter(description = "Professor", required = true, content = @Content(schema = @Schema(implementation = TeacherRequestDTO.class), examples = @ExampleObject(value = "{\"register\": 123456789, \"name\": \"Joaquim\", \"email\": \"joaquim@example.com\", \"password\": \"senha123\", \"image\": \"url_da_imagem\"}"))) @RequestBody TeacherRequestDTO teacher,
             @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor) {
 
-        try{
-            service.addTeacherToCourse(course, teacher, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            service.addTeacherToCourse(id, teacher, actor);
+            return new ResponseEntity<>("Professor adicionado com sucesso", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @Operation(summary = "Adiciona uma materia a um curso", description = "Adiciona uma materia a um curso e retorna o curso atualizado com o status HTTP 200" )
+    @Operation(summary = "Adiciona uma materia a um curso", description = "Adiciona uma materia a um curso e retorna o curso atualizado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Materia adicionada com sucesso",
             content = @Content(schema = @Schema(implementation = CourseResponseDTO.class),
-                    examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
+                    examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar materia")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/addSubject/{course}/{subject}")
+    @PatchMapping("/addSubject/{id}")
     public ResponseEntity<String> addSubjectToCourse(
-            @Parameter(description = "Curso", required = true) @PathVariable Course course,
-            @Parameter(description = "Materia", required = true) @PathVariable Subject subject,
+            @Parameter(description = "Curso", required = true) @PathVariable Long id,
+            @Parameter(description = "Materia", required = true, content = @Content(schema = @Schema(implementation = SubjectRequestDTO.class), examples = @ExampleObject(value = "{\"name\": \"Matemática\", \"workLoad\": 60}"))) @RequestBody SubjectRequestDTO subject,
             @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor) {
 
-        try{
-            service.addSubjectToCourse(course, subject, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            service.addSubjectToCourse(id, subject, actor);
+            return new ResponseEntity<>("Materia adicionada com sucesso", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @Operation(summary = "Adiciona uma classe a um curso", description = "Adiciona uma classe a um curso e retorna o curso atualizado com o status HTTP 200" )
+    @Operation(summary = "Adiciona uma classe a um curso", description = "Adiciona uma classe a um curso e retorna o curso atualizado com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Classe adicionada com sucesso",
             content = @Content(schema = @Schema(implementation = CourseResponseDTO.class),
-                    examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
+                    examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar classe")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/addClass/{course}/{classe}")
+    @PatchMapping("/addClass/{id}")
     public ResponseEntity<String> addClassToCourse(
-            @Parameter(description = "Curso", required = true) @PathVariable Course course,
-            @Parameter(description = "Classe", required = true) @PathVariable Classe classe,
+            @Parameter(description = "Curso", required = true) @PathVariable Long id,
+            @Parameter(description = "Classe", required = true, content = @Content(schema = @Schema(implementation = ClasseRequestDTO.class), examples = @ExampleObject(value = "{\"name\": \"Turma A\", \"acronym\": \"TA\", \"course\": {\"id\": 1}, \"representative\": {\"id\": 1}, \"active\": true}"))) @RequestBody ClasseRequestDTO classe,
             @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor) {
 
-        try{
-            service.addClassToCourse(course, classe, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            service.addClassToCourse(id, classe, actor);
+            return new ResponseEntity<>("Classe adicionada com sucesso", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -329,15 +326,15 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/removeTeacher/{course}/{teacher}")
+    @PatchMapping("/removeTeacher/{id}")
     public ResponseEntity<String> removeTeacherFromCourse(
-            @Parameter(description = "Curso", required = true) @PathVariable Course course,
-            @Parameter(description = "Professor", required = true) @PathVariable Teacher teacher,
+            @Parameter(description = "Curso", required = true) @PathVariable Long id,
+            @Parameter(description = "Professor", required = true, content = @Content(schema = @Schema(implementation = TeacherRequestDTO.class), examples = @ExampleObject(value = "{\"register\": 123456789, \"name\": \"Joaquim\", \"email\": \"joaquim@example.com\", \"password\": \"senha123\", \"image\": \"url_da_imagem\"}"))) @RequestBody TeacherRequestDTO teacher,
             @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor) {
 
         try {
-            service.removeTeacherFromCourse(course, teacher, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            service.removeTeacherFromCourse(id, teacher, actor);
+            return new ResponseEntity<>("Professor removido com sucesso", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -349,15 +346,15 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover materia")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/removeSubject/{course}/{subject}")
+    @PatchMapping("/removeSubject/{id}")
     public ResponseEntity<String> removeSubjectFromCourse(
-            @Parameter(description = "Curso", required = true) @PathVariable Course course,
-            @Parameter(description = "Materia", required = true) @PathVariable Subject subject,
+            @Parameter(description = "Curso", required = true) @PathVariable Long id,
+            @Parameter(description = "Materia", required = true, content = @Content(schema = @Schema(implementation = SubjectRequestDTO.class), examples = @ExampleObject(value = "{\"name\": \"Matemática\", \"workLoad\": 60}"))) @RequestBody SubjectRequestDTO subject,
             @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor) {
 
         try {
-            service.removeSubjectFromCourse(course, subject, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            service.removeSubjectFromCourse(id, subject, actor);
+            return new ResponseEntity<>("Materia removida com sucesso", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -369,15 +366,15 @@ public class CourseController {
                     examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Desenvolvimento de Sistemas\", \"visualIdentity\": \"#FF0000\", \"createdAt\": \"2023-01-01\", \"workLoad\": \"8\", \"level\": \"1\", \"subjects\": [1,2,3], \"teacher\": [1,2,3], \"shift\": \"Manhã\", \"classes\": [1,2,3], \"Supervisor\": \"Joaquim\",}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover classe")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/removeClass/{course}/{classe}")
+    @PatchMapping("/removeClass/{id}")
     public ResponseEntity<String> removeClassFromCourse(
-            @Parameter(description = "Curso", required = true) @PathVariable Course course,
-            @Parameter(description = "Classe", required = true) @PathVariable Classe classe,
+            @Parameter(description = "Curso", required = true) @PathVariable Long id,
+            @Parameter(description = "Classe", required = true, content = @Content(schema = @Schema(implementation = ClasseRequestDTO.class), examples = @ExampleObject(value = "{\"name\": \"Turma A\", \"acronym\": \"TA\", \"course\": {\"id\": 1}, \"representative\": {\"id\": 1}, \"active\": true}"))) @RequestBody ClasseRequestDTO classe,
             @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor) {
 
         try {
-            service.removeClassFromCourse(course, classe, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            service.removeClassFromCourse(id, classe, actor);
+            return new ResponseEntity<>("Classe removida com sucesso", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

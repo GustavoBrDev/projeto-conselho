@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +46,8 @@ public class Classe {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Representative representative;
+
+    private Date createdAt;
 
     /**
      * Método para adicionar um aluno a classe

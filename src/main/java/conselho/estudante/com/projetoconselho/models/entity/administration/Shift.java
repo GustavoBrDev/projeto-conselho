@@ -119,8 +119,8 @@ public class Shift {
                 this.id,
                 this.name,
                 this.createdAt,
-                this.teachers.stream().map(Teacher::getId).collect(Collectors.toList()),
-                this.courses.stream().map(Course::getId).collect(Collectors.toList())
+                this.teachers.stream().map(Teacher::toDTO).collect(Collectors.toList()),
+                this.courses.stream().map(Course::toDTO).collect(Collectors.toList())
         );
     }
 }
