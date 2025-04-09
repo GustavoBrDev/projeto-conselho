@@ -3,8 +3,9 @@ package conselho.estudante.com.projetoconselho.controller.users;
 import conselho.estudante.com.projetoconselho.models.dto.request.users.TechniqueRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.TechniqueResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
+import conselho.estudante.com.projetoconselho.models.entity.users.Admin;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
-import conselho.estudante.com.projetoconselho.services.users.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.services.users.technique.TechniqueService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,10 +42,15 @@ public class TechniqueController {
             @Content (schema = @Schema(implementation = TechniqueRequestDTO.class)),
             required = true, example = "{" +
             "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")
-            @RequestBody @Valid TechniqueRequestDTO techniqueRequestDTO,
-            @RequestParam @Parameter(description = "Usuário que criou o tecnico", required = true) User actor) {
+            @RequestBody @Valid TechniqueRequestDTO techniqueRequestDTO/*,
+            @RequestParam @Parameter(description = "Usuário que criou o tecnico", required = true) User actor*/) {
 
         try {
+            Admin actor = Admin.builder()
+                    .id(1L)
+                    .username("adminTrabalhandoCom@Senai")
+                    .password("adminConselho@estudante.com")
+                    .build();
             return new ResponseEntity<>(service.create(techniqueRequestDTO, actor), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -64,10 +70,17 @@ public class TechniqueController {
             required = true, example = "{" +
                     "\"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")
             @RequestBody @Valid TechniqueRequestDTO techniqueRequestDTO,
-            @Parameter(description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
-            @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor) {
+            @Parameter(description = "ID do tecnico a ser editado", required = true) @PathVariable Long id/*,
+            @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor*/) {
 
         try {
+
+            Admin actor = Admin.builder()
+                    .id(1L)
+                    .username("adminTrabalhandoCom@Senai")
+                    .password("adminConselho@estudante.com")
+                    .build();
+
             return new ResponseEntity<>(service.update(id, techniqueRequestDTO, actor), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -83,10 +96,17 @@ public class TechniqueController {
     @PatchMapping("/editName/{id}")
     public ResponseEntity<String> editName(
         @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
-        @RequestParam @Parameter(description = "Novo nome do tecnico", required = true) String name,
-        @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor){
+        @RequestParam @Parameter(description = "Novo nome do tecnico", required = true) String name/*,
+        @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor*/){
 
         try {
+
+            Admin actor = Admin.builder()
+                    .id(1L)
+                    .username("adminTrabalhandoCom@Senai")
+                    .password("adminConselho@estudante.com")
+                    .build();
+
             service.editName(id, name, actor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
@@ -101,14 +121,20 @@ public class TechniqueController {
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editEmail/{id}")
-    public ResponseEntity<String> editEmail(
+    public ResponseEntity<TechniqueResponseDTO> editEmail(
         @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
-        @RequestParam @Parameter(description = "Novo email do tecnico", required = true) String email,
-        @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor){
+        @RequestParam @Parameter(description = "Novo email do tecnico", required = true) String email/*,
+        @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor*/){
 
         try {
-            service.editEmail(id, email, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+
+            Admin actor = Admin.builder()
+                    .id(1L)
+                    .username("adminTrabalhandoCom@Senai")
+                    .password("adminConselho@estudante.com")
+                    .build();
+
+            return new ResponseEntity<>(service.editEmail(id, email, actor), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -121,14 +147,20 @@ public class TechniqueController {
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editRegister/{id}")
-    public ResponseEntity<String> editRegister(
+    public ResponseEntity<TechniqueResponseDTO> editRegister(
             @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
-            @RequestParam @Parameter(description = "Novo registro do tecnico", required = true) Long register,
-            @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor) {
+            @RequestParam @Parameter(description = "Novo registro do tecnico", required = true) Long register/*,
+            @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor*/) {
 
         try{
-            service.editRegister(id, register, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+
+            Admin actor = Admin.builder()
+                    .id(1L)
+                    .username("adminTrabalhandoCom@Senai")
+                    .password("adminConselho@estudante.com")
+                    .build();
+
+            return new ResponseEntity<>(service.editRegister(id, register, actor), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -141,14 +173,20 @@ public class TechniqueController {
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editPassword/{id}")
-    public ResponseEntity<String> editPassword(
+    public ResponseEntity<TechniqueResponseDTO> editPassword(
             @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
-            @RequestParam @Parameter(description = "Nova senha do tecnico", required = true) String password,
-            @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor) {
+            @RequestParam @Parameter(description = "Nova senha do tecnico", required = true) String password/*,
+            @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor*/) {
 
         try{
-            service.editPassword(id, password, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+
+            Admin actor = Admin.builder()
+                    .id(1L)
+                    .username("adminTrabalhandoCom@Senai")
+                    .password("adminConselho@estudante.com")
+                    .build();
+
+            return new ResponseEntity<>(service.editPassword(id, password, actor), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -161,14 +199,20 @@ public class TechniqueController {
     @ApiResponse(responseCode = "400", description = "Erro ao editar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editImage/{id}")
-    public ResponseEntity<String> editImage(
+    public ResponseEntity<TechniqueResponseDTO> editImage(
             @Parameter (description = "ID do tecnico a ser editado", required = true) @PathVariable Long id,
-            @RequestParam @Parameter(description = "Nova imagem do tecnico", required = true) String image,
-            @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor) {
+            @RequestParam @Parameter(description = "Nova imagem do tecnico", required = true) String image/*,
+            @RequestParam @Parameter(description = "Usuário que editou o tecnico", required = true) User actor*/) {
 
         try{
-            service.editImage(id, image, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+
+            Admin actor = Admin.builder()
+                    .id(1L)
+                    .username("adminTrabalhandoCom@Senai")
+                    .password("adminConselho@estudante.com")
+                    .build();
+
+            return new ResponseEntity<>(service.editImage(id, image, actor), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -180,7 +224,7 @@ public class TechniqueController {
                     examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao encontrar tecnico")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @GetMapping("/allTechniques")
+    @GetMapping
     public ResponseEntity<Page<TechniqueResponseDTO>> findTechniques(
             @Parameter(description = "Busca uma lista paginada de todas as tecnicas", content =
             @Content(schema = @Schema(implementation = TechniqueResponseDTO.class)),
@@ -211,30 +255,13 @@ public class TechniqueController {
         }
     }
 
-    @Operation(summary = "Busca um tecnico pelo email", description = "Busca um tecnico pelo email e retorna com o status HTTP 200")
-    @ApiResponse(responseCode = "200", description = "Tecnico encontrado com sucesso",
-            content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
-                    examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
-    @ApiResponse(responseCode = "400", description = "Erro ao encontrar tecnico")
-    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @GetMapping("/{email}")
-    public ResponseEntity<TechniqueResponseDTO> getTechniqueByEmail(
-            @Parameter(description = "Busca um tecnico pelo email", required = true, example = "roberto@gmail.com") @PathVariable String email) {
-
-        try {
-            return new ResponseEntity<>(service.findTechniqueByEmail(email), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @Operation(summary = "Adiciona uma notificação a um tecnico", description = "Adiciona uma notificação a um tecnico e retorna com o status HTTP 200")
     @ApiResponse(responseCode = "200", description = "Notificação adicionada com sucesso",
             content = @Content(schema = @Schema(implementation = TechniqueResponseDTO.class),
                     examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao adicionar notificação")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/notifications/{id}")
+    @PatchMapping("/addNotification/{id}")
     public ResponseEntity<TechniqueResponseDTO> addNotification(
             @Parameter (description = "ID do tecnico", required = true) @PathVariable Long id,
             @Parameter (description = "Notificação a ser adicionada", required = true) @RequestBody Notification notification) {
@@ -253,10 +280,10 @@ public class TechniqueController {
                     examples = @ExampleObject(value = "\"id\" : 1, \"image\" : \"imagem\", \"name\" : \"Roberto\", \"username\" : \"roberto\", \"email\" : \"roberto@gmail.com\", \"password\" : \"senha123\", \"createdAt\" : \"2023-01-01\", \"register\" : \"12345\", \"notifications\" : []}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover notificação")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/{id}/notifications/{notification}")
+    @PatchMapping("/removeNnotification/{id}")
     public ResponseEntity<TechniqueResponseDTO> removeNotification(
             @Parameter(description = "ID do técnico", required = true, example = "1") @PathVariable Long id,
-            @Parameter(description = "Notificação a ser removida", required = true) @PathVariable Notification notification) {
+            @Parameter(description = "Notificação a ser removida", required = true) @RequestBody Notification notification) {
         TechniqueResponseDTO response = service.removeNotification(id, notification);
         return ResponseEntity.ok(response);
     }
@@ -267,13 +294,21 @@ public class TechniqueController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTechnique(
-            @Parameter(description = "ID do tecnico a ser deletado", required = true) @PathVariable Long id,
-            @Parameter(description = "Usuário que deletou o tecnico", required = true) @RequestParam User actor) {
+            @Parameter(description = "ID do tecnico a ser deletado", required = true) @PathVariable Long id/*,
+            @Parameter(description = "Usuário que deletou o tecnico", required = true) @RequestParam User actor*/) {
 
         try {
+
+            Admin actor = Admin.builder()
+                    .id(1L)
+                    .username("adminTrabalhandoCom@Senai")
+                    .password("adminConselho@estudante.com")
+                    .build();
+
             service.delete(id, actor);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

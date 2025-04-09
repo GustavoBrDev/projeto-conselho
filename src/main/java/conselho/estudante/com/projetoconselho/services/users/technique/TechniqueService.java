@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.services.users.TECHNIQUE;
+package conselho.estudante.com.projetoconselho.services.users.technique;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.users.TechniqueRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.StudentResponseDTO;
@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,9 +66,11 @@ public class TechniqueService {
             throw new DadosDuplicadosException("Registro ja cadastrado");
         } else {
             technique.setPassword(generateRandomPassword());
-            logsService.create(actor, technique, "create");
+            technique.setCreatedAt( new Date());
             emailService.sendWelcomeEmail(technique.getEmail(), technique.getPassword());
-            return repository.save(technique).toDTO();
+            technique = repository.save(technique);
+            logsService.create(actor, technique, "create");
+            return technique.toDTO();
         }
     }
 
@@ -102,11 +105,19 @@ public class TechniqueService {
         if (repository.existsById(id)) {
             technique.setId(id);
             if (repository.existsByEmail(technique.getEmail())) {
-                throw new DadosDuplicadosException("Email ja cadastrado");
+
+                if ( ! repository.findByEmail(technique.getEmail()).getId().equals(id) ) {
+                    throw new DadosDuplicadosException("Email ja cadastrado");
+                }
+
             } else if (repository.existsByRegister(technique.getRegister())) {
-                throw new DadosDuplicadosException("Registro ja cadastrado");
+
+                if ( ! repository.findByRegister(technique.getRegister()).getId().equals(id) ) {
+                    throw new DadosDuplicadosException("Registro ja cadastrado");
+                }
             }
 
+            technique.setCreatedAt( repository.findById(id).get().getCreatedAt() );
             logsService.create( actor, technique,getEditableItems(repository.findById(id).get(), technique), "update" );
             return repository.save(technique).toDTO();
         }
@@ -359,8 +370,8 @@ public class TechniqueService {
      */
     public void delete(Long id, User actor) {
         try {
-            repository.deleteById(id);
             logsService.create(actor, repository.findById(id).get(), "delete");
+            repository.deleteById(id);
         } catch (Exception e) {
             throw new NaoEncontradoException("Técnico nao deletado");
         }

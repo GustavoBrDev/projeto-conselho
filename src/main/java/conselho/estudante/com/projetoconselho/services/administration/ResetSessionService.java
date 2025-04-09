@@ -7,7 +7,7 @@ import conselho.estudante.com.projetoconselho.repositories.administration.ResetS
 import conselho.estudante.com.projetoconselho.services.users.AdvisorService;
 import conselho.estudante.com.projetoconselho.services.users.StudentService;
 import conselho.estudante.com.projetoconselho.services.users.SupervisorService;
-import conselho.estudante.com.projetoconselho.services.users.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.services.users.technique.TechniqueService;
 import conselho.estudante.com.projetoconselho.services.users.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

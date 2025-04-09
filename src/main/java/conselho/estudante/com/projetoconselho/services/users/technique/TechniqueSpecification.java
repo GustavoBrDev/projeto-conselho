@@ -1,4 +1,4 @@
-package conselho.estudante.com.projetoconselho.services.users.TECHNIQUE;
+package conselho.estudante.com.projetoconselho.services.users.technique;
 
 import conselho.estudante.com.projetoconselho.models.entity.users.Technique;
 import jakarta.persistence.criteria.Predicate;

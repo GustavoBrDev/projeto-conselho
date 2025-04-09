@@ -97,6 +97,7 @@ public class TeacherService {
 
 
         Teacher oldTeacher = repository.findById(id).get();
+        teacher.setCreatedAt(oldTeacher.getCreatedAt());
         List<EditableItem> changes = getEditableItems(oldTeacher, teacher);
         logsService.create(actor, teacher, changes, "update");
 

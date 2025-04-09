@@ -112,6 +112,7 @@ public class SupervisorService {
             }
 
             logsService.create( actor, supervisor, getChanges(repository.findById(id).get(), supervisor), "update" );
+            supervisor.setCreatedAt(repository.findById(id).get().getCreatedAt());
             return repository.save(supervisor).convert();
         }
         throw new NaoEncontradoException("Supervisor não encontrado");

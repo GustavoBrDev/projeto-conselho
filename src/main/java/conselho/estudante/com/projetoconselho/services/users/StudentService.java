@@ -80,9 +80,10 @@ public class StudentService {
             throw new DadosDuplicadosException("Matricula ja cadastrada");
         }
 
-        logsService.create( actor, student, "create" );
-        emailService.sendWelcomeEmail( student.getEmail(), student.getPassword() );
-        return repository.save(student).convert();
+       emailService.sendWelcomeEmail( student.getEmail(), student.getPassword() );
+       student = repository.save(student);
+       logsService.create( actor, student, "create" );
+       return student.convert();
     }
 
     /**
@@ -117,9 +118,16 @@ public class StudentService {
         if (repository.existsById(id)) {
             student.setId(id);
             if (repository.existsByEmail(student.getEmail())) {
-                throw new DadosDuplicadosException("Email ja cadastrado");
+
+                if ( ! repository.findById(id).get().getEmail().equals( student.getEmail() ) ) {
+                    throw new DadosDuplicadosException("Email ja cadastrado");
+                }
+
             } else if (repository.existsByRegistration(student.getRegistration())) {
-                throw new DadosDuplicadosException("Matricula ja cadastrada");
+
+                if ( ! repository.findById(id).get().getRegistration().equals( student.getRegistration() ) ) {
+                    throw new DadosDuplicadosException("Matricula ja cadastrada");
+                }
             }
 
             Student oldStudent = repository.findById(id).get();

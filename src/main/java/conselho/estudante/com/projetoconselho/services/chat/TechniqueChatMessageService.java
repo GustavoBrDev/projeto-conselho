@@ -7,7 +7,7 @@ import conselho.estudante.com.projetoconselho.models.entity.users.Technique;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.chat.TechniqueChatMessageRepository;
 import conselho.estudante.com.projetoconselho.services.logs.ChatMessageLogsService;
-import conselho.estudante.com.projetoconselho.services.users.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.services.users.technique.TechniqueService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

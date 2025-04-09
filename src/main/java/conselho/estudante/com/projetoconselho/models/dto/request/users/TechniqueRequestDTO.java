@@ -24,7 +24,8 @@ public record TechniqueRequestDTO(
         String email,
         @NotNull
         @Positive
-        Long register
+        Long register,
+        String password
 ) {
         /**
          * Converte este DTO em uma entidade `Technique`.
