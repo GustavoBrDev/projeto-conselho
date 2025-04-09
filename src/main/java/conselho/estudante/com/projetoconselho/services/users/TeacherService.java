@@ -3,10 +3,13 @@ package conselho.estudante.com.projetoconselho.services.users;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.users.TeacherRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
+import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Shift;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Subject;
 import conselho.estudante.com.projetoconselho.models.entity.logs.*;
+import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;
 import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.models.exceptions.DadosDuplicadosException;
@@ -50,13 +53,13 @@ public class TeacherService {
     /**
      * Cria um professor
      * @param teacherRequestDTO DTO contendo os dados do professor
-     //* @param actor Usuário que adicionou o professor
+     * @param actor Usuário que adicionou o professor
      * @return DTO do professor criado
      *
      * Atualizado em 31/03/2025
      * Adicionado envio de email
      */
-    public TeacherResponseDTO create(TeacherRequestDTO teacherRequestDTO/*, User actor*/) {
+    public TeacherResponseDTO create(TeacherRequestDTO teacherRequestDTO, User actor) {
         Teacher teacher = teacherRequestDTO.convert();
         teacher.setCreatedAt(new Date());
         teacher.setPassword(generateRandomPassword());
@@ -68,9 +71,10 @@ public class TeacherService {
             throw new DadosDuplicadosException("Registro já cadastrado");
         }
 
-        //logsService.create(actor, teacher, "create");
         emailService.sendWelcomeEmail(teacher.getEmail(), teacher.getPassword());
-        return repository.save(teacher).toDTO();
+        teacher = repository.save(teacher);
+        logsService.create(actor, teacher, "create");
+        return teacher.toDTO();
     }
 
 
@@ -491,5 +495,43 @@ public class TeacherService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * Adiciona uma {@link Notification} a um {@link Teacher}.
+     * @param id o identificador do teacher
+     * @param notification a notificação a ser adicionada
+     * @return {@link TeacherResponseDTO} o teacher atualizado
+     * @throws NaoEncontradoException se o teacher não for encontrado
+     */
+    public TeacherResponseDTO addNotification(Long id, Notification notification) {
+        Teacher teacher = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Teacher não encontrado"));
+
+        if ( ! teacher.addNotification(notification) ) {
+            throw new NaoEncontradoException("Notificação nao encontrada");
+        }
+
+        logsService.create(  teacher, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
+        return repository.save(teacher).toDTO();
+    }
+
+    /**
+     * Remove uma {@link Notification} de um {@link Teacher}.
+     * @param id o identificador do teacher
+     * @param notification a notificação a ser removida
+     * @return {@link TeacherResponseDTO} o teacher atualizado
+     * @throws NaoEncontradoException se o teacher não for encontrado
+     */
+    public TeacherResponseDTO removeNotification(Long id, Notification notification) {
+        Teacher teacher = repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Teacher não encontrado"));
+
+        if ( ! teacher.removeNotification(notification) ) {
+            throw new NaoEncontradoException("Notificação nao encontrada");
+        }
+
+        logsService.create( teacher, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
+        return repository.save(teacher).toDTO();
     }
 }

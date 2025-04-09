@@ -342,7 +342,7 @@ public class TechniqueService {
         if (!technique.addNotification(notification)) {
             throw new NaoEncontradoException("Notificação nao encontrada");
         }
-        logsService.create( null, technique, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
+        logsService.create( technique, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
         return repository.save(technique).toDTO();
     }
 
@@ -358,7 +358,7 @@ public class TechniqueService {
         if (!technique.removeNotification(notification)) {
             throw new NaoEncontradoException("Notificação nao encontrada");
         }
-        logsService.create( null, technique, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
+        logsService.create(  technique, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
         return repository.save(technique).toDTO();
     }
 

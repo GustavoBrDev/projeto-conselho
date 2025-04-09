@@ -6,9 +6,9 @@ import lombok.Builder;
 
 @Builder
 public class TeacherResponseDTO implements UserResponseDTO {
-    Long id;
-    String name;
-    String email;
-    String image;
-    Long register;
+    public Long id;
+    public String name;
+    public String email;
+    public String image;
+    public Long register;
 }

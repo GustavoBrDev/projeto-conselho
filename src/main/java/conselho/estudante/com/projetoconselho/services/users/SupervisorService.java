@@ -9,6 +9,7 @@ import conselho.estudante.com.projetoconselho.models.entity.logs.AddItem;
 import conselho.estudante.com.projetoconselho.models.entity.logs.ChangeItem;
 import conselho.estudante.com.projetoconselho.models.entity.logs.EditableItem;
 import conselho.estudante.com.projetoconselho.models.entity.users.Supervisor;
+import conselho.estudante.com.projetoconselho.models.entity.users.Technique;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.models.exceptions.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
@@ -18,6 +19,7 @@ import conselho.estudante.com.projetoconselho.services.EmailService;
 import conselho.estudante.com.projetoconselho.services.logs.UserLogsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,9 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Classe de serviços da entidade Supervisor
@@ -70,9 +74,11 @@ public class SupervisorService {
         }
 
         supervisor.setPassword(generateRandomPassword());
-        logsService.create(actor, supervisor, "create");
+        supervisor.setCreatedAt(new Date());
         emailService.sendWelcomeEmail(supervisor.getEmail(), supervisor.getPassword());
-        return repository.save(supervisor).convert();
+        supervisor = repository.save(supervisor);
+        logsService.create(actor, supervisor, "create");
+        return supervisor.convert();
     }
 
     /**
@@ -253,8 +259,7 @@ public class SupervisorService {
      */
     public Page<SupervisorResponseDTO> findSupervisors(Pageable pageable) {
         try {
-            return repository.findAll(pageable)
-                    .map(Supervisor::convert);
+            return repository.findAll(pageable).map(Supervisor::convert);
         } catch (Exception e) {
             throw new NaoEncontradoException("Supervisores não encontrados");
         }
@@ -266,14 +271,11 @@ public class SupervisorService {
      * @return {@link List<Notification>} a lista de notificações do supervisor
      * @throws NaoEncontradoException se o supervisor não for encontrado
      */
-    /*public List<Notification> getNotifications(Long id) {
+    public List<Notification> getNotifications(Long id) {
         Supervisor supervisor = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Supervisor não encontrado"));
         return supervisor.getNotifications();
-    }*/
-
-
-
+    }
 
     /**
      * Busca um {@link Supervisor} pelo seu identificador.
@@ -352,7 +354,7 @@ public class SupervisorService {
             throw new NaoEncontradoException("Notificação nao encontrada");
         }
 
-        logsService.create( null, supervisor, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
+        logsService.create( supervisor, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
         return repository.save(supervisor).convert();
     }
 
@@ -371,7 +373,7 @@ public class SupervisorService {
             throw new NaoEncontradoException("Notificação nao encontrada");
         }
 
-        logsService.create( null, supervisor, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
+        logsService.create( supervisor, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
         return repository.save(supervisor).convert();
     }
 

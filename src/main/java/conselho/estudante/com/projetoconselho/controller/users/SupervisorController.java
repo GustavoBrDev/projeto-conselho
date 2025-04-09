@@ -4,10 +4,12 @@ import conselho.estudante.com.projetoconselho.models.dto.request.users.Superviso
 import conselho.estudante.com.projetoconselho.models.dto.response.users.SupervisorResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
+import conselho.estudante.com.projetoconselho.models.entity.users.Admin;
 import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.users.SupervisorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,8 +40,10 @@ public class SupervisorController {
     @PostMapping
     public SupervisorResponseDTO create(@RequestBody SupervisorRequestDTO supervisorRequestDTO/*,@RequestParam User actor*/) {
 
-        User actor = Teacher.builder()
+        Admin actor = Admin.builder()
                 .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
                 .build();
 
         return supervisorService.create(supervisorRequestDTO, actor);
@@ -54,72 +58,117 @@ public class SupervisorController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
-    public SupervisorResponseDTO update(@PathVariable Long id, @RequestBody SupervisorRequestDTO supervisorRequestDTO, @RequestParam User actor) {
+    public SupervisorResponseDTO update(@PathVariable Long id, @RequestBody SupervisorRequestDTO supervisorRequestDTO/*, @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return supervisorService.update(id, supervisorRequestDTO, actor);
     }
 
     // Editar nome de supervisor
-    @Operation(summary = "Edita um supervisor")
+    @Operation(summary = "Edita o nome de um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
             , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
             examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/name")
-    public SupervisorResponseDTO editName(@PathVariable Long id, @RequestParam String name, @RequestParam User actor) {
+    @PatchMapping("/editName/{id}")
+    public SupervisorResponseDTO editName(@PathVariable Long id, @RequestParam String name/*, @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
+
         return supervisorService.editName(id, name, actor);
     }
 
     // Editar email de supervisor
-    @Operation(summary = "Edita um supervisor")
+    @Operation(summary = "Edita o email de um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
             , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
             examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/email")
-    public SupervisorResponseDTO editEmail(@PathVariable Long id, @RequestParam String email, @RequestParam User actor) {
+    @PatchMapping("/editEmail/{id}")
+    public SupervisorResponseDTO editEmail(@PathVariable Long id, @RequestParam String email/*, @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return supervisorService.editEmail(id, email, actor);
     }
 
     // Editar cadastro de supervisor
-    @Operation(summary = "Edita um supervisor")
+    @Operation(summary = "Edita o cadastro de um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
             , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
             examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/register")
-    public SupervisorResponseDTO editRegister(@PathVariable Long id, @RequestParam Long register, @RequestParam User actor) {
+    @PatchMapping("/editRegister/{id}")
+    public SupervisorResponseDTO editRegister(@PathVariable Long id, @RequestParam Long register/*, @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
+
         return supervisorService.editRegister(id, register, actor);
     }
 
     // Editar senha de supervisor
-    @Operation(summary = "Edita um supervisor")
+    @Operation(summary = "Edita a senha de um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
             , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
             examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/password")
-    public SupervisorResponseDTO editPassword(@PathVariable Long id, @RequestParam String password, @RequestParam User actor) {
+    @PatchMapping("/editPassword/{id}")
+    public SupervisorResponseDTO editPassword(@PathVariable Long id, @RequestParam String password/*, @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
+
         return supervisorService.editPassword(id, password, actor);
     }
 
     // Editar imagem de perfil de supervisor
-    @Operation(summary = "Edita um supervisor")
+    @Operation(summary = "Edita a imagem de perfil de um supervisor")
     @ApiResponse(responseCode = "200", description = "Supervisor editado com sucesso"
             , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
             examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
     @ApiResponse(responseCode = "400", description = "Erro ao editar supervisor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/image")
-    public SupervisorResponseDTO editImage(@PathVariable Long id, @RequestParam String image, @RequestParam User actor) {
+    @PatchMapping("/editImage/{id}")
+    public SupervisorResponseDTO editImage(@PathVariable Long id, @RequestParam String image/*, @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return supervisorService.editImage(id, image, actor);
     }
 
@@ -132,7 +181,7 @@ public class SupervisorController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @GetMapping
-    public Page<SupervisorResponseDTO> findSupervisors(Pageable pageable) {
+    public Page<SupervisorResponseDTO> findSupervisors( @Parameter(description = "Objeto Pageable com informações de paginação") Pageable pageable) {
         return supervisorService.findSupervisors(pageable);
     }
 
@@ -149,18 +198,6 @@ public class SupervisorController {
         return supervisorService.findById(id);
     }
 
-    // Buscar supervisor por email
-    @Operation(summary = "Busca um supervisor por email")
-    @ApiResponse(responseCode = "200", description = "Supervisor encontrado com sucesso"
-            , content = @Content(schema = @Schema(implementation = SupervisorResponseDTO.class),
-            examples = @ExampleObject("{\"name\": \"Supervisor\", \"email\": \"t2YJi@example.com\", \"register\": 12345678, \"password\": \"senha123\", \"image\": \"https://example.com/image.jpg\"}")))
-    @ApiResponse(responseCode = "400", description = "Erro ao buscar supervisor")
-    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @SecurityRequirement(name = "Bearer")
-    @GetMapping("/email/{email}")
-    public SupervisorResponseDTO findByEmail(@PathVariable String email) {
-        return supervisorService.findByEmail(email);
-    }
 
     // Adicionar notificação a supervisor
     @Operation(summary = "Adiciona uma notificação a um supervisor")
@@ -195,7 +232,14 @@ public class SupervisorController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id, @RequestParam User actor) {
+    public void delete(@PathVariable Long id/*, @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         supervisorService.delete(id, actor);
     }
 
