@@ -39,8 +39,10 @@ public class TechniqueChatMessageService {
     public ChatMessageResponseDTO create (TechniqueChatMessageRequestDTO message) {
 
         try {
-            logsService.create(message, "create");
-            return repository.save(message.convert()).convert();
+            TechniqueChatMessage converted = message.convert();
+            converted = repository.save(converted);
+            logsService.create(converted, "create");
+            return converted.convert();
         } catch (Exception e) {
            throw new NoSuchElementException("Erro ao enviar mensagem");
         }

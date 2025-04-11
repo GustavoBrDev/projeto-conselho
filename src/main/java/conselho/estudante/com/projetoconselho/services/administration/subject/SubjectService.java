@@ -14,6 +14,7 @@ import conselho.estudante.com.projetoconselho.repositories.administration.Subjec
 import conselho.estudante.com.projetoconselho.services.logs.SubjectLogsService;
 import conselho.estudante.com.projetoconselho.services.users.TeacherService;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

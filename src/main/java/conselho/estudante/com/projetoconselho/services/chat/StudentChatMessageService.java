@@ -44,8 +44,10 @@ public class StudentChatMessageService {
     public ChatMessageResponseDTO create (StudentChatMessageRequestDTO message) {
 
         try {
-            logsService.create(message, "create");
-            return repository.save(message.convert()).convert();
+            StudentChatMessage converted = message.convert();
+            converted = repository.save(converted);
+            logsService.create(converted, "create");
+            return converted.convert();
         } catch (Exception e) {
            throw new NoSuchElementException("Erro ao enviar mensagem");
         }

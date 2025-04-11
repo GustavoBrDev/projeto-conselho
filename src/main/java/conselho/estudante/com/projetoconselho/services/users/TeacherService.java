@@ -20,6 +20,8 @@ import conselho.estudante.com.projetoconselho.services.administration.subject.Su
 import conselho.estudante.com.projetoconselho.services.EmailService;
 import conselho.estudante.com.projetoconselho.services.logs.UserLogsService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,11 +42,13 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class TeacherService {
 
     private TeacherRepository repository;
     private UserLogsService logsService;
     private CourseService courseService;
+    @Lazy
     private SubjectService subjectService;
     private EmailService emailService;
     private static final int passwordLength = 8;
