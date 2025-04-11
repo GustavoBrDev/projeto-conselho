@@ -20,6 +20,9 @@ import conselho.estudante.com.projetoconselho.services.administration.subject.Su
 import conselho.estudante.com.projetoconselho.services.EmailService;
 import conselho.estudante.com.projetoconselho.services.logs.UserLogsService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,29 +36,36 @@ import java.util.*;
 
 /**
  * Classe de serviços da entidade Teacher
+ *
  * @author Alex Zastrow
  * @author Gustavo Stinghen (documentação)
  * @since 28/03/2025
  */
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TeacherService {
 
+    @Autowired
     private TeacherRepository repository;
+    @Autowired
     private UserLogsService logsService;
+    @Autowired
     private CourseService courseService;
+    @Lazy
     private SubjectService subjectService;
+    @Autowired
     private EmailService emailService;
     private static final int passwordLength = 8;
 
 
     /**
      * Cria um professor
-     * @param teacherRequestDTO DTO contendo os dados do professor
-     * @param actor Usuário que adicionou o professor
-     * @return DTO do professor criado
      *
+     * @param teacherRequestDTO DTO contendo os dados do professor
+     * @param actor             Usuário que adicionou o professor
+     * @return DTO do professor criado
+     * <p>
      * Atualizado em 31/03/2025
      * Adicionado envio de email
      */
@@ -80,9 +90,10 @@ public class TeacherService {
 
     /**
      * Atualiza um professor
-     * @param id ID do professor
+     *
+     * @param id                ID do professor
      * @param teacherRequestDTO DTO contendo os novos dados do professor
-     * @param actor Usuário que editou o professor
+     * @param actor             Usuário que editou o professor
      * @return DTO do professor atualizado
      */
     public TeacherResponseDTO update(Long id, TeacherRequestDTO teacherRequestDTO, User actor) {
@@ -111,8 +122,9 @@ public class TeacherService {
 
     /**
      * Método para editar o nome de um professor
-     * @param id o id do professor
-     * @param name o novo nome
+     *
+     * @param id    o id do professor
+     * @param name  o novo nome
      * @param actor o usuario que editou
      * @return o professor editado
      */
@@ -128,7 +140,8 @@ public class TeacherService {
 
     /**
      * Método para editar o email de um professor
-     * @param id o id do professor
+     *
+     * @param id    o id do professor
      * @param email o novo email
      * @param actor o usuario que editou
      * @return o professor editado
@@ -145,9 +158,10 @@ public class TeacherService {
 
     /**
      * Método para editar o registro de um professor
-     * @param id o id do professor
+     *
+     * @param id       o id do professor
      * @param register o novo registro
-     * @param actor o usuario que editou
+     * @param actor    o usuario que editou
      * @return o professor editado
      */
     public TeacherResponseDTO editRegister(Long id, Long register, User actor) {
@@ -162,9 +176,10 @@ public class TeacherService {
 
     /**
      * Método para editar a senha de um professor
-     * @param id o id do professor
+     *
+     * @param id       o id do professor
      * @param password a nova senha
-     * @param actor o usuario que editou
+     * @param actor    o usuario que editou
      * @return o professor editado
      */
     public TeacherResponseDTO editPassword(Long id, String password, User actor) {
@@ -179,7 +194,8 @@ public class TeacherService {
 
     /**
      * Método para editar a imagem de um professor
-     * @param id o id do professor
+     *
+     * @param id    o id do professor
      * @param image a nova imagem
      * @param actor o usuario que editou
      * @return o professor editado
@@ -196,6 +212,7 @@ public class TeacherService {
 
     /**
      * Método para listar todos os professores
+     *
      * @param pageable Objeto que contém informações de paginação (tamanho e número da página).
      * @return Página contendo os professores
      */
@@ -209,7 +226,8 @@ public class TeacherService {
 
     /**
      * Método para listar todos os professores de um curso
-     * @param course o curso
+     *
+     * @param course   o curso
      * @param pageable Objeto que contém informações de paginação (tamanho e número da página).
      * @return Página contendo os professores
      */
@@ -223,7 +241,8 @@ public class TeacherService {
 
     /**
      * Método para listar todos os professores de uma disciplina
-     * @param subject a disciplina
+     *
+     * @param subject  a disciplina
      * @param pageable Objeto que contém informações de paginação (tamanho e número da página).
      * @return Página contendo os professores
      */
@@ -237,7 +256,8 @@ public class TeacherService {
 
     /**
      * Método para listar todos os professores de um turno
-     * @param shift o turno
+     *
+     * @param shift    o turno
      * @param pageable Objeto que contém informações de paginação (tamanho e número da página).
      * @return Página contendo os professores
      */
@@ -251,6 +271,7 @@ public class TeacherService {
 
     /**
      * Método para buscar um professor pelo ID
+     *
      * @param id o id do professor
      * @return o professor encontrado
      */
@@ -262,6 +283,7 @@ public class TeacherService {
 
     /**
      * Método para buscar um professor pelo email
+     *
      * @param email o email do professor
      * @return o professor encontrado
      */
@@ -275,9 +297,10 @@ public class TeacherService {
 
     /**
      * Método para adicionar um curso ao professor
+     *
      * @param teacherId o id do professor
-     * @param course o curso a ser adicionado
-     * @param actor o usuario que adicionou
+     * @param course    o curso a ser adicionado
+     * @param actor     o usuario que adicionou
      * @return o professor com o curso adicionado
      */
     public TeacherResponseDTO addCourse(Long teacherId, Course course, User actor) {
@@ -296,9 +319,10 @@ public class TeacherService {
 
     /**
      * Método para remover um curso do professor
+     *
      * @param teacherId o id do professor
-     * @param course o curso a ser removido
-     * @param actor o usuario que removeu
+     * @param course    o curso a ser removido
+     * @param actor     o usuario que removeu
      * @return o professor com o curso removido
      */
     public TeacherResponseDTO removeCourse(Long teacherId, Course course, User actor) {
@@ -317,9 +341,10 @@ public class TeacherService {
 
     /**
      * Método para adicionar uma disciplina ao professor
+     *
      * @param teacherId o id do professor
-     * @param subject a disciplina a ser adicionada
-     * @param actor o usuario que adicionou
+     * @param subject   a disciplina a ser adicionada
+     * @param actor     o usuario que adicionou
      * @return o professor com a disciplina adicionada
      */
     public TeacherResponseDTO addSubject(Long teacherId, Subject subject, User actor) {
@@ -338,9 +363,10 @@ public class TeacherService {
 
     /**
      * Método para remover uma disciplina do professor
+     *
      * @param teacherId o id do professor
-     * @param subject a disciplina a ser removida
-     * @param actor o usuario que removeu
+     * @param subject   a disciplina a ser removida
+     * @param actor     o usuario que removeu
      * @return o professor com a disciplina removida
      */
     public TeacherResponseDTO removeSubject(Long teacherId, Subject subject, User actor) {
@@ -359,9 +385,10 @@ public class TeacherService {
 
     /**
      * Método para adicionar um turno ao professor
+     *
      * @param teacherId o id do professor
-     * @param shift o turno a ser adicionado
-     * @param actor o usuario que adicionou
+     * @param shift     o turno a ser adicionado
+     * @param actor     o usuario que adicionou
      * @return o professor com o turno adicionado
      */
     public TeacherResponseDTO addShift(Long teacherId, Shift shift, User actor) {
@@ -379,9 +406,10 @@ public class TeacherService {
 
     /**
      * Método para remover um turno do professor
+     *
      * @param teacherId o id do professor
-     * @param shift o turno a ser removido
-     * @param actor o usuario que removeu
+     * @param shift     o turno a ser removido
+     * @param actor     o usuario que removeu
      * @return o professor com o turno removido
      */
     public TeacherResponseDTO removeShift(Long teacherId, Shift shift, User actor) {
@@ -399,7 +427,8 @@ public class TeacherService {
 
     /**
      * Método para deletar um professor
-     * @param id o id do professor
+     *
+     * @param id    o id do professor
      * @param actor o usuario que deletou
      */
     public void delete(Long id, User actor) {
@@ -411,8 +440,9 @@ public class TeacherService {
 
     /**
      * Método auxiliar para gerar logs
+     *
      * @param oldTeacher o professor antigo
-     * @param teacher o professor novo
+     * @param teacher    o professor novo
      * @return a lista de itens editados
      */
     private List<EditableItem> getEditableItems(Teacher oldTeacher, Teacher teacher) {
@@ -441,6 +471,7 @@ public class TeacherService {
 
     /**
      * Método auxiliar para gerar uma senha aleatória com o tamanho especificado.
+     *
      * @return uma String com a senha gerada
      */
     private String generateRandomPassword() {
@@ -456,6 +487,7 @@ public class TeacherService {
 
     /**
      * Método para buscar um professor pelo email
+     *
      * @param email o email do professor
      * @return o professor encontrado
      */
@@ -469,6 +501,7 @@ public class TeacherService {
 
     /**
      * Método para buscar um professor pelo id
+     *
      * @param id o id do professor
      * @return o professor encontrado
      */
@@ -482,7 +515,8 @@ public class TeacherService {
 
     /**
      * Método para editar a senha de um professor
-     * @param user o professor a ser editado
+     *
+     * @param user     o professor a ser editado
      * @param password a nova senha
      * @return um booleano indicando se a edição foi bem sucedida
      */
@@ -499,7 +533,8 @@ public class TeacherService {
 
     /**
      * Adiciona uma {@link Notification} a um {@link Teacher}.
-     * @param id o identificador do teacher
+     *
+     * @param id           o identificador do teacher
      * @param notification a notificação a ser adicionada
      * @return {@link TeacherResponseDTO} o teacher atualizado
      * @throws NaoEncontradoException se o teacher não for encontrado
@@ -508,17 +543,18 @@ public class TeacherService {
         Teacher teacher = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Teacher não encontrado"));
 
-        if ( ! teacher.addNotification(notification) ) {
+        if (!teacher.addNotification(notification)) {
             throw new NaoEncontradoException("Notificação nao encontrada");
         }
 
-        logsService.create(  teacher, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "add" );
+        logsService.create(teacher, Collections.singletonList(new AddItem("notifications", (Object) notification)), "add");
         return repository.save(teacher).toDTO();
     }
 
     /**
      * Remove uma {@link Notification} de um {@link Teacher}.
-     * @param id o identificador do teacher
+     *
+     * @param id           o identificador do teacher
      * @param notification a notificação a ser removida
      * @return {@link TeacherResponseDTO} o teacher atualizado
      * @throws NaoEncontradoException se o teacher não for encontrado
@@ -527,11 +563,11 @@ public class TeacherService {
         Teacher teacher = repository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Teacher não encontrado"));
 
-        if ( ! teacher.removeNotification(notification) ) {
+        if (!teacher.removeNotification(notification)) {
             throw new NaoEncontradoException("Notificação nao encontrada");
         }
 
-        logsService.create( teacher, Collections.singletonList( new AddItem("notifications", (Object) notification ) ), "remove" );
+        logsService.create(teacher, Collections.singletonList(new AddItem("notifications", (Object) notification)), "remove");
         return repository.save(teacher).toDTO();
     }
 }
