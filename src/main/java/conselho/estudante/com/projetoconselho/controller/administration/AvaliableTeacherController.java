@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/administration/AvaliableTeachers")
 @AllArgsConstructor
-@Tag( name = "Shift", description = "Recurso para gerenciamento de avaliação de professores" )
+@Tag( name = "AvaliableTeachers", description = "Recurso para gerenciamento de avaliação de professores" )
 public class AvaliableTeacherController {
     private AvaliableTeacherService service;
 
@@ -90,6 +90,6 @@ public class AvaliableTeacherController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    } 
+    }
 
 }
