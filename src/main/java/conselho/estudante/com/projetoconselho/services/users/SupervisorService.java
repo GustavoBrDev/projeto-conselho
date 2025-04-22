@@ -407,7 +407,6 @@ public class SupervisorService {
                 .orElseThrow(() -> new NaoEncontradoException("Supervisor não encontrado"));
 
         supervisor.addCourse(course);
-        courseService.editSupervisor(course.getId(), supervisorId, actor);
         logsService.create( actor, supervisor, Collections.singletonList( new AddItem("courses", (Object) course ) ), "add" );
 
         return repository.save(supervisor).convert();

@@ -72,7 +72,7 @@ public class Course {
      */
     public boolean addTeacher(Teacher teacher) {
 
-        if (this.teachers.contains(teacher)) {
+        if ( this.teachers.contains(teacher)) {
             return false;
         } else {
             this.teachers.add(teacher);

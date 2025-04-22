@@ -1,7 +1,9 @@
 package conselho.estudante.com.projetoconselho.models.dto.request.educational;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.administration.ClasseRequestDTO;
+import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
 import conselho.estudante.com.projetoconselho.models.entity.educational.ClassFeedback;
+import conselho.estudante.com.projetoconselho.services.educational.council.CouncilService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -14,6 +16,7 @@ import java.util.Date;
  * @author Camilly Chelest
  * @since 20/03/2025
  */
+
 @Builder
 public record ClassFeedbackRequestDTO(
         @NotNull CouncilRequestDTO councilRequestDTO,
@@ -21,10 +24,11 @@ public record ClassFeedbackRequestDTO(
         @NotNull Date createdAt,
         @NotBlank String text
 ) {
-    public ClassFeedback convert() {
+    public ClassFeedback convert(Course course) {
+
         return ClassFeedback.builder()
                 .council(councilRequestDTO.convert())
-                .classe(classeRequestDTO.convert())
+                .classe(classeRequestDTO.convert( course ))
                 .createdAt(this.createdAt)
                 .text(this.text)
                 .build();

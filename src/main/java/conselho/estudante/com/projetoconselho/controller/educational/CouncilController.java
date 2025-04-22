@@ -289,7 +289,7 @@ public class CouncilController {
             @PathVariable @Parameter(description = "ID do council", required = true, example = "1") Long id,
             @RequestParam @Parameter(description = "Feedback", required = true, content = @Content(schema = @Schema(implementation = ClassFeedbackRequestDTO.class), examples = @ExampleObject(value = "{\"id\": 1, \"createdAt\": \"2023-01-01\", \"endDate\": \"2025-02-01\", \"classe\": {Objeto de classe}, \"feedbacks\": []}"))) ClassFeedbackRequestDTO feedback
     ) {
-        return ResponseEntity.ok(service.updateClassFeedback(id, feedback.convert()));
+        return ResponseEntity.ok(service.updateClassFeedback(id, feedback));
     }
 
     @Operation(summary = "Deleta um council", description = "Deleta um council e retorna com um status 200")

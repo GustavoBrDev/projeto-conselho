@@ -18,6 +18,8 @@ import conselho.estudante.com.projetoconselho.services.administration.CourseServ
 import conselho.estudante.com.projetoconselho.services.logs.ShiftLogsService;
 import conselho.estudante.com.projetoconselho.services.users.TeacherService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -47,6 +49,8 @@ public class ShiftService {
     private ShiftRepository repository;
     private ShiftLogsService logsService;
     private TeacherService teacherService;
+    @Autowired
+    @Lazy
     private CourseService courseService;
 
     /**
@@ -94,7 +98,6 @@ public class ShiftService {
             if ( this.searchShift(id) == null ) {
                 throw new NaoEncontradoException("Turno nao encontrado");
             }
-
             Shift shift = shiftRequestDTO.toEntity();
             shift.setId(id);
             shift.setCreatedAt( repository.findById(id).get().getCreatedAt() );
@@ -262,6 +265,7 @@ public class ShiftService {
      */
 
     public void addCourseToShift(Long shiftId, Long courseId, User actor) {
+        System.out.println("Entrou para ser adicionado");
         Shift shift = repository.findById(shiftId).orElseThrow(() -> new RuntimeException("Turno não encontrado"));
 
         Course course = courseService.getObjectCourse(courseId);
@@ -269,6 +273,7 @@ public class ShiftService {
         if (shift.getCourses().contains(course)) {
             throw new RuntimeException("Curso já está associado a este turno");
         }
+
 
         logsService.create( actor, shift, Collections.singletonList( new AddItem("courses", (Object) course ) ), "add" );
         shift.getCourses().add(course);
@@ -339,6 +344,19 @@ public class ShiftService {
         }
 
         repository.deleteById(id);
+    }
+
+    /**
+     * Busca um turno pelo ID.
+     *
+     * @param id ID do turno a ser buscado.
+     * @return Turno encontrado.
+     * @throws NaoEncontradoException Caso o turno nao seja encontrado.
+     * @author Gustavo Stinghen
+     * @since 22/04/2025
+     */
+    public Shift getObjectShift(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NaoEncontradoException("Turno nao encontrado"));
     }
 }
 

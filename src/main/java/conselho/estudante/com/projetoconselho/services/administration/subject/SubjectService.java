@@ -14,7 +14,6 @@ import conselho.estudante.com.projetoconselho.repositories.administration.Subjec
 import conselho.estudante.com.projetoconselho.services.logs.SubjectLogsService;
 import conselho.estudante.com.projetoconselho.services.users.TeacherService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,7 +42,6 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class SubjectService {
 
     private final SubjectRepository repository;

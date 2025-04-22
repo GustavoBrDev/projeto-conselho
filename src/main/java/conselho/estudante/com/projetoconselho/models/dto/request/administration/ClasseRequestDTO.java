@@ -25,9 +25,7 @@ public record ClasseRequestDTO(
         @NotBlank
         String acronym,
         @NotNull
-        Course course,
-        @NotNull
-        Representative representative,
+        Long courseId,
         @NotNull
         Boolean active
 ) {
@@ -36,11 +34,11 @@ public record ClasseRequestDTO(
      *
      * @return Uma nova instância de Classe com os dados fornecidos neste DTO.
      */
-    public Classe convert() {
+    public Classe convert( Course course) {
         return Classe.builder()
                 .name(this.name)
                 .acronym(this.acronym)
-                .course(this.course)
+                .course(course)
                 .active(this.active)
                 .build();
     }

@@ -56,7 +56,7 @@ public class ClasseService {
      * @throws DadosDuplicadosException se já existir uma turma ou sigla com o mesmo nome.
      */
     public ClasseResponseDTO create(ClasseRequestDTO classeRequestDTO, User actor) {
-        Classe classe = classeRequestDTO.convert();
+        Classe classe = classeRequestDTO.convert( courseService.getObjectCourse( classeRequestDTO.courseId()));
         if(repository.existsByName(classe.getName())) {
             throw new DadosDuplicadosException("Turma ja cadastrada");
         } else if (repository.existsByAcronym(classe.getAcronym())) {
@@ -81,7 +81,7 @@ public class ClasseService {
      * @throws DadosDuplicadosException se uma turma ou sigla semelhante já existir.
      */
     public ClasseResponseDTO update(Long id, ClasseRequestDTO classeRequestDTO, User actor) {
-        Classe classe = classeRequestDTO.convert();
+        Classe classe = classeRequestDTO.convert( courseService.getObjectCourse( classeRequestDTO.courseId() ));
         if (repository.existsById(id)) {
             classe.setId(id);
             if (repository.existsByName(classe.getName())) {
