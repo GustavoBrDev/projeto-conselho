@@ -75,7 +75,7 @@ public class AdvisorChatMessageService {
     public Page<ChatMessageResponseDTO> findByAdvisor (Long id, Pageable pageable) {
 
         try {
-            Advisor advisor = advisorService.getAdvisorById(id);
+            Advisor advisor = advisorService.getObjectAdvisor(id);
 
             if (advisor == null) {
                 throw new NaoEncontradoException("Orientador nao encontrado");

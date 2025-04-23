@@ -270,7 +270,11 @@ public class CourseService {
     public CourseResponseDTO editShift(Long id, Long shiftId, User actor) {
         Shift shift = shiftService.getObjectShift(shiftId);
         Course course = repository.findById(id).get();
-        shiftService.removeCourseOfShift(course.getShift().getId(), course.getId(), actor);
+
+        if ( course.getShift() != null ) {
+            shiftService.removeCourseOfShift(course.getShift().getId(), course.getId(), actor);
+        }
+
         shiftService.addCourseToShift(shift.getId(), course.getId(), actor);
         logsService.create(actor, course, Collections.singletonList(new ChangeItem("shift", (Object) course.getShift(), (Object) shift)), "update");
         course.setShift(shift);

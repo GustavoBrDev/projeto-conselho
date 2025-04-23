@@ -74,7 +74,7 @@ public class Teacher implements User {
     private List<Subject> subjects;
 
 
-    @ManyToMany
+    @ManyToMany ( mappedBy = "teachers", fetch = FetchType.LAZY)
     private List<Shift> shifts;
 
     @OneToMany

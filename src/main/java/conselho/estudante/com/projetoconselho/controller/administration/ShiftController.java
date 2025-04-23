@@ -217,6 +217,7 @@ public class ShiftController {
             service.addTeacherToShift(shiftId, teacherId, actor);
             return new ResponseEntity<>("Professor associado com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -243,6 +244,7 @@ public class ShiftController {
             service.removeTeacherOfShift(shiftId, teacherId, actor);
             return new ResponseEntity<>("Professor removido com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         }
     }
@@ -269,6 +271,7 @@ public class ShiftController {
             service.addCourseToShift(shiftId, courseId, actor);
             return new ResponseEntity<>("Curso associado com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -295,6 +298,7 @@ public class ShiftController {
             service.removeCourseOfShift(shiftId, courseId, actor);
             return new ResponseEntity<>("Curso removido com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

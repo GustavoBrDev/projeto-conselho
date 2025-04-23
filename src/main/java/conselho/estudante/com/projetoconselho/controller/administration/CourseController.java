@@ -253,6 +253,7 @@ public class CourseController {
         try {
             return new ResponseEntity<>( service.editShift(id, shiftId, actor), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

@@ -223,6 +223,7 @@ public class ShiftService {
 
         logsService.create( actor, shift, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "add" );
         shift.getTeachers().add(teacher);
+        teacher.addShift(shift);
         repository.save(shift);
     }
 
@@ -251,6 +252,7 @@ public class ShiftService {
 
         logsService.create( actor, shift, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "remove" );
         shift.getTeachers().remove(teacher);
+        teacher.removeShift(shift);
         repository.save(shift);
     }
 

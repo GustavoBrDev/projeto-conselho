@@ -40,7 +40,7 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long>, JpaSpec
      * @param email Email do orientador.
      * @return Um {@link Optional} contendo o orientador, se encontrado.
      */
-    Optional<Advisor> findByEmail(String email);
+    Advisor findByEmail(String email);
 
     /**
      * Busca um orientador pela matrícula (registro).
@@ -48,5 +48,5 @@ public interface AdvisorRepository extends JpaRepository<Advisor, Long>, JpaSpec
      * @param register Matrícula do orientador.
      * @return Um {@link Optional} contendo o orientador, se encontrado.
      */
-    Optional<Advisor> findByRegister(Long register);
+    Advisor findByRegister(Long register);
 }
