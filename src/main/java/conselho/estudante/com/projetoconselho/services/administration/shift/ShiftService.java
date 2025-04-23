@@ -274,9 +274,9 @@ public class ShiftService {
             throw new RuntimeException("Curso já está associado a este turno");
         }
 
-
         logsService.create( actor, shift, Collections.singletonList( new AddItem("courses", (Object) course ) ), "add" );
         shift.getCourses().add(course);
+        course.setShift(shift);
         repository.save(shift);
     }
 
@@ -303,8 +303,8 @@ public class ShiftService {
         }
 
         logsService.create( actor, shift, Collections.singletonList( new AddItem("courses", (Object) course ) ), "remove" );
-
         shift.getCourses().remove(course);
+        course.setShift(null);
         repository.save(shift);
     }
 
