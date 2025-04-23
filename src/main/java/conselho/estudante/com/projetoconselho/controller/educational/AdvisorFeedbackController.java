@@ -2,6 +2,7 @@ package conselho.estudante.com.projetoconselho.controller.educational;
 
 import conselho.estudante.com.projetoconselho.models.dto.request.educational.AdvisorFeedbackRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.AdvisorFeedbackResponseDTO;
+import conselho.estudante.com.projetoconselho.models.entity.users.Admin;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.educational.AdvisorFeedbackService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/advisor-feedbacks")
 @RequiredArgsConstructor
+@Tag( name = "Feedbacks de orientadores", description = "Gerenciamento de feedbacks de orientadores" )
 public class AdvisorFeedbackController {
 
     private final AdvisorFeedbackService service;
@@ -32,8 +35,15 @@ public class AdvisorFeedbackController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @PostMapping
-    public ResponseEntity<AdvisorFeedbackResponseDTO> create(@RequestBody @Parameter(description = "Dados do feedback") AdvisorFeedbackRequestDTO requestDTO,
-                                                             @RequestParam @Parameter(description = "Usuário logado") User actor) {
+    public ResponseEntity<AdvisorFeedbackResponseDTO> create(@RequestBody @Parameter(description = "Dados do feedback") AdvisorFeedbackRequestDTO requestDTO/*,
+                                                             @RequestParam @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return ResponseEntity.ok(service.create(requestDTO, actor));
     }
 
@@ -46,8 +56,15 @@ public class AdvisorFeedbackController {
     @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
     public ResponseEntity<AdvisorFeedbackResponseDTO> update(@PathVariable @Parameter(description = "ID do feedback") Long id,
-                                                             @RequestBody @Parameter(description = "Dados do feedback") AdvisorFeedbackRequestDTO requestDTO,
-                                                             @RequestParam @Parameter(description = "Usuário logado") User actor) {
+                                                             @RequestBody @Parameter(description = "Dados do feedback") AdvisorFeedbackRequestDTO requestDTO/*,
+                                                             @RequestParam @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return ResponseEntity.ok(service.update(id, requestDTO, actor));
     }
 
@@ -62,8 +79,15 @@ public class AdvisorFeedbackController {
     public ResponseEntity<AdvisorFeedbackResponseDTO> editTexts(@PathVariable Long id,
                                                                 @RequestParam @Parameter(description = "Forças" ) String strengths,
                                                                 @RequestParam @Parameter(description = "Fracos" ) String weaknesses,
-                                                                @RequestParam @Parameter(description = "Sugestões" ) String suggestions,
-                                                                @RequestParam @Parameter(description = "Usuário logado") User actor) {
+                                                                @RequestParam @Parameter(description = "Sugestões" ) String suggestions/*,
+                                                                @RequestParam @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return ResponseEntity.ok(service.editTexts(id, strengths, weaknesses, suggestions, actor));
     }
 
@@ -109,8 +133,15 @@ public class AdvisorFeedbackController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable @Parameter(description = "ID do feedback") Long id,
-                                       @RequestParam @Parameter(description = "Usuário logado") User actor) {
+    public ResponseEntity<Void> delete(@PathVariable @Parameter(description = "ID do feedback") Long id/*,
+                                       @RequestParam @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         service.delete(id, actor);
         return ResponseEntity.noContent().build();
     }

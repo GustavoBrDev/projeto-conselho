@@ -3,6 +3,7 @@ package conselho.estudante.com.projetoconselho.controller.educational;
 import conselho.estudante.com.projetoconselho.models.dto.request.educational.PersonalFeedbackRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.PersonalFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.services.educational.PersonalFeedbackService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/personal-feedbacks")
 @AllArgsConstructor
+@Tag(name = "Personal Feedbacks", description = "Gerenciamento de feedbacks pessoais")
 public class PersonalFeedbackController {
 
     private final PersonalFeedbackService service;
