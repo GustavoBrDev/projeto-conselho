@@ -1,7 +1,8 @@
 package conselho.estudante.com.projetoconselho.services.educational.council;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.CouncilRequestDTO;
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.TeacherPreCouncilRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.ClassFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.CouncilRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.TeacherPreCouncilRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.CouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Subject;
 import conselho.estudante.com.projetoconselho.models.entity.educational.*;
@@ -13,6 +14,7 @@ import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.models.exceptions.DadosDuplicadosException;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.educational.CouncilRepository;
+import conselho.estudante.com.projetoconselho.services.administration.CourseService;
 import conselho.estudante.com.projetoconselho.services.administration.NotificationService;
 import conselho.estudante.com.projetoconselho.services.educational.CallToChatStudentService;
 import conselho.estudante.com.projetoconselho.services.educational.FeedbackGroupService;
@@ -64,6 +66,7 @@ public class CouncilService {
     private TeacherPreCouncilService teacherPreCouncilService;
     private NotificationService notificationService;
     private FeedbackGroupService feedbackGroupService;
+    private CourseService courseService;
 
     /**
      * Cria um novo conselho baseado nas informações do DTO e armazena no repositório.
@@ -577,10 +580,10 @@ public class CouncilService {
      * @return DTO de resposta contendo o conselho atualizado.
      * @throws NaoEncontradoException se o conselho não for encontrado.
      */
-    public CouncilResponseDTO updateClassFeedback(Long id, ClassFeedback classFeedback) {
+    public CouncilResponseDTO updateClassFeedback(Long id, ClassFeedbackRequestDTO classFeedback) {
         if(repository.existsById(id)) {
             Council council = repository.findById(id).get();
-            council.setClassFeedback(classFeedback);
+            council.setClassFeedback(classFeedback.convert( courseService.getObjectCourse( classFeedback.classeRequestDTO().courseId())));
             return repository.save(council).toDTO();
         }
         throw new NaoEncontradoException("Conselho nao encontrado");

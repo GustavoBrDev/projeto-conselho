@@ -53,7 +53,36 @@ public class UserLogsService {
                     createdAt( new Date() ).
                     build();
 
-            System.out.println("log: " + log);
+            repository.save(log);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Cria um log de um {@link User}
+     * @param target {@link User} alvo do log
+     * @param changes {@link List} de {@link EditableItem} que foram feitos ao {@link User} alvo
+     * @param type {@link String} com o tipo de log
+     * @return {@link Boolean} se o log foi criado ou não
+     * @see User, UserLogs
+     * @author Gustavo Stinghen
+     * @since 09/04/2025
+     */
+    public boolean create(User target, List<EditableItem> changes, String type) {
+
+        try {
+
+            UserLogs log = UserLogs.builder().
+                    target(target).
+                    type(type).
+                    timestamp(Instant.now()).
+                    changes(changes).
+                    createdAt( new Date() ).
+                    build();
+
             repository.save(log);
             return true;
         } catch (Exception e) {
@@ -81,7 +110,6 @@ public class UserLogsService {
                     createdAt( new Date() ).
                     build();
 
-            System.out.println("log: " + log);
             repository.save(log);
             return true;
         } catch (Exception e) {

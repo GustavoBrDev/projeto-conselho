@@ -50,7 +50,7 @@ public class UserLogsController {
                     "}")))
     @ApiResponse(responseCode = "400", description = "Erro ao buscar logs")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Page<UserLogs>> findAll(Pageable pageable) {
         return ResponseEntity.ok(service.findAll(pageable));
     }

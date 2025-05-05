@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.controller.chat;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.CHAT.AdvisorChatMessageRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.chat.AdvisorChatMessageRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.ChatMessageResponseDTO;
 import conselho.estudante.com.projetoconselho.services.chat.AdvisorChatMessageService;
 import io.swagger.v3.oas.annotations.Operation;

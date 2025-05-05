@@ -1,9 +1,10 @@
 package conselho.estudante.com.projetoconselho.controller.administration;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION.ShiftPostRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.ShiftRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.CourseResponseDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.ShiftResponseDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.models.entity.users.Admin;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.administration.shift.ShiftService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +37,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Gustavo Stinghen
  */
 @RestController
-@RequestMapping("/administration/shift")
+@RequestMapping("/administration/shifts")
 @AllArgsConstructor
 @Tag( name = "Shift", description = "Recurso para gerenciamento de turnos" )
 public class ShiftController {
@@ -51,15 +52,22 @@ public class ShiftController {
     @PostMapping
     public ResponseEntity<ShiftResponseDTO> postShift(
             @Parameter(description = "Turno a ser criado", content =
-            @Content(schema = @Schema(implementation = ShiftPostRequestDTO.class)),
+            @Content(schema = @Schema(implementation = ShiftRequestDTO.class)),
             required = true, example = "{" +
             "\"name\": \"Turno 1\", \"teacher\": 1 \"course\": 1}")
-            @RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO,
-            @RequestParam @Parameter(description = "Usuário que criou o turno", required = true)  User actor) {
+            @RequestBody @Valid ShiftRequestDTO shiftRequestDTO/*,
+            @RequestParam @Parameter(description = "Usuário que criou o turno", required = true)  User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
 
         try {
-            return new ResponseEntity<>(service.create(shiftPostRequestDTO, actor), HttpStatus.OK);
+            return new ResponseEntity<>(service.create(shiftRequestDTO, actor), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -93,16 +101,23 @@ public class ShiftController {
     @PutMapping("/{id}")
         public ResponseEntity<ShiftResponseDTO> putShift(
                 @Parameter(description = "Dados do turno a ser editado", content =
-                @Content(schema = @Schema(implementation = ShiftPostRequestDTO.class)),
+                @Content(schema = @Schema(implementation = ShiftRequestDTO.class)),
                 required = true, example = "{" +
                 "\"name\": \"Turno 1\", \"teacher\": 1 \"course\": 1}")
-                @RequestBody @Valid ShiftPostRequestDTO shiftPostRequestDTO,
-                @Parameter(description = "ID do turno a ser editado", required = true) @PathVariable Long id,
-                @RequestParam @Parameter(description = "Usuário que editou o turno", required = true) User actor) {
+                @RequestBody @Valid ShiftRequestDTO shiftRequestDTO,
+                @Parameter(description = "ID do turno a ser editado", required = true) @PathVariable Long id/*,
+                @RequestParam @Parameter(description = "Usuário que editou o turno", required = true) User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
 
         try {
-                return new ResponseEntity<>(service.update(shiftPostRequestDTO, id, actor), HttpStatus.OK);
+                return new ResponseEntity<>(service.update(shiftRequestDTO, id, actor), HttpStatus.OK);
             } catch (Exception e) {
+                e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
@@ -114,14 +129,19 @@ public class ShiftController {
     @ApiResponse(responseCode = "400", description = "Erro ao editar turno")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @PatchMapping("/editName/{id}")
-    public ResponseEntity<String> editName(
+    public ResponseEntity<ShiftResponseDTO> editName(
             @Parameter (description = "ID do turno a ser editado", required = true) @PathVariable Long id,
-            @RequestParam @Parameter(description = "Novo nome do turno", required = true) String name,
-            @RequestParam @Parameter(description = "Usuário que editou o turno", required = true) User actor) {
+            @RequestParam @Parameter(description = "Novo nome do turno", required = true) String name/*,
+            @RequestParam @Parameter(description = "Usuário que editou o turno", required = true) User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
 
         try {
-            service.editName(id, name, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>( service.editName(id, name, actor), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -135,11 +155,11 @@ public class ShiftController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/teachers/{id}")
     public ResponseEntity<Page<TeacherResponseDTO>> getTeachersByShift(
-            @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
+            @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long id,
             @Parameter (description = "Pagina para listar professores", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
-        Page<TeacherResponseDTO> teachers = service.listTeachersByShift(shiftId, pageable);
+        Page<TeacherResponseDTO> teachers = service.listTeachersByShift(id, pageable);
         return ResponseEntity.ok(teachers);
     }
 
@@ -151,11 +171,11 @@ public class ShiftController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @GetMapping("/courses/{id}")
     public ResponseEntity<Page<CourseResponseDTO>> getCoursesByShift(
-            @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
+            @Parameter (description = "ID do turno", required = true, example = "1") @PathVariable Long id,
             @Parameter (description = "Pagina para listar cursos", required = true)
             @PageableDefault(page = 0, size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
-        Page<CourseResponseDTO> cursos = service.listCourseByShift(shiftId, pageable);
+        Page<CourseResponseDTO> cursos = service.listCourseByShift(id, pageable);
         return ResponseEntity.ok(cursos);
     }
 
@@ -181,16 +201,23 @@ public class ShiftController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
     @ApiResponse(responseCode = "400", description = "Erro ao associar professor")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/teachers/{shiftId}/{teacherId}")
+    @PatchMapping("/addTeacher/{shiftId}/{teacherId}")
     public ResponseEntity<String> addTeacherToShift(
             @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
-            @Parameter(description = "ID do professor", required = true, example = "2") @PathVariable Long teacherId,
-            @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor) {
+            @Parameter(description = "ID do professor", required = true, example = "2") @PathVariable Long teacherId/*,
+            @Parameter(description = "Usuário que adicionou o professor", required = true) @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
 
         try {
             service.addTeacherToShift(shiftId, teacherId, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Professor associado com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -204,13 +231,20 @@ public class ShiftController {
     @PatchMapping("/removeTeacher/{shiftId}/{teacherId}")
     public ResponseEntity<String> removeTeacherOfShift(
             @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
-            @Parameter(description = "ID do professor", required = true, example = "2") @PathVariable Long teacherId,
-            @Parameter(description = "Usuário que removeu o professor", required = true) @RequestParam User actor) {
+            @Parameter(description = "ID do professor", required = true, example = "2") @PathVariable Long teacherId/*,
+            @Parameter(description = "Usuário que removeu o professor", required = true) @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
 
         try {
             service.removeTeacherOfShift(shiftId, teacherId, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Professor removido com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         }
     }
@@ -221,16 +255,23 @@ public class ShiftController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
     @ApiResponse(responseCode = "400", description = "Erro ao associar curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/addTeacher/{shiftId}/{courseId}")
+    @PatchMapping("/addCourse/{shiftId}/{courseId}")
     public ResponseEntity<String> addCourseToShift(
             @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
-            @Parameter(description = "ID do curso", required = true, example = "2") @PathVariable Long courseId,
-            @Parameter(description = "Usuário que adicionou o curso", required = true) @RequestParam User actor) {
+            @Parameter(description = "ID do curso", required = true, example = "2") @PathVariable Long courseId/*,
+            @Parameter(description = "Usuário que adicionou o curso", required = true) @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
 
         try {
             service.addCourseToShift(shiftId, courseId, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Curso associado com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -241,15 +282,23 @@ public class ShiftController {
             examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Turno 1\",  \"createdAt\": \"2023-01-01\", \"teacher\": 1 \"course\": 1}")))
     @ApiResponse(responseCode = "400", description = "Erro ao remover curso")
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
-    @PatchMapping("/teachers/{shiftId}/{courseId}")
+    @PatchMapping("/removeCourse/{shiftId}/{courseId}")
     public ResponseEntity<String> removeCourseOfShift(
             @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long shiftId,
-            @Parameter(description = "ID do curso", required = true, example = "2") @PathVariable Long courseId,
-            @Parameter(description = "Usuário que removeu o curso", required = true) @RequestParam User actor) {
+            @Parameter(description = "ID do curso", required = true, example = "2") @PathVariable Long courseId/*,
+            @Parameter(description = "Usuário que removeu o curso", required = true) @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         try {
             service.removeCourseOfShift(shiftId, courseId, actor);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Curso removido com sucesso", HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -260,8 +309,14 @@ public class ShiftController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @DeleteMapping("/{id}")
         public ResponseEntity<Void> deleteShift(
-                @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long id,
-                @Parameter(description = "Usuário que deletou o turno", required = true) @RequestParam User actor) {
+                @Parameter(description = "ID do turno", required = true, example = "1") @PathVariable Long id/*,
+                @Parameter(description = "Usuário que deletou o turno", required = true) @RequestParam User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
             try {
                 service.deleteShift(id, actor);
                 return new ResponseEntity<>(HttpStatus.OK);

@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.services.chat;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.CHAT.TeacherChatMessageRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.chat.TeacherChatMessageRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.ChatMessageResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.chat.TeacherChatMessage;
 import conselho.estudante.com.projetoconselho.models.entity.users.Teacher;
@@ -44,8 +44,10 @@ public class TeacherChatMessageService {
     public ChatMessageResponseDTO create (TeacherChatMessageRequestDTO message) {
 
         try {
-            logsService.create(message, "create");
-            return repository.save(message.convert()).convert();
+            TeacherChatMessage converted = message.convert();
+            converted = repository.save(converted);
+            logsService.create(converted, "create");
+            return converted.convert();
         } catch (Exception e) {
            throw new NoSuchElementException("Erro ao enviar mensagem");
         }

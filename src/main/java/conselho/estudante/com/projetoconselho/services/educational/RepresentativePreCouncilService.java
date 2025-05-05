@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.services.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.RepresentativePreCouncilRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.RepresentativePreCouncilRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.RepresentativePreCouncilResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.educational.*;

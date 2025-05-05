@@ -1,9 +1,10 @@
 package conselho.estudante.com.projetoconselho.controller.users;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.StudentRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.StudentRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
+import conselho.estudante.com.projetoconselho.models.entity.users.Admin;
 import conselho.estudante.com.projetoconselho.models.entity.users.Student;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.users.StudentService;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 26/03/2025
  */
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/users/students")
 @AllArgsConstructor
 @Tag(name = "Estudantes", description = "Cria um novo estudante")
 public class StudentController {
@@ -44,9 +45,14 @@ public class StudentController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @PostMapping
-    public StudentResponseDTO createStudent(@RequestBody @Valid @Parameter(description = "Dados do estudante a ser criado") StudentRequestDTO studentRequestDTO,
-                                            @RequestParam @Parameter(description = "Usuário que está criando o estudante") User actor) {
-        return studentService.create(studentRequestDTO, actor);
+    public StudentResponseDTO createStudent(@RequestBody @Valid @Parameter(description = "Dados do estudante a ser criado") StudentRequestDTO studentRequestDTO/*,
+                                            @RequestParam @Parameter(description = "Usuário que está criando o estudante") User actor*/) {
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+        return studentService.create(studentRequestDTO, (User) actor);
     }
 
     // Atualiza um estudante existente
@@ -59,8 +65,13 @@ public class StudentController {
     @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
     public StudentResponseDTO updateStudent(@PathVariable @Parameter(description = "ID do estudante a ser atualizado") Long id,
-                                            @RequestBody @Valid @Parameter(description = "Novos dados do estudante") StudentRequestDTO studentRequestDTO,
-                                            @RequestParam @Parameter(description = "Usuário que está atualizando o estudante") User actor) {
+                                            @RequestBody @Valid @Parameter(description = "Novos dados do estudante") StudentRequestDTO studentRequestDTO/*,
+                                            @RequestParam @Parameter(description = "Usuário que está atualizando o estudante") User actor*/) {
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
         return studentService.update(id, studentRequestDTO, actor);
     }
 
@@ -73,7 +84,12 @@ public class StudentController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/name")
-    public StudentResponseDTO editName(@PathVariable Long id, @RequestParam String name, @RequestParam User actor) {
+    public StudentResponseDTO editName(@PathVariable Long id, @RequestParam String name/*, @RequestParam User actor*/) {
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
         return studentService.editName(id, name, actor);
     }
 
@@ -86,7 +102,12 @@ public class StudentController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/email")
-    public StudentResponseDTO editEmail(@PathVariable Long id, @RequestParam String email, @RequestParam User actor) {
+    public StudentResponseDTO editEmail(@PathVariable Long id, @RequestParam String email/*, @RequestParam User actor*/) {
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
         return studentService.editEmail(id, email, actor);
     }
 
@@ -99,7 +120,13 @@ public class StudentController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/registration")
-    public StudentResponseDTO editRegistration(@PathVariable Long id, @RequestParam Long registration, @RequestParam User actor) {
+    public StudentResponseDTO editRegistration(@PathVariable Long id, @RequestParam Long registration/*, @RequestParam User actor*/) {
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return studentService.editRegistration(id, registration, actor);
     }
 
@@ -112,7 +139,12 @@ public class StudentController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @PatchMapping("/{id}/password")
-    public StudentResponseDTO editPassword(@PathVariable Long id, @RequestParam String password, @RequestParam User actor) {
+    public StudentResponseDTO editPassword(@PathVariable Long id, @RequestParam String password/*, @RequestParam User actor*/) {
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
         return studentService.editPassword(id, password, actor);
     }
 
@@ -190,7 +222,12 @@ public class StudentController {
     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
-    public void deleteStudent(@PathVariable Long id, @RequestParam User actor) {
+    public void deleteStudent(@PathVariable Long id/*, @RequestParam User acto*/) {
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
         studentService.delete(id, actor);
     }
 

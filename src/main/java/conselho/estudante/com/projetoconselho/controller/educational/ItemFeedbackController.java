@@ -1,8 +1,9 @@
 package conselho.estudante.com.projetoconselho.CONTROLLERS.EDUCATIONAL;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.ItemFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.ItemFeedbackRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.ItemFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.services.educational.ItemFeedbackService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 @RestController
 @RequestMapping("educational/itemfeedback")
 @RequiredArgsConstructor
+@Tag(name = "Item Feedback", description = "Gerenciamento de feedbacks de itens")
 public class ItemFeedbackController {
 
     private final ItemFeedbackService service;

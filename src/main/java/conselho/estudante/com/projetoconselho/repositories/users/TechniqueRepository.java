@@ -1,6 +1,8 @@
 package conselho.estudante.com.projetoconselho.repositories.users;
 
 import conselho.estudante.com.projetoconselho.models.entity.users.Technique;
+import conselho.estudante.com.projetoconselho.services.users.technique.TechniqueService;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -21,14 +23,14 @@ public interface TechniqueRepository extends JpaRepository<Technique, Long>, Jpa
      * @return true se um técnico com o email fornecido existe, caso contrário, false.
      */
 
-    public boolean existsByEmail(String email);
+    boolean existsByEmail(String email);
     /**
      * Verifica a existência de um técnico com o registro fornecido no banco de dados.
      *
      * @param register Registro a ser verificado.
      * @return true se um técnico com o registro fornecido existe, caso contrário, false.
      */
-    public boolean existsByRegister(Long register);
+    boolean existsByRegister(Long register);
 
     /**
      * Encontra um técnico pelo seu email.
@@ -37,5 +39,7 @@ public interface TechniqueRepository extends JpaRepository<Technique, Long>, Jpa
      * @return A entidade {@link Technique} que corresponde ao email fornecido,
      *         ou null se nenhum técnico for encontrado.
      */
-    public Technique findByEmail(String email);
+    Technique findByEmail(String email);
+
+    Technique findByRegister(Long register);
 }

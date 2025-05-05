@@ -1,5 +1,8 @@
 package conselho.estudante.com.projetoconselho.models.dto.response.administration;
 
+import conselho.estudante.com.projetoconselho.models.dto.response.users.TeacherResponseDTO;
+import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
+
 import java.util.Date;
 import java.util.List;
 
@@ -31,11 +34,11 @@ public record ShiftResponseDTO(
         /**
          * Lista de IDs dos professores associados a este turno.
          */
-        List<Long> teacher_id,
+        List<TeacherResponseDTO> teachers,
 
         /**
          * Lista de IDs dos cursos associados a este turno.
          */
-        List<Long> course_id
+        List<CourseResponseDTO> courses
 ) {
 }

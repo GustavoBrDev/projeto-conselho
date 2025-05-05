@@ -10,7 +10,7 @@ import conselho.estudante.com.projetoconselho.services.logs.LoginLogsService;
 import conselho.estudante.com.projetoconselho.services.users.AdvisorService;
 import conselho.estudante.com.projetoconselho.services.users.StudentService;
 import conselho.estudante.com.projetoconselho.services.users.SupervisorService;
-import conselho.estudante.com.projetoconselho.services.users.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.services.users.technique.TechniqueService;
 import conselho.estudante.com.projetoconselho.services.users.TeacherService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -229,9 +229,7 @@ public class LoginService {
                 throw new RuntimeException("Erro ao criar token" );
             }
 
-            if (emailService.sendResetPasswordEmail(student.getEmail(), token)) {
-                throw new RuntimeException("Erro ao enviar email" );
-            }
+            emailService.sendResetPasswordEmail(student.getEmail(), token);
 
             return true;
 
@@ -246,9 +244,7 @@ public class LoginService {
                 throw new RuntimeException("Erro ao criar token" );
             }
 
-            if (emailService.sendResetPasswordEmail(technique.getEmail(), token)) {
-                throw new RuntimeException("Erro ao enviar email" );
-            }
+            emailService.sendResetPasswordEmail(technique.getEmail(), token);
 
             return true;
 
@@ -263,9 +259,7 @@ public class LoginService {
                 throw new RuntimeException("Erro ao criar token" );
             }
 
-            if (emailService.sendResetPasswordEmail(supervisor.getEmail(), token)) {
-                throw new RuntimeException("Erro ao enviar email" );
-            }
+            emailService.sendResetPasswordEmail(supervisor.getEmail(), token);
 
             return true;
 
@@ -280,9 +274,7 @@ public class LoginService {
                 throw new RuntimeException("Erro ao criar token" );
             }
 
-            if (emailService.sendResetPasswordEmail(teacher.getEmail(), token)) {
-                throw new RuntimeException("Erro ao enviar email" );
-            }
+            emailService.sendResetPasswordEmail(teacher.getEmail(), token);
 
             return true;
 
@@ -297,9 +289,7 @@ public class LoginService {
                 throw new RuntimeException("Erro ao criar token" );
             }
 
-            if (emailService.sendResetPasswordEmail(advisor.getEmail(), token)) {
-                throw new RuntimeException("Erro ao enviar email" );
-            }
+            emailService.sendResetPasswordEmail(advisor.getEmail(), token);
 
             return true;
 

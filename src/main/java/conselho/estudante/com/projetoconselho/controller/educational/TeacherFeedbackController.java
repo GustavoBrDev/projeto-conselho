@@ -1,9 +1,10 @@
 package conselho.estudante.com.projetoconselho.controller.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.TeacherFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.TeacherFeedbackRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.TeacherFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.services.educational.TeacherFeedbackService;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("educational/teacherfeedback")
 @AllArgsConstructor
+@Tag(name = "Teacher Feedback", description = "Recurso para gerenciar feedbacks de professores")
 public class TeacherFeedbackController {
 
     private final TeacherFeedbackService service;

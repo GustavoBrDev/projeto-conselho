@@ -1,8 +1,9 @@
 package conselho.estudante.com.projetoconselho.services.chat;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.CHAT.AdvisorChatMessageRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.chat.AdvisorChatMessageRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.ChatMessageResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.chat.AdvisorChatMessage;
+import conselho.estudante.com.projetoconselho.models.entity.chat.ChatMessage;
 import conselho.estudante.com.projetoconselho.models.entity.users.Advisor;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.chat.AdvisorChatMessageRepository;
@@ -39,8 +40,11 @@ public class AdvisorChatMessageService {
     public ChatMessageResponseDTO create (AdvisorChatMessageRequestDTO message) {
 
         try {
-            logsService.create( message, "create" );
-            return repository.save(message.convert()).convert();
+            AdvisorChatMessage converted = message.convert();
+            converted = repository.save(converted);
+            logsService.create(converted, "create");
+            return converted.convert();
+
         } catch (Exception e) {
            throw new NoSuchElementException("Erro ao enviar mensagem");
         }
@@ -71,7 +75,7 @@ public class AdvisorChatMessageService {
     public Page<ChatMessageResponseDTO> findByAdvisor (Long id, Pageable pageable) {
 
         try {
-            Advisor advisor = advisorService.getAdvisorById(id);
+            Advisor advisor = advisorService.getObjectAdvisor(id);
 
             if (advisor == null) {
                 throw new NaoEncontradoException("Orientador nao encontrado");

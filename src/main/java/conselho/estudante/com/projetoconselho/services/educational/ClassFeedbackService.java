@@ -1,10 +1,11 @@
 package conselho.estudante.com.projetoconselho.services.educational;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.EDUCATIONAL.ClassFeedbackRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.educational.ClassFeedbackRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.educational.ClassFeedbackResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.educational.ClassFeedback;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.educational.ClassFeedbackRepository;
+import conselho.estudante.com.projetoconselho.services.administration.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.util.Date;
 public class ClassFeedbackService {
 
     private final ClassFeedbackRepository repository;
+    private CourseService courseService;
 
     /**
      * Cria um novo feedback de turma.
@@ -30,7 +32,7 @@ public class ClassFeedbackService {
      * @return Feedback criado
      */
     public ClassFeedbackResponseDTO create(ClassFeedbackRequestDTO requestDTO) {
-        ClassFeedback classFeedback = requestDTO.convert();
+        ClassFeedback classFeedback = requestDTO.convert( courseService.getObjectCourse(requestDTO.classeRequestDTO().courseId()) );
         classFeedback.setCreatedAt(new Date());
 
         classFeedback = repository.save(classFeedback);

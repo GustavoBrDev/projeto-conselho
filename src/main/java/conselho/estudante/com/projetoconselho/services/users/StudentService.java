@@ -1,7 +1,7 @@
 package conselho.estudante.com.projetoconselho.services.users;
 
 
-import conselho.estudante.com.projetoconselho.models.dto.request.USERS.StudentRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.StudentRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.users.StudentResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Notification;
@@ -72,6 +72,7 @@ public class StudentService {
         Student student = studentRequestDTO.convert();
         Date data = new Date();
         student.setCreatedAt(data);
+        student.setIsHidden(false);
         student.setPassword(generateRandomPassword());
         if (repository.existsByEmail(student.getEmail())) {
             throw new DadosDuplicadosException("Email ja cadastrado");
@@ -79,9 +80,10 @@ public class StudentService {
             throw new DadosDuplicadosException("Matricula ja cadastrada");
         }
 
-        logsService.create( actor, student, "create" );
-        emailService.sendWelcomeEmail( student.getEmail(), student.getPassword() );
-        return repository.save(student).convert();
+       emailService.sendWelcomeEmail( student.getEmail(), student.getPassword() );
+       student = repository.save(student);
+       logsService.create( actor, student, "create" );
+       return student.convert();
     }
 
     /**
@@ -116,12 +118,21 @@ public class StudentService {
         if (repository.existsById(id)) {
             student.setId(id);
             if (repository.existsByEmail(student.getEmail())) {
-                throw new DadosDuplicadosException("Email ja cadastrado");
+
+                if ( ! repository.findById(id).get().getEmail().equals( student.getEmail() ) ) {
+                    throw new DadosDuplicadosException("Email ja cadastrado");
+                }
+
             } else if (repository.existsByRegistration(student.getRegistration())) {
-                throw new DadosDuplicadosException("Matricula ja cadastrada");
+
+                if ( ! repository.findById(id).get().getRegistration().equals( student.getRegistration() ) ) {
+                    throw new DadosDuplicadosException("Matricula ja cadastrada");
+                }
             }
 
             Student oldStudent = repository.findById(id).get();
+            student.setCreatedAt(oldStudent.getCreatedAt());
+            student.setIsHidden(oldStudent.getIsHidden());
             List<EditableItem> changes = getEditableItems(oldStudent, student);
             logsService.create( actor, student, changes, "update" );
 
@@ -361,8 +372,8 @@ public class StudentService {
     public void delete(Long id, User actor) {
         try {
             Student student = repository.findById(id).get();
-            repository.deleteById(id);
             logsService.create( actor, student, "delete" );
+            repository.deleteById(id);
         } catch (Exception e) {
             throw new NaoEncontradoException("Aluno nao deletado");
         }

@@ -14,10 +14,10 @@ import lombok.Builder;
  */
 @Builder
 public class TechniqueResponseDTO implements UserResponseDTO {
-    Long id;
-    String name;
-    String password;
-    String image;
-    String email;
-    Long register;
+    public Long id;
+    public String name;
+    public String password;
+    public String image;
+    public String email;
+    public Long register;
 }

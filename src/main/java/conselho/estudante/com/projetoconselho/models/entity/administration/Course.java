@@ -62,6 +62,7 @@ public class Course {
     @ManyToOne(fetch = FetchType.LAZY)
     private Supervisor supervisor;
 
+
     /**
      * Metodo para adicionar um professor ao curso
      * @param teacher o professor a ser adicionado em formato de {@link Teacher}
@@ -71,7 +72,7 @@ public class Course {
      */
     public boolean addTeacher(Teacher teacher) {
 
-        if (this.teachers.contains(teacher)) {
+        if ( this.teachers.contains(teacher)) {
             return false;
         } else {
             this.teachers.add(teacher);

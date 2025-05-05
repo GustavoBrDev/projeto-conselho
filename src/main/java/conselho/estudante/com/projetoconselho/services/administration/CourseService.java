@@ -1,6 +1,9 @@
 package conselho.estudante.com.projetoconselho.services.administration;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION.CourseRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.ClasseRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.CourseRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.SubjectRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.users.TeacherRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.CourseResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
@@ -16,10 +19,13 @@ import conselho.estudante.com.projetoconselho.models.exceptions.DadosDuplicadosE
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.administration.CourseRepository;
 import conselho.estudante.com.projetoconselho.services.administration.shift.ShiftService;
+import conselho.estudante.com.projetoconselho.services.administration.subject.SubjectService;
 import conselho.estudante.com.projetoconselho.services.logs.CourseLogsService;
 import conselho.estudante.com.projetoconselho.services.users.SupervisorService;
+import conselho.estudante.com.projetoconselho.services.users.TeacherService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,17 +51,34 @@ import java.util.List;
  * Conexão com o CourseLogsService para gerar logs
  * @author Gustavo Stinghen
  * @see CourseLogsService
+ *
+ * Atualizado em 09/04/2025
+ * Sobrecarga de métodos para retorno correto na controller
  */
 @Service
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class CourseService {
 
+    @Autowired
     private CourseRepository repository;
+    @Autowired
     @Lazy
     private SupervisorService supervisorService;
+    @Autowired
     private CourseLogsService logsService;
+    @Autowired
+    @Lazy
     private ShiftService shiftService;
+    @Autowired
+    @Lazy
+    private TeacherService teacherService;
+    @Autowired
+    @Lazy
+    private SubjectService subjectService;
+    @Autowired
+    @Lazy
+    private ClasseService classeService;
 
     /**
      * Cria um novo curso com os dados fornecidos.
@@ -65,13 +89,14 @@ public class CourseService {
      * @throws DadosDuplicadosException Se um curso com o mesmo nome já existir.
      */
     public CourseResponseDTO create(CourseRequestDTO courseRequestDTO, User actor) {
-        Course course = courseRequestDTO.convert();
+        Course course = courseRequestDTO.convert( shiftService.getObjectShift( courseRequestDTO.shiftId() ) );
         if (repository.existsByName(course.getName())) {
             throw new DadosDuplicadosException("Curso ja cadastrado");
         } else {
-            shiftService.addCourseToShift( course.getShift().getId(), course.getId(), actor);
+            course.setCreatedAt( new Date());
+            course = repository.save(course);
             logsService.create(actor, course, "create");
-            return repository.save(course).toDTO();
+            return course.toDTO();
         }
     }
 
@@ -86,13 +111,13 @@ public class CourseService {
      * @throws NaoEncontradoException Se o curso não for encontrado.
      */
     public CourseResponseDTO update(Long id, CourseRequestDTO courseRequestDTO, User actor) {
-        Course course = courseRequestDTO.convert();
+        Course course = courseRequestDTO.convert( shiftService.getObjectShift( courseRequestDTO.shiftId() ) );
         if (repository.existsById(id)) {
             course.setId(id);
             if (repository.existsByName(course.getName())) {
                 throw new DadosDuplicadosException("Curso ja cadastrado");
             } else {
-
+                course.setCreatedAt( repository.findById(id).get().getCreatedAt());
                 logsService.create(actor, course, getEditableItems(repository.findById(id).get(), course, actor), "update");
                 return repository.save(course).toDTO();
             }
@@ -131,8 +156,12 @@ public class CourseService {
             changes.add(new ChangeItem("shift", (Object) oldCourse.getShift(), (Object) course.getShift()));
         }
 
-        if ( ! oldCourse.getSupervisor().equals( course.getSupervisor() ) ) {
-            changes.add(new ChangeItem("supervisor", (Object) oldCourse.getSupervisor(), (Object) course.getSupervisor()));
+        if ( oldCourse.getSupervisor() != null ){
+
+            if ( ! oldCourse.getSupervisor().equals( course.getSupervisor() ) ) {
+                changes.add(new ChangeItem("supervisor", (Object) oldCourse.getSupervisor(), (Object) course.getSupervisor()));
+            }
+
         }
 
         return changes;
@@ -218,7 +247,11 @@ public class CourseService {
             throw  new RuntimeException("Supervisor não encontrado");
         }
         Course course = repository.findById(id).get();
-        supervisorService.removeCourse(course.getSupervisor().getId(), course, actor);
+
+        if ( course.getSupervisor() != null ) {
+            supervisorService.removeCourse(course.getSupervisor().getId(), course, actor);
+        }
+
         supervisorService.addCourse(supervisorId, course, actor);
         Supervisor supervisor = supervisorService.findObjectSupervisor(supervisorId);
         logsService.create(actor, course, Collections.singletonList(new ChangeItem("supervisor", (Object) course.getSupervisor(), (Object) supervisor)), "update");
@@ -230,13 +263,18 @@ public class CourseService {
      * Edita o turno de um curso específico.
      *
      * @param id o ID do curso
-     * @param shift o novo turno
+     * @param shiftId o ID do turno
      * @param actor o usuário que editou o curso
      * @return O curso atualizado convertido para DTO.
      */
-    public CourseResponseDTO editShift(Long id, Shift shift, User actor) {
+    public CourseResponseDTO editShift(Long id, Long shiftId, User actor) {
+        Shift shift = shiftService.getObjectShift(shiftId);
         Course course = repository.findById(id).get();
-        shiftService.removeCourseOfShift(course.getShift().getId(), course.getId(), actor);
+
+        if ( course.getShift() != null ) {
+            shiftService.removeCourseOfShift(course.getShift().getId(), course.getId(), actor);
+        }
+
         shiftService.addCourseToShift(shift.getId(), course.getId(), actor);
         logsService.create(actor, course, Collections.singletonList(new ChangeItem("shift", (Object) course.getShift(), (Object) shift)), "update");
         course.setShift(shift);
@@ -290,15 +328,32 @@ public class CourseService {
     /**
      *  Adiciona um professor ao curso.
      *
+     * @param id o ID do curso ao qual o professor sera adicionado
+     * @param teacherId o ID do professor a ser adicionado
+     * @param actor o usuario que adicionou o professor
+     */
+    public void addTeacherToCourse(Long id, Long teacherId, User actor) {
+        Teacher teacher = teacherService.getObjectTeacher(teacherId);
+        Course course = repository.findById(id).get();
+        if(course.addTeacher(teacher)){
+            logsService.create( actor, course, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "add" );
+            repository.save(course);
+        } else {
+            throw new NaoEncontradoException("Professor não encontrado");
+        }
+    }
+
+    /**
+     *  Adiciona um professor ao curso.
+     *
      * @param course o curso ao qual o professor sera adicionado
      * @param teacher o professor a ser adicionado
      * @param actor o usuario que adicionou o professor
-     * @return o curso atualizado convertido para DTO
      */
-    public CourseResponseDTO addTeacherToCourse(Course course, Teacher teacher, User actor) {
+    public void addTeacherToCourse(Course course, Teacher teacher, User actor) {
         if(course.addTeacher(teacher)){
             logsService.create( actor, course, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "add" );
-            return repository.save(course).toDTO();
+            repository.save(course);
         } else {
             throw new NaoEncontradoException("Professor não encontrado");
         }
@@ -307,16 +362,17 @@ public class CourseService {
     /**
      * Adiciona uma matéria ao curso.
      *
-     * @param course O curso ao qual a matéria será adicionada.
-     * @param subject A matéria a ser adicionada ao curso.
+     * @param id O ID do curso ao qual a matéria sera adicionada.
+     * @param subjectId O ID da materia a ser adicionada.
      * @param actor O usuário que adicionou a matéria ao curso.
-     * @return DTO contendo os detalhes do curso atualizado.
      * @throws NaoEncontradoException Se a matéria não for encontrada ou não puder ser adicionada.
      */
-    public CourseResponseDTO addSubjectToCourse(Course course, Subject subject, User actor) {
+    public void addSubjectToCourse(Long id, Long subjectId, User actor) {
+        Course course = repository.findById(id).get();
+        Subject subject = subjectService.getObjectSubject(subjectId);
         if(course.addSubject(subject)){
             logsService.create( actor, course, Collections.singletonList( new AddItem("subjects", (Object) subject ) ), "add" );
-            return repository.save(course).toDTO();
+            repository.save(course).toDTO();
         } else {
             throw new NaoEncontradoException("Materia não encontrada");
         }
@@ -328,33 +384,71 @@ public class CourseService {
      * @param course o curso ao qual a classe sera adicionada
      * @param classe a classe a ser adicionada
      * @param actor o usuario que adicionou a classe
-     * @return DTO contendo os detalhes do curso atualizado.
      * @throws NaoEncontradoException Se a classe nao for encontrada ou nao puder ser adicionada.
      * @author Gustavo Stinghen
      * @since 25/03/2024
      */
-    public CourseResponseDTO addClassToCourse(Course course, Classe classe, User actor) {
+    public void addClassToCourse(Course course, Classe classe, User actor) {
         if(course.addClasse(classe)){
             logsService.create( actor, course, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "add" );
-            return repository.save(course).toDTO();
+            repository.save(course).toDTO();
         } else {
             throw new NaoEncontradoException("Materia nao encontrada");
         }
     }
 
     /**
-     *  Remove um professor ao curso.
+     * Adiciona uma classe ao curso.
      *
-     * @param course o curso ao qual o professor sera removido
+     * @param id o ID do curso ao qual a classe sera adicionada
+     * @param classeId o ID da classe a ser adicionada
+     * @param actor o usuario que adicionou a classe
+     * @throws NaoEncontradoException Se a classe nao for encontrada ou nao puder ser adicionada.
+     * @author Gustavo Stinghen
+     * @since 25/03/2024
+     */
+    public void addClassToCourse(Long id, Long classeId, User actor) {
+        Course course = repository.findById(id).get();
+        Classe classe = classeService.findObjectClasse(classeId);
+        if(course.addClasse(classe)){
+            logsService.create( actor, course, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "add" );
+            repository.save(course).toDTO();
+        } else {
+            throw new NaoEncontradoException("Materia nao encontrada");
+        }
+    }
+
+    /**
+     * Remove um professor ao curso.
+     *
+     * @param course  o curso ao qual o professor sera removido
      * @param teacher o professor a ser removido
-     * @param actor o usuario que removeu o professor
-     * @return DTO contendo os detalhes do curso atualizado.
+     * @param actor   o usuario que removeu o professor
      * @throws NaoEncontradoException Se a matéria não for encontrada ou não puder ser adicionada.
      */
-    public CourseResponseDTO removeTeacherFromCourse(Course course, Teacher teacher, User actor) {
+    public void removeTeacherFromCourse(Course course, Teacher teacher, User actor) {
         if(course.removeTeacher(teacher)){
             logsService.create( actor, course, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "remove" );
-            return repository.save(course).toDTO();
+            repository.save(course).toDTO();
+        } else {
+            throw new NaoEncontradoException("Professor nao encontrado");
+        }
+    }
+
+    /**
+     * Remove um professor ao curso.
+     *
+     * @param id      o ID do curso ao qual o professor sera removido
+     * @param teacherId o ID do professor a ser removido
+     * @param actor   o usuario que removeu o professor
+     * @throws NaoEncontradoException Se a matéria não for encontrada ou não puder ser adicionada.
+     */
+    public void removeTeacherFromCourse(Long id, Long teacherId, User actor) {
+        Course course = repository.findById(id).get();
+        Teacher teacher = teacherService.getObjectTeacher(teacherId);
+        if(course.removeTeacher(teacher)){
+            logsService.create( actor, course, Collections.singletonList( new AddItem("teachers", (Object) teacher ) ), "remove" );
+            repository.save(course).toDTO();
         } else {
             throw new NaoEncontradoException("Professor nao encontrado");
         }
@@ -363,16 +457,17 @@ public class CourseService {
     /**
      * Remove uma materia ao curso.
      *
-     * @param course o curso ao qual a materia sera removida
-     * @param subject a materia a ser removida
+     * @param id o ID do curso ao qual a materia sera removida
+     * @param subjectId o ID da materia a ser removida
      * @param actor o usuario que removeu a materia
-     * @return DTO contendo os detalhes do curso atualizado.
      * @throws NaoEncontradoException Se a matéria nao for encontrada ou nao puder ser adicionada.
      */
-    public CourseResponseDTO removeSubjectFromCourse(Course course, Subject subject, User actor) {
+    public void removeSubjectFromCourse(Long id, Long subjectId, User actor) {
+        Course course = repository.findById(id).get();
+        Subject subject = subjectService.getObjectSubject(subjectId);
         if(course.removeSubject(subject)){
             logsService.create( actor, course, Collections.singletonList( new AddItem("subjects", (Object) subject ) ), "remove" );
-            return repository.save(course).toDTO();
+            repository.save(course).toDTO();
         } else {
             throw new NaoEncontradoException("Materia nao encontrada");
         }
@@ -384,15 +479,35 @@ public class CourseService {
      * @param course o curso ao qual a classe sera removida
      * @param classe a classe a ser removida
      * @param actor o usuario que removeu a classe
-     * @return DTO contendo os detalhes do curso atualizado.
      * @throws NaoEncontradoException Se a classe nao for encontrada ou nao puder ser adicionada.
      * @author Gustavo Stinghen
      * @since 25/03/2024
      */
-    public CourseResponseDTO removeClassFromCourse(Course course, Classe classe, User actor) {
+    public void removeClassFromCourse(Course course, Classe classe, User actor) {
         if(course.removeClasse(classe)){
             logsService.create( actor, course, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "remove" );
-            return repository.save(course).toDTO();
+            repository.save(course).toDTO();
+        } else {
+            throw new NaoEncontradoException("Materia nao encontrada");
+        }
+    }
+
+    /**
+     * Remove uma classe ao curso.
+     *
+     * @param id o ID do curso ao qual a classe sera removida
+     * @param classeId o ID da classe a ser removida
+     * @param actor o usuario que removeu a classe
+     * @throws NaoEncontradoException Se a classe nao for encontrada ou nao puder ser adicionada.
+     * @author Gustavo Stinghen
+     * @since 25/03/2024
+     */
+    public void removeClassFromCourse(Long id, Long classeId, User actor) {
+        Course course = repository.findById(id).get();
+        Classe classe = classeService.findObjectClasse(classeId);
+        if(course.removeClasse(classe)){
+            logsService.create( actor, course, Collections.singletonList( new AddItem("classes", (Object) classe ) ), "remove" );
+            repository.save(course).toDTO();
         } else {
             throw new NaoEncontradoException("Materia nao encontrada");
         }

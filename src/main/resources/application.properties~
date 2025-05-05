@@ -1,0 +1,18 @@
+spring.datasource.url = jdbc:mysql://localhost:3306/db_projeto?createDatabaseIfNotExist=true
+spring.datasource.username = root
+spring.datasource.password =
+spring.jpa.hibernate.ddl-auto = update
+server.port = 9090
+spring.data.mongodb.uri=mongodb+srv://gustavostinghen:UqsNeGbD0uedTxCR@mongocluester.2wwyr.mongodb.net/?retryWrites=true&w=majority&appName=MongoCluester
+spring.data.mongodb.database=logs_db
+spring.data.mongodb.auto-index-creation=true
+springdoc.api-docs.enabled=true
+springdoc.swagger-ui.title=Conselho do Estudante
+springdoc.swagger-ui.description=Documentacao do site Conselho do Estudante
+springdoc.swagger-ui.path=/swagger-ui.html
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=conselhoestudante@gmail.com
+spring.mail.password=hrgw askm bgan ouhf
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true

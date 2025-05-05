@@ -1,9 +1,10 @@
 package conselho.estudante.com.projetoconselho.controller.administration;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION.ClasseRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.ClasseRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.ClasseResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
+import conselho.estudante.com.projetoconselho.models.entity.users.Admin;
 import conselho.estudante.com.projetoconselho.models.entity.users.Student;
 import conselho.estudante.com.projetoconselho.models.entity.users.User;
 import conselho.estudante.com.projetoconselho.services.administration.ClasseService;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 01/04/2025
  */
 @RestController
-@RequestMapping("/api/classes")
+@RequestMapping("/administration/classes")
 @Tag(name = "Classe", description = "Controlador para gerenciar as operações relacionadas a Classe")
 @AllArgsConstructor
 public class ClasseController {
@@ -43,8 +44,15 @@ public class ClasseController {
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @PostMapping
-    public ClasseResponseDTO create(@RequestBody @Parameter(description = "Dados da Classe") ClasseRequestDTO classeRequestDTO,
-                                    @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+    public ClasseResponseDTO create(@RequestBody @Parameter(description = "Dados da Classe", required = true, schema = @Schema(implementation = ClasseRequestDTO.class), example = " { \"name\": \"Classe 1\", \"acronym\": \"C1\"  \"courseId\": \"1\", \"active\": \"true\"} ") ClasseRequestDTO classeRequestDTO/*,
+                                    @RequestBody @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return classeService.create(classeRequestDTO, actor);
     }
 
@@ -57,8 +65,15 @@ public class ClasseController {
     @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
     public ClasseResponseDTO update(@PathVariable @Parameter(description = "ID da Classe") Long id,
-                                    @RequestBody @Parameter(description = "Dados da Classe") ClasseRequestDTO classeRequestDTO,
-                                    @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+                                    @RequestBody @Parameter(description = "Dados da Classe", required = true, schema = @Schema(implementation = ClasseRequestDTO.class), example = " { \"name\": \"Classe 1\", \"acronym\": \"C1\"  \"courseId\": \"1\", \"active\": \"true\"} ") ClasseRequestDTO classeRequestDTO/*,
+                                    @RequestBody @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return classeService.update(id, classeRequestDTO, actor);
     }
 
@@ -69,10 +84,17 @@ public class ClasseController {
     @ApiResponse(responseCode = "400", description = "Pedido ruim")
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/name")
+    @PatchMapping("/editName/{id}")
     public ClasseResponseDTO editName(@PathVariable @Parameter(description = "ID da Classe") Long id,
-                                      @RequestParam @Parameter(description = "Nome da Classe") String name,
-                                      @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+                                      @RequestParam @Parameter(description = "Nome da Classe") String name/*,
+                                      @RequestBody @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return classeService.editName(id, name, actor);
     }
 
@@ -83,10 +105,17 @@ public class ClasseController {
     @ApiResponse(responseCode = "400", description = "Pedido ruim")
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/acronym")
+    @PatchMapping("/editAcronym/{id}")
     public ClasseResponseDTO editAcronym(@PathVariable @Parameter(description = "ID da Classe") Long id,
-                                         @RequestParam @Parameter(description = "Sigla da Classe") String acronym,
-                                         @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+                                         @RequestParam @Parameter(description = "Sigla da Classe") String acronym/*,
+                                         @RequestBody @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return classeService.editAcronym(id, acronym, actor);
     }
 
@@ -97,10 +126,17 @@ public class ClasseController {
     @ApiResponse(responseCode = "400", description = "Pedido ruim")
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/course")
+    @PatchMapping("/editCourse/{id}")
     public ClasseResponseDTO editCourse(@PathVariable @Parameter(description = "ID da Classe") Long id,
-                                        @RequestBody @Parameter(description = "Curso da Classe") Course course,
-                                        @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+                                        @RequestBody @Parameter(description = "Curso da Classe") Course course/*,
+                                        @RequestBody @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return classeService.editCourse(id, course, actor);
     }
 
@@ -111,10 +147,17 @@ public class ClasseController {
     @ApiResponse(responseCode = "400", description = "Pedido ruim")
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
-    @PatchMapping("/{id}/active")
+    @PatchMapping("/editActive/{id}")
     public ClasseResponseDTO editActive(@PathVariable @Parameter(description = "ID da Classe") Long id,
-                                        @RequestParam @Parameter(description = "Estado ativo da Classe") boolean active,
-                                        @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+                                        @RequestParam @Parameter(description = "Estado ativo da Classe") boolean active/*,
+                                        @RequestBody @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         return classeService.editActive(id, active, actor);
     }
 
@@ -147,10 +190,10 @@ public class ClasseController {
     @ApiResponse(responseCode = "400", description = "Pedido ruim")
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
-    @PostMapping("/{id}/students")
+    @PatchMapping("/addStudent/{id}")
     public void addStudentToClasse(@PathVariable @Parameter(description = "ID da Classe" ) Long id,
                                    @RequestBody @Parameter(description = "Estudante a ser adicionado") Student student,
-                                   @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+                                   @RequestBody @Parameter(description = "Usuário logado") User actor) {
         Classe classe = classeService.findObjectClasse(id);
         classeService.addStudentToClasse(classe, student, actor);
     }
@@ -160,10 +203,10 @@ public class ClasseController {
     @ApiResponse(responseCode = "400", description = "Pedido ruim")
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
-    @DeleteMapping("/{id}/students")
+    @PatchMapping("/removeStudent/{id}")
     public void removeStudentFromClasse(@PathVariable @Parameter(description = "ID da Classe" ) Long id,
                                         @RequestBody @Parameter(description = "Estudante a ser removido") Student student,
-                                        @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+                                        @RequestBody @Parameter(description = "Usuário logado") User actor) {
         Classe classe = classeService.findObjectClasse(id);
         classeService.removeStudentFromClasse(classe, student, actor);
     }
@@ -174,8 +217,15 @@ public class ClasseController {
     @ApiResponse(responseCode = "500", description = "Erro do Servidor Interno")
     @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @Parameter(description = "ID da Classe" ) Long id,
-                       @RequestHeader("user") @Parameter(description = "Usuário logado") User actor) {
+    public void delete(@PathVariable @Parameter(description = "ID da Classe" ) Long id/*,
+                       @RequestBody @Parameter(description = "Usuário logado") User actor*/) {
+
+        Admin actor = Admin.builder()
+                .id(1L)
+                .username("adminTrabalhandoCom@Senai")
+                .password("adminConselho@estudante.com")
+                .build();
+
         classeService.delete(id, actor);
     }
 }

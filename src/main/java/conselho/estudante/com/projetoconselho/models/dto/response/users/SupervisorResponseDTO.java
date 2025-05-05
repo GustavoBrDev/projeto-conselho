@@ -14,10 +14,10 @@ import lombok.Builder;
  */
 @Builder
 public class SupervisorResponseDTO implements UserResponseDTO {
-    Long id;
-    String name;
-    String email;
-    String password;
-    String image;
-    Long register;
+    public Long id;
+    public String name;
+    public String email;
+    public String password;
+    public String image;
+    public Long register;
 }

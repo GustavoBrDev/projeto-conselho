@@ -43,7 +43,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         @Tag(name = "Logs de PreCouncils", description = "Recurso de gerenciamento de logs de PreCouncils"),
         @Tag(name = "Logs de representantes", description = "Recurso de gerenciamento de logs de representantes"),
         @Tag(name = "Logs de Shifts", description = "Recurso de gerenciamento de logs de Shifts"),
-        @Tag(name = "Logs de Subjects", description = "Recurso de gerenciamento de logs de Subjects")
+        @Tag(name = "Logs de Subjects", description = "Recurso de gerenciamento de logs de Subjects"),
+        @Tag( name = "Feedbacks de orientadores", description = "Gerenciamento de feedbacks de orientadores" ),
+        @Tag(name = "Item Feedback", description = "Gerenciamento de feedbacks de itens"),
+        @Tag(name = "Personal Feedbacks", description = "Gerenciamento de feedbacks pessoais"),
+        @Tag(name = "Teacher Feedback", description = "Recurso para gerenciar feedbacks de professores")
+
 }, servers = {
         @Server(
                 url = "http://localhost:9090",

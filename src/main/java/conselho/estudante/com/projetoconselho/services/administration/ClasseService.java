@@ -1,6 +1,6 @@
 package conselho.estudante.com.projetoconselho.services.administration;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.ADMINISTRATION.ClasseRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.administration.ClasseRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.administration.ClasseResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Classe;
 import conselho.estudante.com.projetoconselho.models.entity.administration.Course;
@@ -13,6 +13,7 @@ import conselho.estudante.com.projetoconselho.models.exceptions.DadosDuplicadosE
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.administration.ClasseRepository;
 import conselho.estudante.com.projetoconselho.services.logs.ClassLogsService;
+import conselho.estudante.com.projetoconselho.services.users.RepresentativeService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,15 +56,17 @@ public class ClasseService {
      * @throws DadosDuplicadosException se já existir uma turma ou sigla com o mesmo nome.
      */
     public ClasseResponseDTO create(ClasseRequestDTO classeRequestDTO, User actor) {
-        Classe classe = classeRequestDTO.convert();
+        Classe classe = classeRequestDTO.convert( courseService.getObjectCourse( classeRequestDTO.courseId()));
         if(repository.existsByName(classe.getName())) {
             throw new DadosDuplicadosException("Turma ja cadastrada");
         } else if (repository.existsByAcronym(classe.getAcronym())) {
             throw new DadosDuplicadosException("Sigla ja cadastrada");
         } else {
+            classe.setCreatedAt(new Date());
+            classe = repository.save(classe);
             courseService.addClassToCourse(classe.getCourse(), classe, actor);
             logsService.create(actor, classe, "create");
-            return repository.save(classe).toDTO();
+            return classe.toDTO();
         }
     }
 
@@ -77,7 +81,7 @@ public class ClasseService {
      * @throws DadosDuplicadosException se uma turma ou sigla semelhante já existir.
      */
     public ClasseResponseDTO update(Long id, ClasseRequestDTO classeRequestDTO, User actor) {
-        Classe classe = classeRequestDTO.convert();
+        Classe classe = classeRequestDTO.convert( courseService.getObjectCourse( classeRequestDTO.courseId() ));
         if (repository.existsById(id)) {
             classe.setId(id);
             if (repository.existsByName(classe.getName())) {
@@ -85,6 +89,7 @@ public class ClasseService {
             } else if (repository.existsByAcronym(classe.getAcronym())) {
                 throw new DadosDuplicadosException("Sigla ja cadastrada");
             }
+            classe.setCreatedAt( repository.findById(id).get().getCreatedAt());
             logsService.create(actor, classe, getEditableItems(repository.findById(id).get(), classe, actor), "update");
             return repository.save(classe).toDTO();
         }

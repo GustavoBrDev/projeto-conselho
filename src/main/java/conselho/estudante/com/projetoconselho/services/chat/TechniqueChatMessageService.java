@@ -1,13 +1,13 @@
 package conselho.estudante.com.projetoconselho.services.chat;
 
-import conselho.estudante.com.projetoconselho.models.dto.request.CHAT.TechniqueChatMessageRequestDTO;
+import conselho.estudante.com.projetoconselho.models.dto.request.chat.TechniqueChatMessageRequestDTO;
 import conselho.estudante.com.projetoconselho.models.dto.response.ChatMessageResponseDTO;
 import conselho.estudante.com.projetoconselho.models.entity.chat.TechniqueChatMessage;
 import conselho.estudante.com.projetoconselho.models.entity.users.Technique;
 import conselho.estudante.com.projetoconselho.models.exceptions.NaoEncontradoException;
 import conselho.estudante.com.projetoconselho.repositories.chat.TechniqueChatMessageRepository;
 import conselho.estudante.com.projetoconselho.services.logs.ChatMessageLogsService;
-import conselho.estudante.com.projetoconselho.services.users.TECHNIQUE.TechniqueService;
+import conselho.estudante.com.projetoconselho.services.users.technique.TechniqueService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +39,10 @@ public class TechniqueChatMessageService {
     public ChatMessageResponseDTO create (TechniqueChatMessageRequestDTO message) {
 
         try {
-            logsService.create(message, "create");
-            return repository.save(message.convert()).convert();
+            TechniqueChatMessage converted = message.convert();
+            converted = repository.save(converted);
+            logsService.create(converted, "create");
+            return converted.convert();
         } catch (Exception e) {
            throw new NoSuchElementException("Erro ao enviar mensagem");
         }
