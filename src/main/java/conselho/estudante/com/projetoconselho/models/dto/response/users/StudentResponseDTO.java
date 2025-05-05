@@ -1,0 +1,41 @@
+package conselho.estudante.com.projetoconselho.models.dto.response.users;
+
+import conselho.estudante.com.projetoconselho.models.entity.users.Student;
+import lombok.Builder;
+
+/**
+ * Classe de DTO da entidade Student, para ser usada nas respostas da API
+ * @author Camilly Chelest
+ * @since 12/03/2025
+ *
+ * Atualizado em 17/03/2025
+ * Adicionado atributos isRepresentative e isHidden
+ * @author Gustavo Stinghen
+ *
+ * Atualizado em 19/03/2025
+ * Alterado para uma classe para utilizar abstração (interface)
+ * @author Gustavo Stinghen
+ */
+
+@Builder
+public class StudentResponseDTO implements UserResponseDTO {
+    public Long id;
+    public String name;
+    public String email;
+    public String password;
+    public String image;
+    public Boolean isRepresentative;
+    public Boolean isHidden;
+
+    public Student convert() {
+        return Student.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .image(this.image)
+                .isRepresentative(this.isRepresentative)
+                .isHidden(this.isHidden)
+                .build();
+    }
+}
